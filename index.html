@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Ball Central | Dashboard Multiversal</title>
+    <meta name="description" content="La base de datos más completa del multiverso Dragon Ball. Explora personajes, sagas, series, películas, videojuegos y compara el poder de tus guerreros favoritos.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css?v=3.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9">
+</head>
+
+<body>
+    <!-- Premium Loader -->
+    <div id="loader">
+        <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="DB CENTRAL" style="height: 80px; width: auto; margin-bottom: 20px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255, 94, 0, 0.4));">
+        <div class="loader-circle"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Topbar Navigation -->
+        <header class="topbar" id="mainTopbar">
+            <div class="topbar-inner">
+                <a href="#" class="brand" onclick="showSection('inicio')">
+                    <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="DB CENTRAL" style="height: 55px; width: auto; object-fit: contain; transform: scale(1.15); transform-origin: left center; filter: drop-shadow(0 4px 12px rgba(255, 94, 0, 0.4));">
+                </a>
+
+                <nav class="top-nav">
+                    <a href="#" class="nav-item active" onclick="showSection('inicio')">
+                        <i class="bi bi-house-door d-md-none"></i> <span class="d-none d-md-inline">Inicio</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('personajes')">
+                        <i class="bi bi-person-badge d-md-none"></i> <span class="d-none d-md-inline">Personajes</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('serie')">
+                        <i class="bi bi-tv d-md-none"></i> <span class="d-none d-md-inline">Series</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('peliculas')">
+                        <i class="bi bi-film d-md-none"></i> <span class="d-none d-md-inline">Películas</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('manga')">
+                        <i class="bi bi-book d-md-none"></i> <span class="d-none d-md-inline">Manga</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('videojuegos')">
+                        <i class="bi bi-controller d-md-none"></i> <span class="d-none d-md-inline">Juegos</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('videos')">
+                        <i class="bi bi-play-btn d-md-none"></i> <span class="d-none d-md-inline">Videos</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('musica')">
+                        <i class="bi bi-music-note-beamed d-md-none"></i> <span class="d-none d-md-inline">Música</span>
+                    </a>
+                    <div class="nav-dropdown d-none d-md-block">
+                        <span class="nav-item"><i class="bi bi-three-dots"></i> Más</span>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showSection('esferas')">Esferas</a>
+                            <a href="#" onclick="showSection('universos')">Universos</a>
+                            <a href="#" onclick="showSection('biomas')">Biomas</a>
+                            <a href="#" onclick="showSection('game')">Juego RPG</a>
+                        </div>
+                    </div>
+                    <!-- Mobile extras -->
+                    <a href="#" class="nav-item d-md-none" onclick="showSection('esferas')"><i class="bi bi-stars"></i></a>
+                    <a href="#" class="nav-item d-md-none" onclick="showSection('universos')"><i class="bi bi-globe"></i></a>
+                    <a href="#" class="nav-item d-md-none" onclick="showSection('biomas')"><i class="bi bi-map"></i></a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-wrapper">
+            <!-- Dashboard / Inicio Section (Fullscreen Netflix Style) -->
+            <section id="inicio" class="section-content cinematic-home p-0">
+                
+                <!-- 1. HERO FULLSCREEN CAROUSEL -->
+                <div class="fullscreen-hero-wrapper" data-aos="fade-in" data-aos-duration="1500">
+                    <div id="heroBgBlur" class="hero-bg-blur"></div>
+                    <div class="hero-gradient-overlay"></div>
+                    
+                    <div class="swiper fullscreenSwiper">
+                        <div class="swiper-wrapper" id="fullscreenHeroSlides">
+                            <!-- Slides inyectados por JS -->
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+
+                <div class="container-fluid px-md-5 home-content-overlap">
+                    <!-- 2. DESTACADOS ÉPICOS -->
+                    <div class="row g-4 mb-5">
+                        <div class="col-12">
+                            <h4 class="epic-section-title" data-aos="fade-right">Destacados del Multiverso</h4>
+                        </div>
+                        <!-- Gran Tarjeta Principal (Música) -->
+                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="epic-highlight-card main-highlight" onclick="showSection('musica')">
+                                <div class="epic-bg" style="background-image: url('https://img.youtube.com/vi/sfKi8c-UoP0/maxresdefault.jpg'); filter: brightness(0.65);"></div>
+                                <div class="epic-overlay" style="background: linear-gradient(to top, rgba(13,13,18,0.95) 0%, rgba(13,13,18,0.3) 100%);"></div>
+                                <div class="epic-content">
+                                    <span class="epic-badge" style="background: rgba(0, 210, 255, 0.15); border-color: rgba(0, 210, 255, 0.5); color: var(--accent-electric);">NUEVA SECCIÓN</span>
+                                    <h3>🎵 Música Multiversal</h3>
+                                    <p>Escucha los openings más icónicos, endings emotivos y las bandas sonoras legendarias del anime en nuestro reproductor integrado.</p>
+                                    <button class="epic-btn" style="background: linear-gradient(135deg, var(--accent-electric), #0077ff); box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">Escuchar Música</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mosaico Lateral -->
+                        <div class="col-lg-6">
+                            <div class="row g-4">
+                                <div class="col-sm-6" data-aos="fade-up" data-aos-delay="200">
+                                    <div class="epic-stat-glass">
+                                        <div class="epic-stat-val" data-count="100">0</div>
+                                        <div class="epic-stat-label">Personajes</div>
+                                        <i class="bi bi-people-fill epic-stat-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" data-aos="fade-up" data-aos-delay="300">
+                                    <div class="epic-stat-glass">
+                                        <div class="epic-stat-val" data-count="12">0</div>
+                                        <div class="epic-stat-label">Universos</div>
+                                        <i class="bi bi-globe-central-south-asia epic-stat-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="col-12" data-aos="fade-up" data-aos-delay="400">
+                                    <div class="epic-highlight-card secondary-highlight" onclick="showSection('videos')">
+                                        <div class="epic-overlay" style="background: linear-gradient(90deg, rgba(30,144,255,0.8), transparent);"></div>
+                                        <div class="epic-content row-layout">
+                                            <div class="icon-box"><i class="bi bi-play-circle-fill"></i></div>
+                                            <div>
+                                                <h4>Clips Multiversales</h4>
+                                                <p>Openings, batallas y trailers épicos</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" data-aos="fade-up" data-aos-delay="500">
+                                    <div class="epic-highlight-card secondary-highlight" onclick="showSection('personajes')">
+                                        <div class="epic-overlay" style="background: linear-gradient(90deg, rgba(255,179,0,0.8), transparent);"></div>
+                                        <div class="epic-content row-layout">
+                                            <div class="icon-box" style="color: var(--accent-secondary);"><i class="bi bi-person-badge-fill"></i></div>
+                                            <div>
+                                                <h4>Directorio de Guerreros</h4>
+                                                <p>Explora estadísticas y habilidades</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. EXPLORAR (NETFLIX ROWS) -->
+                    <div class="netflix-rows-container mb-5 pb-5">
+                        
+                        <!-- Row 1: Series -->
+                        <div class="netflix-row-wrapper mb-5" data-aos="fade-up">
+                            <h4 class="epic-section-title mb-3">Series Originales</h4>
+                            <div class="netflix-row" id="row-series">
+                                <!-- JS Inyecta -->
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Películas -->
+                        <div class="netflix-row-wrapper mb-5" data-aos="fade-up" data-aos-delay="100">
+                            <h4 class="epic-section-title mb-3">Películas</h4>
+                            <div class="netflix-row" id="row-peliculas">
+                                <!-- JS Inyecta -->
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Mangas -->
+                        <div class="netflix-row-wrapper mb-5" data-aos="fade-up" data-aos-delay="200">
+                            <h4 class="epic-section-title mb-3">Mangas Especiales</h4>
+                            <div class="netflix-row" id="row-mangas">
+                                <!-- JS Inyecta -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Personajes Section -->
+            <section id="personajes" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Personajes</h2>
+                        <p>Directorio detallado de guerreros y seres de todos los universos.</p>
+                    </div>
+                </div>
+                <div class="row g-4" id="charactersContainer"></div>
+            </section>
+
+            <!-- Esferas Section -->
+            <section id="esferas" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Esferas del Dragón</h2>
+                        <p>Artefactos místicos capaces de conceder cualquier deseo.</p>
+                    </div>
+                </div>
+                <div class="row g-4" id="esferasContainer"></div>
+            </section>
+
+            <!-- Universos Section -->
+            <section id="universos" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Universos</h2>
+                        <p>Explora la jerarquía divina y los 12 universos.</p>
+                    </div>
+                </div>
+                <div id="universosContainer"></div>
+            </section>
+
+            <!-- Series Section -->
+            <section id="serie" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Series de Televisión</h2>
+                        <p>Toda la cronología animada desde Dragon Ball hasta Daima.</p>
+                    </div>
+                </div>
+                <div id="seriesListView">
+                    <div class="row g-4" id="seriesContainer"></div>
+                </div>
+
+                <div id="seriesDetailView" class="d-none">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-white mb-1" id="seriesDetailTitle">Serie</h3>
+                            <div class="text-muted" id="seriesDetailSub">Información</div>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm" id="seriesDetailBackBtn" style="border-radius: var(--radius-md);">
+                            <i class="bi bi-arrow-left"></i> Volver a Series
+                        </button>
+                    </div>
+
+                    <div class="premium-card p-4 mb-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="text-white mb-0">▼ Sagas de esta serie</h5>
+                            <span class="badge bg-primary text-black fw-bold rounded-pill" id="seriesSagasCount">0</span>
+                        </div>
+                        <div class="row g-3 mt-1" id="seriesSagasList">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Manga Section -->
+            <section id="manga" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Publicaciones Manga</h2>
+                        <p>La fuente original de Akira Toriyama y Toyotaro.</p>
+                    </div>
+                </div>
+                <div class="row g-4" id="mangasContainer"></div>
+            </section>
+
+            <!-- Peliculas Section -->
+            <section id="peliculas" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Largometrajes</h2>
+                        <p>Películas, especiales de TV y OVAs oficiales.</p>
+                    </div>
+                </div>
+                <div class="row g-4" id="peliculasContainer"></div>
+            </section>
+
+            <!-- Videojuegos Section -->
+            <section id="videojuegos" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Videojuegos</h2>
+                        <p>De la era de los 8-bits hasta la nueva generación.</p>
+                    </div>
+                </div>
+                <div class="row g-4" id="videojuegosContainer"></div>
+            </section>
+
+            <!-- Biomas Section -->
+            <section id="biomas" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Biomas</h2>
+                        <p>Localizaciones icónicas y entornos del multiverso.</p>
+                    </div>
+                </div>
+                <div class="row g-4" id="biomasContainer"></div>
+            </section>
+
+            <!-- Videos Section -->
+            <section id="videos" class="section-content d-none">
+                <div class="section-header flex-column flex-md-row align-items-start align-items-md-end gap-3">
+                    <div class="section-title-wrapper">
+                        <h2>Clips y Videos Multiversales</h2>
+                        <p>Disfruta de openings, batallas épicas y trailers oficiales del universo Dragon Ball.</p>
+                    </div>
+                    <!-- Filtros y Búsqueda -->
+                    <div class="d-flex flex-wrap gap-2 align-items-center w-100 w-md-auto ms-auto">
+                        <div class="search-box-wrapper mb-2 mb-md-0 position-relative w-100 w-md-auto" style="min-width: 250px;">
+                            <input type="text" id="videoSearchInput" class="form-control bg-dark border-orange-glow text-white pe-5" placeholder="Buscar video..." onkeyup="filterVideos()" style="border-radius: var(--radius-md);">
+                            <i class="bi bi-search position-absolute end-0 top-50 translate-middle-y me-3 text-muted"></i>
+                        </div>
+                        <div class="video-tabs d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm active" onclick="filterVideoCategory('Todos', this)" style="border-radius: var(--radius-md);">Todos</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Openings', this)" style="border-radius: var(--radius-md);">Openings</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Batallas', this)" style="border-radius: var(--radius-md);">Batallas</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Trailers', this)" style="border-radius: var(--radius-md);">Trailers</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4" id="videosContainer"></div>
+            </section>
+
+            <!-- 🎵 SECCIÓN MÚSICA -->
+            <section id="musica" class="section-content d-none">
+                <div class="section-header flex-column flex-md-row align-items-start align-items-md-end gap-3">
+                    <div class="section-title-wrapper">
+                        <h2>Música Multiversal</h2>
+                        <p>Escucha los mejores openings, endings, OSTs y temas de combate de todo el universo Dragon Ball.</p>
+                    </div>
+                    <!-- music category filters -->
+                    <div class="d-flex flex-wrap gap-2 align-items-center w-100 w-md-auto ms-auto">
+                        <div class="video-tabs d-flex gap-2" id="musicCategoryTabs">
+                            <button class="btn btn-outline-primary btn-sm active" onclick="filterMusicCategory('Todos', this)" style="border-radius: var(--radius-md);">Todos</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterMusicCategory('Opening', this)" style="border-radius: var(--radius-md);">Openings</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterMusicCategory('Ending', this)" style="border-radius: var(--radius-md);">Endings</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterMusicCategory('OST', this)" style="border-radius: var(--radius-md);">OST</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterMusicCategory('Batallas', this)" style="border-radius: var(--radius-md);">Batallas</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterMusicCategory('Transformaciones', this)" style="border-radius: var(--radius-md);">Transformaciones</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterMusicCategory('Favoritos', this)" style="border-radius: var(--radius-md);"><i class="bi bi-heart-fill text-danger"></i> Favoritos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Playlist -->
+                    <div class="col-lg-7">
+                        <div class="premium-card p-4">
+                            <h5 class="text-white mb-3 d-flex justify-content-between align-items-center">
+                                <span>Lista de Canciones</span>
+                                <span class="badge bg-primary text-black fw-bold rounded-pill" id="musicTrackCount">0</span>
+                            </h5>
+                            <div class="music-list-container" id="musicPlaylist" style="max-height: 480px; overflow-y: auto; padding-right: 5px;">
+                                <!-- Inyectado por JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player -->
+                    <div class="col-lg-5">
+                        <div class="premium-card p-4 text-center player-card mb-4" style="background: linear-gradient(145deg, rgba(20, 20, 25, 0.9), rgba(5, 5, 8, 0.98));">
+                            <div class="disc-wrapper mb-4">
+                                <div class="disc" id="playerDisc">
+                                    <img src="https://via.placeholder.com/200x200/111/ff5e00?text=Banda+Sonora" alt="Cover" id="playerCover">
+                                </div>
+                            </div>
+                            <h4 class="text-white text-truncate mb-1" id="playerTitle">Selecciona un tema</h4>
+                            <p class="text-muted small mb-4 text-truncate" id="playerArtist">Dragon Ball Central Radio</p>
+
+                            <!-- Audio progress -->
+                            <div class="music-progress-wrapper mb-4 px-2">
+                                <div class="progress-bar-track" id="progressBarTrack" onclick="seekAudio(event)" style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; cursor: pointer; position: relative; overflow: hidden;">
+                                    <div class="progress-bar-fill" id="playerProgress" style="height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); width: 0%;"></div>
+                                </div>
+                                <div class="d-flex justify-content-between text-muted mt-2" style="font-size: 0.75rem;">
+                                    <span id="playerCurrentTime">00:00</span>
+                                    <span id="playerDuration">00:00</span>
+                                </div>
+                            </div>
+
+                            <!-- Playback controls -->
+                            <div class="d-flex justify-content-center align-items-center gap-4 mb-4">
+                                <button class="btn btn-outline-light btn-circle" onclick="prevTrack()" title="Anterior" style="border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-skip-start-fill"></i></button>
+                                <button class="btn btn-primary" id="playerPlayBtn" onclick="togglePlay()" title="Reproducir" style="border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: var(--accent-primary); border: none;"><i class="bi bi-play-fill" style="font-size: 1.8rem; color: #000; margin-left: 2px;"></i></button>
+                                <button class="btn btn-outline-light btn-circle" onclick="nextTrack()" title="Siguiente" style="border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-skip-end-fill"></i></button>
+                            </div>
+
+                            <!-- Additional controls -->
+                            <div class="d-flex justify-content-between align-items-center border-top border-secondary border-opacity-10 pt-3 px-2">
+                                <button class="btn btn-link text-muted p-0" id="playerFavBtn" onclick="toggleFavoriteActive()" style="text-decoration: none;"><i class="bi bi-heart" style="font-size: 1.25rem;"></i></button>
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-volume-up text-muted" id="volumeIcon" onclick="toggleMute()" style="cursor: pointer;"></i>
+                                    <input type="range" class="volume-slider" id="playerVolume" min="0" max="1" step="0.1" value="0.8" oninput="changeVolume(this.value)" style="width: 80px; accent-color: var(--accent-primary);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Music History -->
+                        <div class="premium-card p-4" style="background: rgba(13, 13, 18, 0.4);">
+                            <h6 class="text-white mb-3 d-flex align-items-center gap-2"><i class="bi bi-clock-history text-primary"></i> Historial de Escucha</h6>
+                            <div class="list-group list-group-flush" id="musicHistory" style="max-height: 150px; overflow-y: auto;">
+                                <!-- Inyectado por JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 🎮 MÓDULO RPG JUEGO -->
+            <section id="game" class="section-content d-none">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <h2>Juego RPG Multiversal</h2>
+                        <p>Entrena a tu equipo, enfréntate a poderosos enemigos y desbloquea transformaciones en este simulador RPG.</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Game UI Tabs -->
+                    <div class="col-12 mb-2">
+                        <div class="video-tabs d-flex gap-2" id="rpgTabs">
+                            <button class="btn btn-outline-primary btn-sm active" onclick="switchRpgTab('hero', this)" style="border-radius: var(--radius-md);">Héroe y Equipo</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="switchRpgTab('battle', this)" style="border-radius: var(--radius-md);">Entrenamiento y Batalla</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="switchRpgTab('inventory', this)" style="border-radius: var(--radius-md);">Inventario</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="switchRpgTab('missions', this)" style="border-radius: var(--radius-md);">Misiones y Reclutamiento</button>
+                        </div>
+                    </div>
+
+                    <!-- RPG Panels -->
+                    <div class="col-lg-8">
+                        <!-- Hero Tab Content -->
+                        <div class="premium-card p-4 rpg-panel-tab" id="rpgTab-hero">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-4 text-center">
+                                    <div class="fighter-portrait active mx-auto" style="border-color: var(--accent-primary);">
+                                        <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="Hero Portrait" id="rpgHeroImg">
+                                    </div>
+                                    <h4 class="text-white mt-2 mb-1" id="rpgHeroName">Guerrero Z</h4>
+                                    <span class="category-badge" id="rpgHeroTrans">Forma Base</span>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5 class="text-white mb-3">Progreso del Personaje</h5>
+                                    
+                                    <div class="stats-group mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-muted extra-small">NIVEL <strong class="text-white" id="rpgValLevel">1</strong></span>
+                                            <span class="text-primary extra-small fw-bold"><span id="rpgValXp">0</span> / <span id="rpgValNextXp">100</span> XP</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05)">
+                                            <div class="progress-bar bg-primary" id="rpgBarXp" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="stats-group mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-muted extra-small">ENERGÍA (STAMINA)</span>
+                                            <span class="text-success extra-small fw-bold" id="rpgTextStamina">100 / 100</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05)">
+                                            <div class="progress-bar bg-success" id="rpgBarStamina" style="width: 100%"></div>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="text-white mb-2 mt-4">Estadísticas de Combate</h6>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                                                <span class="text-muted small">Ataque (Fuerza)</span>
+                                                <span class="text-white fw-bold" id="rpgStatAtk">10</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                                                <span class="text-muted small">Velocidad</span>
+                                                <span class="text-white fw-bold" id="rpgStatVel">8</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                                                <span class="text-muted small">Poder de Ki</span>
+                                                <span class="text-white fw-bold" id="rpgStatKi">15</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                                                <span class="text-muted small">Defensa</span>
+                                                <span class="text-white fw-bold" id="rpgStatDef">12</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Battle Tab Content -->
+                        <div class="premium-card p-4 rpg-panel-tab d-none" id="rpgTab-battle">
+                            <h5 class="text-white mb-3">Arena de Entrenamiento</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="premium-card p-3 text-center border-orange-glow" onclick="rpgActionTrain()" style="cursor: pointer; background: rgba(255, 94, 0, 0.03);">
+                                        <i class="bi bi-fire text-primary mb-2" style="font-size: 2rem;"></i>
+                                        <h6 class="text-white">Entrenamiento de Gravedad</h6>
+                                        <p class="text-muted small mb-0">Consume <strong>15 Energía</strong> para ganar <strong>20 XP</strong> y mejorar estadísticas.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="premium-card p-3 text-center border-orange-glow" onclick="rpgActionFight()" style="cursor: pointer; background: rgba(0, 210, 255, 0.03); border-color: rgba(0, 210, 255, 0.3);">
+                                        <i class="bi bi-lightning-charge-fill text-info mb-2" style="font-size: 2rem;"></i>
+                                        <h6 class="text-white">Combate contra Saibaman</h6>
+                                        <p class="text-muted small mb-0">Consume <strong>30 Energía</strong> para ganar <strong>50 XP</strong> y objetos aleatorios.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="text-white mb-2 mt-4"><i class="bi bi-list-columns"></i> Registro de Combate / Bitácora</h6>
+                            <div class="p-3 bg-black text-success rounded border border-secondary border-opacity-20 font-monospace" id="rpgBattleLog" style="height: 180px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5;">
+                                [Sistema] Listo para entrenar o combatir...
+                            </div>
+                        </div>
+
+                        <!-- Inventory Tab Content -->
+                        <div class="premium-card p-4 rpg-panel-tab d-none" id="rpgTab-inventory">
+                            <h5 class="text-white mb-3">Tu Inventario</h5>
+                            <div class="row g-3" id="rpgInventoryContainer">
+                                <!-- Inyectado dinámicamente por JS -->
+                            </div>
+                        </div>
+
+                        <!-- Missions/Recruit Tab Content -->
+                        <div class="premium-card p-4 rpg-panel-tab d-none" id="rpgTab-missions">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <h6 class="text-white mb-3"><i class="bi bi-trophy"></i> Misiones Multiversales</h6>
+                                    <div class="list-group list-group-flush gap-2" id="rpgMissionsList">
+                                        <!-- Inyectado dinámicamente por JS -->
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-white mb-3"><i class="bi bi-people-fill"></i> Sistema de Reclutamiento (Compañeros)</h6>
+                                    <div class="p-3 rounded bg-dark border border-secondary border-opacity-15">
+                                        <p class="text-muted small mb-3">La API de personajes externos está en desarrollo. Estructura de base de datos placeholder lista:</p>
+                                        <pre class="bg-black text-primary p-3 rounded small font-monospace" style="border: 1px dashed rgba(255,255,255,0.1); overflow-x: auto;">
+{
+  "id": "placeholder",
+  "name": "coming_soon"
+}
+                                        </pre>
+                                        <button class="btn btn-outline-primary btn-sm w-100" style="border-radius: var(--radius-md);" disabled>
+                                            <i class="bi bi-lock-fill"></i> Reclutar Guerreros Z (Próximamente)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar: Game State controls -->
+                    <div class="col-lg-4">
+                        <div class="premium-card p-4" style="background: rgba(13, 13, 18, 0.8);">
+                            <h5 class="text-white mb-3"><i class="bi bi-gear-fill"></i> Controles del Juego</h5>
+                            <div class="d-flex flex-column gap-2">
+                                <button class="btn btn-outline-primary text-start" onclick="rpgActionRest()" style="border-radius: var(--radius-md);">
+                                    <i class="bi bi-heart-pulse"></i> Descansar en Paozu (Recuperar Stamina)
+                                </button>
+                                <button class="btn btn-outline-success text-start" onclick="rpgActionSave()" style="border-radius: var(--radius-md);">
+                                    <i class="bi bi-floppy-fill"></i> Guardar Partida (Save Game)
+                                </button>
+                                <button class="btn btn-outline-danger text-start" onclick="rpgActionResetGame()" style="border-radius: var(--radius-md);">
+                                    <i class="bi bi-trash-fill"></i> Reiniciar Progreso (Reset)
+                                </button>
+                            </div>
+                            <div class="mt-4 pt-3 border-top border-secondary border-opacity-10 text-muted small text-center">
+                                Partida autoguardada localmente en <strong class="text-white">localStorage</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div>
+                    <div class="footer-brand">
+                        <i class="bi bi-pentagon-fill" style="color: var(--accent-primary);"></i>
+                        <span>DB CENTRAL</span>
+                    </div>
+                    <p class="footer-text mt-2">La base de datos definitiva del multiverso Dragon Ball.<br>Hecho con 🔥 por fans, para fans.</p>
+                </div>
+                <div class="text-end">
+                    <div class="footer-links mb-2">
+                        <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
+                        <a href="#" title="Twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" title="Discord"><i class="bi bi-discord"></i></a>
+                        <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+                    <p class="footer-text">© 2026 Dragon Ball Central. Proyecto fan no oficial.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="modal fade" id="videoPlayerModal" tabindex="-1" aria-labelledby="videoPlayerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-black border-orange-glow" style="border-radius: var(--radius-lg); overflow: hidden; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title text-white" id="videoPlayerModalLabel">Reproductor Multiversal</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="closeVideo()"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="ratio ratio-16x9">
+                        <iframe id="youtubePlayer" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Details Info Modal -->
+    <div class="modal fade" id="mediaInfoModal" tabindex="-1" aria-labelledby="mediaInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-black border-orange-glow" style="border-radius: var(--radius-lg); overflow: hidden; background: rgba(13,13,18,0.95); backdrop-filter: blur(20px);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title text-white" id="mediaInfoModalLabel">Detalles del Contenido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-5">
+                            <img id="mediaInfoImg" src="" alt="Media Cover" class="img-fluid rounded border border-secondary border-opacity-20" style="max-height: 380px; width: 100%; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        </div>
+                        <div class="col-md-7 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary px-3 py-1.5 mb-3 text-black fw-bold" id="mediaInfoBadge" style="letter-spacing: 1px; text-transform: uppercase;">Serie</span>
+                                <h3 class="text-white mb-2" id="mediaInfoTitle">Título</h3>
+                                <div class="text-muted small mb-3" id="mediaInfoSub" style="font-size: 0.85rem;">Subtítulo / Info</div>
+                                <p class="text-muted" id="mediaInfoDesc" style="font-size: 0.95rem; line-height: 1.6;">Descripción...</p>
+                            </div>
+                            <div class="pt-3 border-top border-secondary border-opacity-10 mt-3">
+                                <button type="button" class="epic-btn" id="mediaInfoBtn" onclick="" style="border-radius: var(--radius-md);">
+                                    <i class="bi bi-play-fill"></i> Explorar Sección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
+    <script src="api.js?v=3.0"></script>
+    <script src="script.js?v=3.0"></script>
+</body>
+
+</html>
