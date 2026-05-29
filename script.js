@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // UI interna para Series -> Sagas (sin modificar navegación global)
     try { wireSeriesSagasUi(); } catch(e) {}
+
+    // UI interna para Fan Animations
+    try { wireFanAnimationUi(); } catch(e) {}
 });
 
 async function initDashboard() {
@@ -201,6 +204,9 @@ function renderMedia(media) {
     // Guardar y renderizar sección de videos
     window.ALL_VIDEOS = media.videos || [];
     renderVideos(window.ALL_VIDEOS);
+
+    // Guardar fan animations
+    window.ALL_FAN_ANIMATIONS = media.fanAnimations || [];
 }
 
 const PLATFORM_META = {
@@ -439,8 +445,10 @@ function renderEsferas(world, query = '') {
             <div class="col-12 mb-3"><h4 class="epic-section-title esferas-subsection-title">${group.title}</h4></div>
             ${items.map(esfera => `
                 <div class="col-md-4" data-aos="fade-up">
-                    <div class="premium-card p-4 text-center">
-                        <div class="mb-3 display-6">✨</div>
+                    <div class="premium-card p-4 text-center esfera-card" onclick="showEsferaDetail(this)" data-nombre="${esfera.nombre}" data-descripcion="${esfera.descripcion}" data-dragon="${esfera.dragon}" data-color="${esfera.color}" data-imagen="${esfera.imagen || ''}">
+                        <div class="esfera-img-wrapper mb-3">
+                            <img src="${esfera.imagen || ''}" alt="${esfera.nombre}" class="esfera-img" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'display-6\\'>✨</div>';">
+                        </div>
                         <h5 class="text-white mb-2">${highlightText(esfera.nombre, query)}</h5>
                         <p class="text-muted small mb-3">${highlightText(esfera.descripcion, query)}</p>
                         <span class="badge bg-${esfera.color} bg-opacity-10 text-${esfera.color} border border-${esfera.color} border-opacity-25">${highlightText(esfera.dragon, query)}</span>
@@ -449,6 +457,70 @@ function renderEsferas(world, query = '') {
             `).join('')}
         `;
     }).join('');
+}
+
+function showEsferaDetail(cardEl) {
+    const nombre = cardEl.dataset.nombre;
+    const descripcion = cardEl.dataset.descripcion;
+    const dragon = cardEl.dataset.dragon;
+    const color = cardEl.dataset.color;
+    const imagen = cardEl.dataset.imagen;
+
+    const modalId = 'esferaDetailModal';
+    let modalEl = document.getElementById(modalId);
+
+    if (!modalEl) {
+        modalEl = document.createElement('div');
+        modalEl.className = 'modal fade';
+        modalEl.id = modalId;
+        modalEl.setAttribute('tabindex', '-1');
+        modalEl.setAttribute('aria-hidden', 'true');
+        modalEl.innerHTML = `
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content bg-black border-orange-glow" style="border-radius: var(--radius-lg); overflow: hidden; background: rgba(13,13,18,0.95); backdrop-filter: blur(20px);">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title text-white">Esfera del Dragón</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-md-5 text-center">
+                                <img id="esferaModalImg" src="" alt="Esfera" class="img-fluid esfera-modal-img">
+                                <h4 id="esferaModalTitle" class="text-white mt-3 mb-1"></h4>
+                                <span id="esferaModalBadge" class="badge mt-2 px-3 py-1.5"></span>
+                            </div>
+                            <div class="col-md-7">
+                                <p id="esferaModalDesc" class="text-muted" style="font-size: 0.95rem; line-height: 1.6;"></p>
+                                <div class="mt-4 pt-3 border-top border-secondary border-opacity-10">
+                                    <h6 class="text-white mb-3"><i class="bi bi-dragon me-2" style="color: var(--accent-primary);"></i>Dragón invocado</h6>
+                                    <div class="text-center">
+                                        <img src="https://lh3.googleusercontent.com/d/1powONUqd6btTR4GheQvAyc990HKHTBDA" alt="Dragón" class="img-fluid dragon-modal-img">
+                                        <p id="esferaModalDragon" class="text-white mt-2 fw-bold" style="font-size: 1.1rem;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalEl);
+
+        modalEl.addEventListener('hidden.bs.modal', () => {
+            const inst = bootstrap.Modal.getInstance(modalEl);
+            if (inst) inst.dispose();
+        });
+    }
+
+    document.getElementById('esferaModalImg').src = imagen || 'https://via.placeholder.com/300x300/111/ff5e00?text=ESFERA';
+    document.getElementById('esferaModalTitle').textContent = nombre;
+    document.getElementById('esferaModalDesc').textContent = descripcion || 'Sin descripción disponible.';
+    document.getElementById('esferaModalBadge').textContent = dragon || '—';
+    document.getElementById('esferaModalBadge').className = `badge bg-${color || 'secondary'} bg-opacity-10 text-${color || 'secondary'} border border-${color || 'secondary'} border-opacity-25 px-3 py-1.5 mt-2`;
+    document.getElementById('esferaModalDragon').textContent = dragon || '—';
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
 }
 
 function renderUniversos(world, query = '') {
@@ -863,6 +935,11 @@ function filterVideoCategory(category, buttonEl) {
         buttonEl.classList.add('active');
     }
     
+    // Asegurar que volvemos a la vista normal de videos
+    document.getElementById('videosContainer').classList.remove('d-none');
+    document.getElementById('fanAnimationListView').classList.add('d-none');
+    document.getElementById('fanAnimationDetailView').classList.add('d-none');
+    
     filterVideos();
 }
 
@@ -907,6 +984,120 @@ function closeVideo() {
     }
 }
 
+// --- Fan Animations ---
+
+function showFanAnimations(buttonEl) {
+    // Desactivar otras pestañas
+    const buttons = document.querySelectorAll('.video-tabs button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    if (buttonEl) {
+        buttonEl.classList.add('active');
+    }
+
+    document.getElementById('videosContainer').classList.add('d-none');
+    document.getElementById('fanAnimationListView').classList.remove('d-none');
+    document.getElementById('fanAnimationDetailView').classList.add('d-none');
+
+    renderFanAnimations(window.ALL_FAN_ANIMATIONS || []);
+}
+
+function renderFanAnimations(list) {
+    const grid = document.getElementById('fanAnimationGrid');
+    if (!grid) return;
+
+    if (!list || list.length === 0) {
+        grid.innerHTML = `
+            <div class="col-12 text-center py-5" data-aos="fade-in">
+                <div class="premium-card p-5 border-orange-glow mx-auto" style="max-width: 600px;">
+                    <i class="bi bi-camera-reels display-1 text-primary mb-4 d-block" style="opacity: 0.5;"></i>
+                    <h3 class="text-white mb-3">Sin animaciones</h3>
+                    <p class="text-muted mb-0">No hay fan animations disponibles.</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = list.map((fa, index) => `
+        <div class="col-xl-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}">
+            <div class="premium-card video-card" onclick="showFanAnimationDetail(${index})">
+                <div class="card-image-box">
+                    <img src="${fa.imagen}" alt="${fa.titulo}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x338/111/ff5e00?text=SIN+IMAGEN';">
+                    <div class="video-card-overlay">
+                        <div class="video-play-btn">
+                            <i class="bi bi-collection-play-fill"></i>
+                        </div>
+                    </div>
+                    <a href="${fa.url || '#'}" target="_blank" rel="noopener noreferrer" class="category-badge text-decoration-none" style="position: absolute; top: 12px; left: 12px; z-index: 10;" onclick="event.stopPropagation();"><i class="bi bi-youtube me-1"></i>${fa.creador}</a>
+                </div>
+                <div class="video-card-body">
+                    <h5 class="video-card-title text-truncate" title="${fa.titulo}">${fa.titulo}</h5>
+                    <p class="video-card-desc text-muted line-clamp-2">${fa.descripcion}</p>
+                    <div class="mt-2">
+                        <span class="badge bg-dark text-white border border-secondary">
+                            <i class="bi bi-camera-reels me-1"></i> ${fa.capitulos.length} capítulo${fa.capitulos.length !== 1 ? 's' : ''}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showFanAnimationDetail(index) {
+    const list = window.ALL_FAN_ANIMATIONS || [];
+    const fa = list[index];
+    if (!fa) return;
+
+    document.getElementById('fanAnimationListView').classList.add('d-none');
+    document.getElementById('fanAnimationDetailView').classList.remove('d-none');
+
+    const titleEl = document.getElementById('fanAnimationDetailTitle');
+    const subEl = document.getElementById('fanAnimationDetailSub');
+    if (titleEl) titleEl.textContent = fa.titulo;
+    if (subEl) subEl.textContent = `Por ${fa.creador} · ${fa.descripcion}`;
+
+    const countEl = document.getElementById('fanAnimationChapterCount');
+    if (countEl) countEl.textContent = fa.capitulos.length;
+
+    const listEl = document.getElementById('fanAnimationChapterList');
+    if (!listEl) return;
+
+    listEl.innerHTML = fa.capitulos.map((cap, i) => `
+        <div class="col-lg-4 col-md-6">
+            <div class="premium-card video-card" onclick="playVideo('${cap.youtubeId}')">
+                <div class="card-image-box">
+                    <img src="https://img.youtube.com/vi/${cap.youtubeId}/mqdefault.jpg" alt="${cap.titulo}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x338/111/ff5e00?text=SIN+IMAGEN';">
+                    <div class="video-card-overlay">
+                        <div class="video-play-btn">
+                            <i class="bi bi-play-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-card-body">
+                    <h6 class="video-card-title text-truncate mb-0" title="${cap.titulo}">${cap.titulo}</h6>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    if (window.AOS) AOS.refresh();
+}
+
+function wireFanAnimationUi() {
+    const back = document.getElementById('fanAnimationBackBtn');
+    const listView = document.getElementById('fanAnimationListView');
+    const detailView = document.getElementById('fanAnimationDetailView');
+
+    if (back && listView && detailView) {
+        back.addEventListener('click', (e) => {
+            e.preventDefault();
+            detailView.classList.add('d-none');
+            listView.classList.remove('d-none');
+            if (window.AOS) AOS.refresh();
+        });
+    }
+}
 
 function initCinematicHome(media) {
     const seriesWithType = media.series.map(item => ({ ...item, tipo: 'Serie' }));

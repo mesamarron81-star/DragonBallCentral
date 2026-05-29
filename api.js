@@ -205,22 +205,49 @@ var MEDIA_DATA = {
         { "titulo": "Dragon Ball Fusions", "descripcion": "Información no disponible.", "imagen": "https://lh3.googleusercontent.com/d/1x6y8WCWJA-7eH_aRckj_Bp0YKRv92lmk" }
     ],
     "videos": [
-        { "titulo": "Dragon Ball Z - Opening 1 (Cha-La Head-Cha-La)", "descripcion": "El legendario opening en español latino interpretado por Ricardo Silva.", "imagen": "https://img.youtube.com/vi/sfKi8c-UoP0/mqdefault.jpg", "youtubeId": "sfKi8c-UoP0", "categoria": "Openings" },
-        { "titulo": "Dragon Ball GT - Opening (Mi Corazón Encantado)", "descripcion": "El emotivo opening latino de Dragon Ball GT interpretado por Aarón Montalvo.", "imagen": "https://img.youtube.com/vi/k5n1d88Cq1w/mqdefault.jpg", "youtubeId": "k5n1d88Cq1w", "categoria": "Openings" },
-        { "titulo": "Dragon Ball Super - Opening 2 (Limit Break x Survivor)", "descripcion": "Opening del Torneo del Poder interpretado por Adrián Barba.", "imagen": "https://img.youtube.com/vi/3147Q9S-l08/mqdefault.jpg", "youtubeId": "3147Q9S-l08", "categoria": "Openings" },
-        { "titulo": "Dragon Ball Daima - Opening (Jaka Jaan)", "descripcion": "Opening oficial de la nueva serie Dragon Ball Daima (2024).", "imagen": "https://img.youtube.com/vi/63WlVqGzYlU/mqdefault.jpg", "youtubeId": "63WlVqGzYlU", "categoria": "Openings" },
         { "titulo": "Dragon Ball Clásico - Opening (Makafushigi Adventure)", "descripcion": "El opening original que inició la leyenda de Dragon Ball.", "imagen": "https://img.youtube.com/vi/JSb7p0SIc1w/mqdefault.jpg", "youtubeId": "JSb7p0SIc1w", "categoria": "Openings" },
-        { "titulo": "Goku alcanza el Super Saiyajin por Primera Vez", "descripcion": "La legendaria transformación de Goku frente a Freezer en Namek.", "imagen": "https://img.youtube.com/vi/Bcg8H6uU2-s/mqdefault.jpg", "youtubeId": "Bcg8H6uU2-s", "categoria": "Transformaciones" },
-        { "titulo": "Gohan Despierta el Super Saiyajin 2", "descripcion": "El momento de furia de Gohan contra los Cell Juniors y Cell.", "imagen": "https://img.youtube.com/vi/a9N0zB1qK0U/mqdefault.jpg", "youtubeId": "a9N0zB1qK0U", "categoria": "Batallas" },
-        { "titulo": "Goku Ultra Instinto Dominado vs Jiren", "descripcion": "El clímax del Torneo del Poder en Dragon Ball Super.", "imagen": "https://img.youtube.com/vi/sF7z27Jz5hQ/mqdefault.jpg", "youtubeId": "sF7z27Jz5hQ", "categoria": "Batallas" },
         { "titulo": "Goku se Transforma en Super Saiyajin 3 por Primera Vez", "descripcion": "La impactante transformación de Goku SSJ3 frente a Majin Buu.", "imagen": "https://img.youtube.com/vi/Ut8wlVuT3pc/mqdefault.jpg", "youtubeId": "Ut8wlVuT3pc", "categoria": "Transformaciones" },
         { "titulo": "Goku Despierta el Ultra Instinto por Primera Vez", "descripcion": "Goku alcanza el Ultra Instinto por primera vez en el Torneo del Poder.", "imagen": "https://img.youtube.com/vi/6CF29TtxU2c/mqdefault.jpg", "youtubeId": "6CF29TtxU2c", "categoria": "Transformaciones" },
         { "titulo": "Gogeta vs Broly - Batalla Épica Completa", "descripcion": "La fusión definitiva de Gogeta vs Broly en 4K.", "imagen": "https://img.youtube.com/vi/BYt9F2vCfqU/mqdefault.jpg", "youtubeId": "BYt9F2vCfqU", "categoria": "Batallas" },
         { "titulo": "Vegito vs Majin Buu - Combate Legendario", "descripcion": "Vegito hace su debut aplastando a Buuhan en una batalla épica.", "imagen": "https://img.youtube.com/vi/pmB5p1ZIWQw/mqdefault.jpg", "youtubeId": "pmB5p1ZIWQw", "categoria": "Batallas" },
         { "titulo": "Goku vs Majin Vegeta - La Rivalidad Saiyajin", "descripcion": "La pelea más intensa entre Goku y Vegeta bajo el control de Babidi.", "imagen": "https://img.youtube.com/vi/89fzXpb9rCU/mqdefault.jpg", "youtubeId": "89fzXpb9rCU", "categoria": "Batallas" },
-        { "titulo": "Dragon Ball Sparking! ZERO - Trailer Oficial", "descripcion": "Trailer de revelación del juego más esperado por los fans.", "imagen": "https://img.youtube.com/vi/1S_A0L3nQd4/mqdefault.jpg", "youtubeId": "1S_A0L3nQd4", "categoria": "Trailers" },
-        { "titulo": "Dragon Ball Daima - Trailer Principal", "descripcion": "Primer avance oficial de la historia original creada por Akira Toriyama.", "imagen": "https://img.youtube.com/vi/f2x7c-0Uvks/mqdefault.jpg", "youtubeId": "f2x7c-0Uvks", "categoria": "Trailers" },
-        { "titulo": "Dragon Ball Super: SUPER HERO - Tráiler Oficial", "descripcion": "El tráiler oficial de la película Super Hero con Gohan y Piccolo.", "imagen": "https://img.youtube.com/vi/t5CIs0jDqC8/mqdefault.jpg", "youtubeId": "t5CIs0jDqC8", "categoria": "Trailers" }
+        { "titulo": "Dragon Ball Super: SUPER HERO - Tráiler Oficial", "descripcion": "El tráiler oficial de la película Super Hero con Gohan y Piccolo.", "imagen": "https://img.youtube.com/vi/t5CIs0jDqC8/mqdefault.jpg", "youtubeId": "t5CIs0jDqC8", "categoria": "Trailers" },
+        { "titulo": "Dragon Ball Z Kakarot DLC 6 - Goku vs Vegeta 4K (Goku's Next Journey)", "descripcion": "La batalla final entre Goku y Vegeta en el DLC 6 de Dragon Ball Z Kakarot en 4K 60FPS.", "imagen": "https://img.youtube.com/vi/p3CDfDwwb6Q/mqdefault.jpg", "youtubeId": "p3CDfDwwb6Q", "categoria": "Batallas" }
+    ],
+    "fanAnimations": [
+        {
+            "titulo": "Dragon Ball Deliverance",
+            "creador": "FRAME ONE",
+            "url": "https://www.youtube.com/@frameone1",
+            "descripcion": "Años después de Dragon Ball GT, los Z Fighters se enfrentan a una poderosa amenaza que causa caos en Namek. Serie fan-made con animación de alta calidad y modelados 3D.",
+            "imagen": "https://img.youtube.com/vi/xRXn538AJIw/mqdefault.jpg",
+            "capitulos": [
+                { "titulo": "Episodio 1 - Emergency", "youtubeId": "xRXn538AJIw" },
+                { "titulo": "Episodio 2 - Scattered", "youtubeId": "Y0Z2Rbxg2Lk" },
+                { "titulo": "Episodio 3 - Acquired", "youtubeId": "cM3iF32reeE" },
+                { "titulo": "Episodio 4 - Legacies", "youtubeId": "Hoc0j1k3Wvc" }
+            ]
+        },
+        {
+            "titulo": "Future Gohan's Last Stand",
+            "creador": "WD Animation",
+            "url": "https://www.youtube.com/@WD.animate",
+            "descripcion": "La batalla final de Gohan del futuro contra los androides, recreada con una impresionante animación fan que captura la esencia del guerrero más trágico.",
+            "imagen": "https://img.youtube.com/vi/rQ_eqJHw4tE/mqdefault.jpg",
+            "capitulos": [
+                { "titulo": "Partes 1 + 2", "youtubeId": "rQ_eqJHw4tE" }
+            ]
+        },
+        {
+            "titulo": "Dragon Ball MAGIC",
+            "creador": "Totally Not Mark",
+            "url": "https://www.youtube.com/@TotallyNotMark",
+            "descripcion": "Una parodia animada en colaboración con TeamFourStar que reimagina el universo Dragon Ball con un toque de humor y creatividad.",
+            "imagen": "https://img.youtube.com/vi/-3J0ovtt278/mqdefault.jpg",
+            "capitulos": [
+                { "titulo": "Parte 1", "youtubeId": "-3J0ovtt278" }
+            ]
+        }
     ]
 };
 
@@ -289,21 +316,22 @@ var WORLD_DATA = {
     ],
     "esferas": {
         "cristalesEspeciales": [
-            { "nombre": "Cristal de la Omnipotencia", "dragon": "—", "color": "info", "descripcion": "Artefacto único capaz de otorgar poder absoluto sin límites conocidos." }
+            { "nombre": "Cristal de la Omnipotencia", "dragon": "—", "color": "info", "descripcion": "Artefacto único capaz de otorgar poder absoluto sin límites conocidos.", "imagen": "https://lh3.googleusercontent.com/d/1kwllvhGWA2-9KxqwPStyca9v6mUKTMWc" }
         ],
         "principales": [
-            { "nombre": "Esferas del Dragón", "dragon": "Shenlong", "color": "warning", "descripcion": "Las siete esferas de la Tierra. Conceden un deseo al reunirlas." },
-            { "nombre": "Gran Esfera del Dragón", "dragon": "Shenlong (GT)", "color": "warning", "descripcion": "Versión ampliada utilizada en Dragon Ball GT." },
-            { "nombre": "Super Esferas del Dragón", "dragon": "Super Shenlong", "color": "info", "descripcion": "Del tamaño de planetas. Sin límites de poder." }
+            { "nombre": "Esferas del Dragón", "dragon": "Shenlong", "color": "warning", "descripcion": "Las siete esferas de la Tierra. Conceden un deseo al reunirlas.", "imagen": "https://lh3.googleusercontent.com/d/1_bCHC8MeGlixl6yqSuso8G5V9uhn8AmM" },
+            { "nombre": "Esferas del Dragón de Namek", "dragon": "Porunga", "color": "success", "descripcion": "Mucho más grandes; conceden tres deseos en idioma Namek.", "imagen": "https://lh3.googleusercontent.com/d/1_bCHC8MeGlixl6yqSuso8G5V9uhn8AmM" },
+            { "nombre": "Super Esferas del Dragón", "dragon": "Super Shenlong", "color": "info", "descripcion": "Del tamaño de planetas. Sin límites de poder.", "imagen": "https://lh3.googleusercontent.com/d/14MPoXE9vqzqPwwP5Bg-Yt6jJ_whWYG4h" },
+            { "nombre": "Gran Esfera del Dragón", "dragon": "Shenlong (GT)", "color": "warning", "descripcion": "Esferas de la Estrella Negra de Dragon Ball GT. Al reunirlas, el dragón oscuro concede un deseo pero esparce las esferas por todo el universo.", "imagen": "https://lh3.googleusercontent.com/d/1fRtltVnEL1Vb3hGGUxRVvxALscKHcNPF" },
+            { "nombre": "Esfera del Dragón de Cuatro Estrellas", "dragon": "Shenlong", "color": "warning", "descripcion": "La esfera icónica de Goku, heredada de su abuelo Son Gohan. Simboliza su conexión con el pasado y su destino como guerrero.", "imagen": "https://lh3.googleusercontent.com/d/1_bCHC8MeGlixl6yqSuso8G5V9uhn8AmM" }
         ],
         "variantes": [
-            { "nombre": "Esfera del Dragón de Cuatro Estrellas", "dragon": "Shenlong", "color": "warning", "descripcion": "La esfera icónica de Goku, símbolo de su abuelo." },
-            { "nombre": "Esferas del Dragón de Namek", "dragon": "Porunga", "color": "success", "descripcion": "Mucho más grandes; conceden tres deseos en idioma Namek." },
-            { "nombre": "Esferas del Dragón de Cereal", "dragon": "Toronbo", "color": "success", "descripcion": "Esferas del planeta Cereal, hogar de Granolah." },
-            { "nombre": "Esferas del Dragón Oscuras", "dragon": "Dragón Oscuro", "color": "dark", "descripcion": "Variante corrupta vinculada a energías negativas." },
-            { "nombre": "Esferas del Dragón Especiales", "dragon": "Shenlong", "color": "primary", "descripcion": "Ediciones limitadas y variantes especiales del multiverso." },
-            { "nombre": "Esferas del Dragón de Energía Negativa", "dragon": "—", "color": "danger", "descripcion": "Esferas cargadas con energía negativa que distorsionan los deseos." },
-            { "nombre": "Esferas del Dragón del Reino Demoníaco", "dragon": "Tamagami", "color": "secondary", "descripcion": "Artefactos del Reino Demoníaco introducidos en Dragon Ball Daima." }
+            { "nombre": "Esferas del Dragón (Dragonball Evolución)", "dragon": "Shenlong", "color": "danger", "descripcion": "Versión de la película live action Dragonball Evolution, con un diseño alternativo de las esferas.", "imagen": "https://lh3.googleusercontent.com/d/1_bCHC8MeGlixl6yqSuso8G5V9uhn8AmM" },
+            { "nombre": "Esferas del Dragón de Cereal", "dragon": "Toronbo", "color": "success", "descripcion": "Esferas del planeta Cereal, hogar de Granolah.", "imagen": "https://lh3.googleusercontent.com/d/1dMQfaDo2tfXNmb954-T34DwuEQamJc5W" },
+            { "nombre": "Esferas del Dragón Oscuras", "dragon": "Dragón Oscuro", "color": "dark", "descripcion": "Esferas de color oscuro vinculadas a energías corruptas y dragones oscuros.", "imagen": "https://lh3.googleusercontent.com/d/13tgVnKRZ6GhYFAJUP1AMHWn-CQAk2a7R" },
+            { "nombre": "Esferas del Dragón Especiales", "dragon": "Shenlong", "color": "primary", "descripcion": "Ediciones limitadas y variantes especiales del multiverso.", "imagen": "https://lh3.googleusercontent.com/d/1fRtltVnEL1Vb3hGGUxRVvxALscKHcNPF" },
+            { "nombre": "Esferas del Dragón de Energía Negativa", "dragon": "—", "color": "danger", "descripcion": "Esferas cargadas con energía negativa que distorsionan los deseos.", "imagen": "https://lh3.googleusercontent.com/d/13whURNtmtBWqfJStYOvzesGhikpxCnC7" },
+            { "nombre": "Esferas del Dragón del Reino Demoníaco", "dragon": "Tamagami", "color": "secondary", "descripcion": "Artefactos del Reino Demoníaco introducidos en Dragon Ball Daima.", "imagen": "https://lh3.googleusercontent.com/d/19PLsHz2B_w4Gz1z6D4h5shGj4cxgMYxN" }
         ]
     },
     "universos": [

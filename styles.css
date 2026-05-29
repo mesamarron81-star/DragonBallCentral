@@ -720,6 +720,62 @@ p, span, div { color: inherit; }
     filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6));
 }
 
+/* --- Esferas --- */
+.esfera-card {
+    cursor: pointer;
+}
+
+.esfera-card .esfera-img-wrapper {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.08);
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.esfera-card:hover .esfera-img-wrapper {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 35px rgba(255, 94, 0, 0.2);
+    transform: scale(1.08);
+}
+
+.esfera-card .esfera-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.esfera-card:hover .esfera-img {
+    transform: scale(1.12);
+}
+
+/* Esfera Modal */
+.esfera-modal-img {
+    max-height: 280px;
+    width: auto;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 215, 0, 0.25);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+
+.dragon-modal-img {
+    max-height: 180px;
+    width: auto;
+    border-radius: var(--radius-md);
+    filter: drop-shadow(0 0 20px rgba(255, 94, 0, 0.15));
+    object-fit: contain;
+}
+
 /* --- Footer --- */
 .site-footer {
     background: rgba(13, 13, 13, 0.95);

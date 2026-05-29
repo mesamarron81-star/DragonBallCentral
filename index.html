@@ -17,7 +17,7 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css?v=4.0">
+    <link rel="stylesheet" href="styles.css?v=4.1">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9">
 </head>
@@ -325,10 +325,36 @@
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Batallas', this)" style="border-radius: var(--radius-md);">Batallas</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Transformaciones', this)" style="border-radius: var(--radius-md);">Transformaciones</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Trailers', this)" style="border-radius: var(--radius-md);">Trailers</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="showFanAnimations(this)" style="border-radius: var(--radius-md);"><i class="bi bi-stars"></i> Fan Animations</button>
                         </div>
                     </div>
                 </div>
                 <div class="row g-4" id="videosContainer"></div>
+
+                <!-- Fan Animation List View -->
+                <div id="fanAnimationListView" class="d-none">
+                    <div class="row g-4" id="fanAnimationGrid"></div>
+                </div>
+
+                <!-- Fan Animation Detail View -->
+                <div id="fanAnimationDetailView" class="d-none">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-white mb-1" id="fanAnimationDetailTitle">Fan Animation</h3>
+                            <div class="text-muted" id="fanAnimationDetailSub">Capítulos</div>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm" id="fanAnimationBackBtn" style="border-radius: var(--radius-md);">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </button>
+                    </div>
+                    <div class="premium-card p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="text-white mb-0"><i class="bi bi-play-circle me-2"></i> Capítulos</h5>
+                            <span class="badge bg-primary text-black fw-bold rounded-pill" id="fanAnimationChapterCount">0</span>
+                        </div>
+                        <div class="row g-3" id="fanAnimationChapterList"></div>
+                    </div>
+                </div>
             </section>
 
             <!-- 🎵 SECCIÓN MÚSICA -->
@@ -352,7 +378,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4">
+                <div class="row g-4 mb-0 pb-4">
                     <!-- Playlist -->
                     <div class="col-lg-7">
                         <div class="premium-card p-4">
@@ -496,8 +522,8 @@
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>AOS.init({ duration: 800, once: true });</script>
-    <script src="api.js?v=4.0"></script>
-    <script src="script.js?v=4.0"></script>
+    <script src="api.js?v=4.1"></script>
+    <script src="script.js?v=4.1"></script>
 </body>
 
 </html>
