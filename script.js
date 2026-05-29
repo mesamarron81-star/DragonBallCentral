@@ -51,9 +51,6 @@ async function loadInitialData() {
         // Initialize Music Player after data loads
         try { initMusicPlayer(music); } catch(e) { console.warn('Music player not available:', e.message); }
 
-        // Initialize RPG game after data loads
-        try { initRpgGame(); } catch(e) { console.warn('RPG game not available:', e.message); }
-
         // Initialize Cinematic Home
         initCinematicHome(media);
     } catch (error) {

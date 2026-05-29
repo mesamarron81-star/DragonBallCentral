@@ -17,7 +17,7 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css?v=3.0">
+    <link rel="stylesheet" href="styles.css?v=4.0">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9">
 </head>
@@ -68,7 +68,6 @@
                             <a href="#" onclick="showSection('esferas')">Esferas</a>
                             <a href="#" onclick="showSection('universos')">Universos</a>
                             <a href="#" onclick="showSection('biomas')">Biomas</a>
-                            <a href="#" onclick="showSection('game')">Juego RPG</a>
                         </div>
                     </div>
                     <!-- Mobile extras -->
@@ -324,6 +323,7 @@
                             <button class="btn btn-outline-primary btn-sm active" onclick="filterVideoCategory('Todos', this)" style="border-radius: var(--radius-md);">Todos</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Openings', this)" style="border-radius: var(--radius-md);">Openings</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Batallas', this)" style="border-radius: var(--radius-md);">Batallas</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Transformaciones', this)" style="border-radius: var(--radius-md);">Transformaciones</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Trailers', this)" style="border-radius: var(--radius-md);">Trailers</button>
                         </div>
                     </div>
@@ -416,176 +416,6 @@
                 </div>
             </section>
 
-            <!-- 🎮 MÓDULO RPG JUEGO -->
-            <section id="game" class="section-content d-none">
-                <div class="section-header">
-                    <div class="section-title-wrapper">
-                        <h2>Juego RPG Multiversal</h2>
-                        <p>Entrena a tu equipo, enfréntate a poderosos enemigos y desbloquea transformaciones en este simulador RPG.</p>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    <!-- Game UI Tabs -->
-                    <div class="col-12 mb-2">
-                        <div class="video-tabs d-flex gap-2" id="rpgTabs">
-                            <button class="btn btn-outline-primary btn-sm active" onclick="switchRpgTab('hero', this)" style="border-radius: var(--radius-md);">Héroe y Equipo</button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="switchRpgTab('battle', this)" style="border-radius: var(--radius-md);">Entrenamiento y Batalla</button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="switchRpgTab('inventory', this)" style="border-radius: var(--radius-md);">Inventario</button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="switchRpgTab('missions', this)" style="border-radius: var(--radius-md);">Misiones y Reclutamiento</button>
-                        </div>
-                    </div>
-
-                    <!-- RPG Panels -->
-                    <div class="col-lg-8">
-                        <!-- Hero Tab Content -->
-                        <div class="premium-card p-4 rpg-panel-tab" id="rpgTab-hero">
-                            <div class="row g-4 align-items-center">
-                                <div class="col-md-4 text-center">
-                                    <div class="fighter-portrait active mx-auto" style="border-color: var(--accent-primary);">
-                                        <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="Hero Portrait" id="rpgHeroImg">
-                                    </div>
-                                    <h4 class="text-white mt-2 mb-1" id="rpgHeroName">Guerrero Z</h4>
-                                    <span class="category-badge" id="rpgHeroTrans">Forma Base</span>
-                                </div>
-                                <div class="col-md-8">
-                                    <h5 class="text-white mb-3">Progreso del Personaje</h5>
-                                    
-                                    <div class="stats-group mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="text-muted extra-small">NIVEL <strong class="text-white" id="rpgValLevel">1</strong></span>
-                                            <span class="text-primary extra-small fw-bold"><span id="rpgValXp">0</span> / <span id="rpgValNextXp">100</span> XP</span>
-                                        </div>
-                                        <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05)">
-                                            <div class="progress-bar bg-primary" id="rpgBarXp" style="width: 0%"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="stats-group mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="text-muted extra-small">ENERGÍA (STAMINA)</span>
-                                            <span class="text-success extra-small fw-bold" id="rpgTextStamina">100 / 100</span>
-                                        </div>
-                                        <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05)">
-                                            <div class="progress-bar bg-success" id="rpgBarStamina" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-
-                                    <h6 class="text-white mb-2 mt-4">Estadísticas de Combate</h6>
-                                    <div class="row g-2">
-                                        <div class="col-6">
-                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
-                                                <span class="text-muted small">Ataque (Fuerza)</span>
-                                                <span class="text-white fw-bold" id="rpgStatAtk">10</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
-                                                <span class="text-muted small">Velocidad</span>
-                                                <span class="text-white fw-bold" id="rpgStatVel">8</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
-                                                <span class="text-muted small">Poder de Ki</span>
-                                                <span class="text-white fw-bold" id="rpgStatKi">15</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="p-2 rounded bg-dark border border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
-                                                <span class="text-muted small">Defensa</span>
-                                                <span class="text-white fw-bold" id="rpgStatDef">12</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Battle Tab Content -->
-                        <div class="premium-card p-4 rpg-panel-tab d-none" id="rpgTab-battle">
-                            <h5 class="text-white mb-3">Arena de Entrenamiento</h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="premium-card p-3 text-center border-orange-glow" onclick="rpgActionTrain()" style="cursor: pointer; background: rgba(255, 94, 0, 0.03);">
-                                        <i class="bi bi-fire text-primary mb-2" style="font-size: 2rem;"></i>
-                                        <h6 class="text-white">Entrenamiento de Gravedad</h6>
-                                        <p class="text-muted small mb-0">Consume <strong>15 Energía</strong> para ganar <strong>20 XP</strong> y mejorar estadísticas.</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="premium-card p-3 text-center border-orange-glow" onclick="rpgActionFight()" style="cursor: pointer; background: rgba(0, 210, 255, 0.03); border-color: rgba(0, 210, 255, 0.3);">
-                                        <i class="bi bi-lightning-charge-fill text-info mb-2" style="font-size: 2rem;"></i>
-                                        <h6 class="text-white">Combate contra Saibaman</h6>
-                                        <p class="text-muted small mb-0">Consume <strong>30 Energía</strong> para ganar <strong>50 XP</strong> y objetos aleatorios.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h6 class="text-white mb-2 mt-4"><i class="bi bi-list-columns"></i> Registro de Combate / Bitácora</h6>
-                            <div class="p-3 bg-black text-success rounded border border-secondary border-opacity-20 font-monospace" id="rpgBattleLog" style="height: 180px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5;">
-                                [Sistema] Listo para entrenar o combatir...
-                            </div>
-                        </div>
-
-                        <!-- Inventory Tab Content -->
-                        <div class="premium-card p-4 rpg-panel-tab d-none" id="rpgTab-inventory">
-                            <h5 class="text-white mb-3">Tu Inventario</h5>
-                            <div class="row g-3" id="rpgInventoryContainer">
-                                <!-- Inyectado dinámicamente por JS -->
-                            </div>
-                        </div>
-
-                        <!-- Missions/Recruit Tab Content -->
-                        <div class="premium-card p-4 rpg-panel-tab d-none" id="rpgTab-missions">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <h6 class="text-white mb-3"><i class="bi bi-trophy"></i> Misiones Multiversales</h6>
-                                    <div class="list-group list-group-flush gap-2" id="rpgMissionsList">
-                                        <!-- Inyectado dinámicamente por JS -->
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6 class="text-white mb-3"><i class="bi bi-people-fill"></i> Sistema de Reclutamiento (Compañeros)</h6>
-                                    <div class="p-3 rounded bg-dark border border-secondary border-opacity-15">
-                                        <p class="text-muted small mb-3">La API de personajes externos está en desarrollo. Estructura de base de datos placeholder lista:</p>
-                                        <pre class="bg-black text-primary p-3 rounded small font-monospace" style="border: 1px dashed rgba(255,255,255,0.1); overflow-x: auto;">
-{
-  "id": "placeholder",
-  "name": "coming_soon"
-}
-                                        </pre>
-                                        <button class="btn btn-outline-primary btn-sm w-100" style="border-radius: var(--radius-md);" disabled>
-                                            <i class="bi bi-lock-fill"></i> Reclutar Guerreros Z (Próximamente)
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sidebar: Game State controls -->
-                    <div class="col-lg-4">
-                        <div class="premium-card p-4" style="background: rgba(13, 13, 18, 0.8);">
-                            <h5 class="text-white mb-3"><i class="bi bi-gear-fill"></i> Controles del Juego</h5>
-                            <div class="d-flex flex-column gap-2">
-                                <button class="btn btn-outline-primary text-start" onclick="rpgActionRest()" style="border-radius: var(--radius-md);">
-                                    <i class="bi bi-heart-pulse"></i> Descansar en Paozu (Recuperar Stamina)
-                                </button>
-                                <button class="btn btn-outline-success text-start" onclick="rpgActionSave()" style="border-radius: var(--radius-md);">
-                                    <i class="bi bi-floppy-fill"></i> Guardar Partida (Save Game)
-                                </button>
-                                <button class="btn btn-outline-danger text-start" onclick="rpgActionResetGame()" style="border-radius: var(--radius-md);">
-                                    <i class="bi bi-trash-fill"></i> Reiniciar Progreso (Reset)
-                                </button>
-                            </div>
-                            <div class="mt-4 pt-3 border-top border-secondary border-opacity-10 text-muted small text-center">
-                                Partida autoguardada localmente en <strong class="text-white">localStorage</strong>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </main>
 
         <!-- Footer -->
@@ -666,8 +496,8 @@
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>AOS.init({ duration: 800, once: true });</script>
-    <script src="api.js?v=3.0"></script>
-    <script src="script.js?v=3.0"></script>
+    <script src="api.js?v=4.0"></script>
+    <script src="script.js?v=4.0"></script>
 </body>
 
 </html>
