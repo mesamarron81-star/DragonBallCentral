@@ -223,7 +223,84 @@
                         <p>Explora la jerarquía divina y los 12 universos.</p>
                     </div>
                 </div>
-                <div id="universosContainer"></div>
+                <div id="universosListView">
+                    <div class="row g-4" id="universosContainer"></div>
+                </div>
+                <div id="universosDetailView" class="d-none">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-white mb-1" id="universoDetailTitle">Universo</h3>
+                            <p class="text-muted mb-0" id="universoDetailSub">Información del universo</p>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm" id="universoBackBtn" style="border-radius: var(--radius-md);">
+                            <i class="bi bi-arrow-left"></i> Volver a Universos
+                        </button>
+                    </div>
+
+                    <!-- Cover -->
+                    <div class="premium-card p-0 mb-4 overflow-hidden">
+                        <div class="universo-detail-cover">
+                            <img id="universoDetailCover" src="" alt="Universo" class="w-100">
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="premium-card p-4 mb-4">
+                        <p id="universoDetailDesc" class="text-muted mb-0" style="font-size: 0.95rem; line-height: 1.7;"></p>
+                    </div>
+
+                    <!-- God of Destruction -->
+                    <div class="premium-card p-4 mb-4">
+                        <h5 class="text-white mb-3"><i class="bi bi-lightning-fill me-2" style="color: var(--accent-primary);"></i>Dios de la Destrucción</h5>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-4 text-center">
+                                <div class="universo-char-img-wrapper mb-2">
+                                    <div class="universo-char-placeholder"><i class="bi bi-person-fill" style="font-size: 2.5rem; opacity: 0.3;"></i></div>
+                                </div>
+                                <h6 id="universoDiosNombre" class="text-white mb-0"></h6>
+                            </div>
+                            <div class="col-md-8">
+                                <p id="universoDiosDesc" class="text-muted small mb-2"></p>
+                                <div class="d-flex align-items-start gap-2">
+                                    <i class="bi bi-stars mt-1" style="color: var(--accent-gold);"></i>
+                                    <div>
+                                        <strong class="text-white small">Habilidades:</strong>
+                                        <p id="universoDiosHabilidades" class="text-muted small mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Angel -->
+                    <div class="premium-card p-4 mb-4">
+                        <h5 class="text-white mb-3"><i class="bi bi-feather me-2" style="color: var(--accent-electric);"></i>Ángel</h5>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-4 text-center">
+                                <div class="universo-char-img-wrapper mb-2">
+                                    <div class="universo-char-placeholder"><i class="bi bi-person-fill" style="font-size: 2.5rem; opacity: 0.3;"></i></div>
+                                </div>
+                                <h6 id="universoAngelNombre" class="text-white mb-0"></h6>
+                            </div>
+                            <div class="col-md-8">
+                                <p id="universoAngelDesc" class="text-muted small mb-2"></p>
+                                <div class="d-flex align-items-start gap-2">
+                                    <i class="bi bi-bookmark-star mt-1" style="color: var(--accent-electric);"></i>
+                                    <div>
+                                        <strong class="text-white small">Función:</strong>
+                                        <p id="universoAngelFuncion" class="text-muted small mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Supreme Kaioshin -->
+                    <div class="premium-card p-4">
+                        <h5 class="text-white mb-3"><i class="bi bi-gem me-2" style="color: var(--accent-secondary);"></i>Supremos Kaioshin</h5>
+                        <div id="universoKaioshinList"></div>
+                    </div>
+                </div>
             </section>
 
             <!-- Series Section -->

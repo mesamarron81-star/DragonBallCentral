@@ -723,57 +723,210 @@ p, span, div { color: inherit; }
 /* --- Esferas --- */
 .esfera-card {
     cursor: pointer;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 }
 
-.esfera-card .esfera-img-wrapper {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto;
-    border-radius: 50%;
+.esfera-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 94, 0, 0.3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 94, 0, 0.08);
+}
+
+.esfera-card .esfera-card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
     overflow: hidden;
-    border: 2px solid rgba(255, 215, 0, 0.2);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.08);
-    transition: var(--transition-smooth);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
 }
 
-.esfera-card:hover .esfera-img-wrapper {
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 35px rgba(255, 94, 0, 0.2);
-    transform: scale(1.08);
-}
-
-.esfera-card .esfera-img {
+.esfera-card .esfera-card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 12px;
     transition: transform 0.6s ease;
 }
 
-.esfera-card:hover .esfera-img {
-    transform: scale(1.12);
+.esfera-card:hover .esfera-card-image img {
+    transform: scale(1.06);
+}
+
+.esfera-card .esfera-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.esfera-card .esfera-card-body h5 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.esfera-card .esfera-card-body p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* Esfera Modal */
 .esfera-modal-img {
-    max-height: 280px;
-    width: auto;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 215, 0, 0.25);
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
-    object-fit: cover;
-    aspect-ratio: 1/1;
+    max-height: 300px;
+    width: 100%;
+    border-radius: var(--radius-md);
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 16px;
 }
 
-.dragon-modal-img {
-    max-height: 180px;
-    width: auto;
+.dragon-modal-placeholder {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-md);
-    filter: drop-shadow(0 0 20px rgba(255, 94, 0, 0.15));
-    object-fit: contain;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem;
+}
+
+/* --- Universos --- */
+.universo-card {
+    cursor: pointer;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.universo-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 94, 0, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 94, 0, 0.08);
+}
+
+.universo-card .universo-card-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.universo-card:hover .universo-card-img {
+    transform: scale(1.05);
+}
+
+.universo-card .universo-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.universo-card .universo-card-body h5 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.universo-card .universo-card-body p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.universo-card .universo-card-footer {
+    padding: 0.75rem 1.5rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Detail view */
+.universo-detail-cover {
+    width: 100%;
+    max-height: 360px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.universo-detail-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.universo-char-img-wrapper {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 215, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.universo-char-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+/* Kaioshin sub-card */
+.kaioshin-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.kaioshin-item:last-child {
+    margin-bottom: 0;
+}
+
+.kaioshin-item .kaioshin-img-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 /* --- Footer --- */

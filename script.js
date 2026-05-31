@@ -445,13 +445,15 @@ function renderEsferas(world, query = '') {
             <div class="col-12 mb-3"><h4 class="epic-section-title esferas-subsection-title">${group.title}</h4></div>
             ${items.map(esfera => `
                 <div class="col-md-4" data-aos="fade-up">
-                    <div class="premium-card p-4 text-center esfera-card" onclick="showEsferaDetail(this)" data-nombre="${esfera.nombre}" data-descripcion="${esfera.descripcion}" data-dragon="${esfera.dragon}" data-color="${esfera.color}" data-imagen="${esfera.imagen || ''}">
-                        <div class="esfera-img-wrapper mb-3">
-                            <img src="${esfera.imagen || ''}" alt="${esfera.nombre}" class="esfera-img" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'display-6\\'>✨</div>';">
+                    <div class="esfera-card premium-card" onclick="showEsferaDetail(this)" data-nombre="${esfera.nombre}" data-descripcion="${esfera.descripcion}" data-dragon="${esfera.dragon}" data-color="${esfera.color}" data-imagen="${esfera.imagen || ''}">
+                        <div class="esfera-card-image">
+                            <img src="${esfera.imagen || ''}" alt="${esfera.nombre}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x225/111/ff5e00?text=SIN+IMAGEN';">
                         </div>
-                        <h5 class="text-white mb-2">${highlightText(esfera.nombre, query)}</h5>
-                        <p class="text-muted small mb-3">${highlightText(esfera.descripcion, query)}</p>
-                        <span class="badge bg-${esfera.color} bg-opacity-10 text-${esfera.color} border border-${esfera.color} border-opacity-25">${highlightText(esfera.dragon, query)}</span>
+                        <div class="esfera-card-body">
+                            <h5 class="text-white">${highlightText(esfera.nombre, query)}</h5>
+                            <p class="text-muted">${highlightText(esfera.descripcion, query)}</p>
+                            <span class="badge bg-${esfera.color} bg-opacity-10 text-${esfera.color} border border-${esfera.color} border-opacity-25">${highlightText(esfera.dragon, query)}</span>
+                        </div>
                     </div>
                 </div>
             `).join('')}
@@ -494,8 +496,9 @@ function showEsferaDetail(cardEl) {
                                 <div class="mt-4 pt-3 border-top border-secondary border-opacity-10">
                                     <h6 class="text-white mb-3"><i class="bi bi-dragon me-2" style="color: var(--accent-primary);"></i>Dragón invocado</h6>
                                     <div class="text-center">
-                                        <img src="https://lh3.googleusercontent.com/d/1powONUqd6btTR4GheQvAyc990HKHTBDA" alt="Dragón" class="img-fluid dragon-modal-img">
-                                        <p id="esferaModalDragon" class="text-white mt-2 fw-bold" style="font-size: 1.1rem;"></p>
+                                        <div class="dragon-modal-placeholder">
+                                            <p id="esferaModalDragon" class="text-white fw-bold mb-0" style="font-size: 1.2rem;"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -526,29 +529,88 @@ function showEsferaDetail(cardEl) {
 function renderUniversos(world, query = '') {
     const universosContainer = document.getElementById('universosContainer');
     if (!universosContainer) return;
-    const list = filterByQuery(world.universos || [], query, (u) => [`Universo ${u.id}`, u.dios, u.angel].join(' '));
+    const list = filterByQuery(world.universos || [], query, (u) => [`Universo ${u.id}`, u.dios, u.angel, u.descripcion].join(' '));
     if (!list.length) {
         universosContainer.innerHTML = renderEmptySearch('No se encontraron universos.');
         return;
     }
-    universosContainer.innerHTML = `
-        <div class="row g-4">
-            ${list.map(u => `
-                <div class="col-xl-2 col-lg-3 col-md-4 col-6" data-aos="fade-up">
-                    <div class="premium-card universo-card ${u.highlight ? 'border-orange-glow' : ''}">
-                        <div class="card-image-box" style="aspect-ratio: 3/4;">
-                            <img src="${u.imagen}" alt="Universo ${u.id}" loading="lazy">
-                        </div>
-                        <div class="card-content text-center">
-                            <span class="category-badge mb-2">Universo ${u.id}</span>
-                            <h6 class="text-white mb-1">${highlightText(u.dios, query)}</h6>
-                            <p class="text-muted small mb-0">Ángel: ${highlightText(u.angel, query)}</p>
-                        </div>
-                    </div>
+    universosContainer.innerHTML = list.map(u => `
+        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="universo-card ${u.highlight ? 'border-orange-glow' : ''}" onclick='showUniversoDetail(${JSON.stringify(u).replace(/'/g, "&#39;")})'>
+                <img src="${u.imagen}" alt="Universo ${u.id}" class="universo-card-img" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x338/111/ff5e00?text=Universo+${u.id}';">
+                <div class="universo-card-body">
+                    <span class="category-badge" style="align-self: flex-start;">Universo ${u.id}</span>
+                    <h5 class="text-white">${highlightText(u.dios, query)}</h5>
+                    <p>${highlightText(u.descripcion || '', query)}</p>
                 </div>
-            `).join('')}
+                <div class="universo-card-footer">
+                    <span class="text-muted small"><i class="bi bi-feather me-1"></i>${highlightText(u.angel, query)}</span>
+                    <span class="text-muted small"><i class="bi bi-arrow-right-circle"></i></span>
+                </div>
+            </div>
         </div>
-    `;
+    `).join('');
+}
+
+function showUniversoDetail(u) {
+    if (!u) return;
+
+    document.getElementById('universosListView').classList.add('d-none');
+    document.getElementById('universosDetailView').classList.remove('d-none');
+
+    document.getElementById('universoDetailTitle').textContent = `Universo ${u.id}`;
+    document.getElementById('universoDetailSub').textContent = `Dios: ${u.dios} · Ángel: ${u.angel}`;
+    document.getElementById('universoDetailCover').src = u.imagen || 'https://via.placeholder.com/800x450/111/ff5e00?text=Universo+' + u.id;
+    document.getElementById('universoDetailDesc').textContent = u.descripcion || '';
+
+    // God of Destruction
+    const di = u.diosInfo || {};
+    document.getElementById('universoDiosNombre').textContent = di.nombre || u.dios;
+    document.getElementById('universoDiosDesc').textContent = di.descripcion || '';
+    document.getElementById('universoDiosHabilidades').textContent = di.habilidades || '';
+
+    // Angel
+    const ai = u.angelInfo || {};
+    document.getElementById('universoAngelNombre').textContent = ai.nombre || u.angel;
+    document.getElementById('universoAngelDesc').textContent = ai.descripcion || '';
+    document.getElementById('universoAngelFuncion').textContent = ai.funcion || '';
+
+    // Kaioshin
+    const kList = document.getElementById('universoKaioshinList');
+    const kaioshin = u.kaioshin || [];
+    if (kaioshin.length === 0) {
+        kList.innerHTML = '<p class="text-muted small mb-0">No hay información disponible sobre los Supremos Kaioshin de este universo.</p>';
+    } else {
+        kList.innerHTML = kaioshin.map(k => `
+            <div class="kaioshin-item d-flex align-items-start gap-3">
+                <div class="kaioshin-img-placeholder">
+                    <i class="bi bi-gem" style="color: var(--accent-secondary); opacity: 0.5;"></i>
+                </div>
+                <div>
+                    <h6 class="text-white mb-1" style="font-size: 0.9rem;">${k.nombre || 'Kaioshin'}</h6>
+                    <p class="text-muted small mb-1">${k.descripcion || ''}</p>
+                    <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25" style="font-size: 0.7rem;">${k.rol || ''}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    if (window.AOS) AOS.refresh();
+}
+
+function wireUniversosUi() {
+    const back = document.getElementById('universoBackBtn');
+    const listView = document.getElementById('universosListView');
+    const detailView = document.getElementById('universosDetailView');
+
+    if (back && listView && detailView) {
+        back.addEventListener('click', (e) => {
+            e.preventDefault();
+            detailView.classList.add('d-none');
+            listView.classList.remove('d-none');
+            if (window.AOS) AOS.refresh();
+        });
+    }
 }
 
 function renderBiomas(world, query = '') {
@@ -685,8 +747,16 @@ function initSectionSearchers() {
     });
 
     injectSectionSearch('universos', 'Buscar universo...', (q) => {
+        const listView = document.getElementById('universosListView');
+        const detailView = document.getElementById('universosDetailView');
+        if (detailView && !detailView.classList.contains('d-none')) {
+            detailView.classList.add('d-none');
+            listView.classList.remove('d-none');
+        }
         renderUniversos(window.ALL_WORLD, q);
     });
+
+    wireUniversosUi();
 
     injectSectionSearch('biomas', 'Buscar bioma...', (q) => {
         renderBiomas(window.ALL_WORLD, q);
