@@ -2396,3 +2396,79 @@ p, span, div { color: inherit; }
     .gallery-arrow-left { left: 0.4rem; }
     .gallery-arrow-right { right: 0.4rem; }
 }
+
+/* ===========================
+   SERIES CATEGORY CARDS (PERSONAJES)
+   =========================== */
+#charactersSeriesContainer .serie-card {
+    position: relative;
+    overflow: hidden;
+}
+
+#charactersSeriesContainer .serie-card .card-image-box {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+}
+
+#charactersSeriesContainer .serie-card .card-image-box img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#charactersSeriesContainer .serie-card:hover .card-image-box img {
+    transform: scale(1.08);
+}
+
+#charactersSeriesContainer .serie-card .canon-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 50rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+#charactersSeriesContainer .serie-card .canon-badge.canon-ok {
+    background: rgba(0, 230, 118, 0.2);
+    color: #00E676;
+    border: 1px solid rgba(0, 230, 118, 0.3);
+}
+
+#charactersSeriesContainer .serie-card .canon-badge.canon-neutral {
+    background: rgba(255, 179, 0, 0.2);
+    color: #ffb300;
+    border: 1px solid rgba(255, 179, 0, 0.3);
+}
+
+#charactersSeriesContainer .serie-card .canon-badge.canon-no {
+    background: rgba(255, 69, 0, 0.2);
+    color: #ff4500;
+    border: 1px solid rgba(255, 69, 0, 0.3);
+}
+
+#charactersSeriesContainer .serie-card .card-image-box .category-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 50rem;
+    background: var(--accent-primary);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#personajesSerieBar {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px 16px;
+}
+
+#personajesSerieBar #personajesCurrentSerieTitle {
+    font-size: 1rem;
+    font-weight: 600;
+}

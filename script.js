@@ -111,15 +111,25 @@ function showSection(sectionId, updateHistory = true, evt) {
         activeSection.offsetHeight; // Force reflow
         activeSection.style.animation = '';
         
-        // Cuando se navega a personajes, reset a lista
+        // Cuando se navega a personajes, reset a vista de series
         if (sectionId === 'personajes') {
             const pDetail = document.getElementById('personajesDetailView');
             const pList = document.getElementById('personajesListView');
+            const pSeries = document.getElementById('charactersSeriesContainer');
+            const pChars = document.getElementById('charactersContainer');
             if (pDetail && pList) {
                 pDetail.classList.add('d-none');
                 pList.classList.remove('d-none');
                 _currentChar = null;
             }
+            if (pSeries && pChars) {
+                pSeries.classList.remove('d-none');
+                pChars.classList.add('d-none');
+            }
+            const bar = document.getElementById('personajesSerieBar');
+            if (bar) bar.classList.add('d-none');
+            _currentSerie = null;
+            _currentChar = null;
         }
         
         // Trigger AOS para re-animar si es necesario
@@ -162,9 +172,15 @@ function showSection(sectionId, updateHistory = true, evt) {
 }
 
 function renderAll(characters, media, world) {
+    renderSeriesCategories();
     renderCharacters(characters);
     renderMedia(media);
     renderWorld(world);
+    // Start in series view
+    const sContainer = document.getElementById('charactersSeriesContainer');
+    const cContainer = document.getElementById('charactersContainer');
+    if (sContainer) sContainer.classList.remove('d-none');
+    if (cContainer) cContainer.classList.add('d-none');
 }
 
 function renderCharacters(characters, query = '') {
@@ -205,6 +221,68 @@ function renderCharacters(characters, query = '') {
             </div>
         </div>
     `).join('');
+}
+
+function renderSeriesCategories() {
+    const container = document.getElementById('charactersSeriesContainer');
+    if (!container) return;
+    container.innerHTML = SERIES_DATA.map((serie, idx) => `
+        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${(idx % 4) * 80}">
+            <div class="premium-card serie-card" onclick="selectSerie('${serie.id}')" style="cursor:pointer;">
+                <div class="card-image-box">
+                    <img src="${serie.icono}" alt="${serie.nombre}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=${encodeURIComponent(serie.nombre)}';">
+                    <div class="position-absolute top-0 start-0 m-3">
+                        <span class="category-badge">SERIE</span>
+                    </div>
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="canon-badge ${serie.canon === 'OFICIAL Y CANON' ? 'canon-ok' : serie.canon === 'OFICIAL Y NO CANON' ? 'canon-neutral' : 'canon-no'}">${serie.canon}</span>
+                    </div>
+                    <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+                        <h5 class="text-white mb-1">${serie.nombre}</h5>
+                        <p class="text-muted small mb-0">${serie.descripcion}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectSerie(serieId) {
+    _currentSerie = serieId;
+    const serieData = SERIES_DATA.find(s => s.id === serieId);
+    if (!serieData) return;
+
+    document.getElementById('charactersSeriesContainer').classList.add('d-none');
+    document.getElementById('charactersContainer').classList.remove('d-none');
+
+    const bar = document.getElementById('personajesSerieBar');
+    if (bar) {
+        bar.classList.remove('d-none');
+        const title = document.getElementById('personajesCurrentSerieTitle');
+        if (title) title.textContent = serieData.nombre;
+    }
+
+    const filtered = window.ALL_CHARACTERS.filter(c => c.serie === serieId);
+    renderCharacters(filtered);
+    if (window.AOS) AOS.refresh();
+}
+
+function goBackToSeries() {
+    _currentSerie = null;
+    const sContainer = document.getElementById('charactersSeriesContainer');
+    const cContainer = document.getElementById('charactersContainer');
+    if (sContainer) sContainer.classList.remove('d-none');
+    if (cContainer) cContainer.classList.add('d-none');
+    const bar = document.getElementById('personajesSerieBar');
+    if (bar) bar.classList.add('d-none');
+    const detail = document.getElementById('personajesDetailView');
+    if (detail && !detail.classList.contains('d-none')) {
+        detail.classList.add('d-none');
+        const list = document.getElementById('personajesListView');
+        if (list) list.classList.remove('d-none');
+    }
+    _currentChar = null;
+    if (window.AOS) AOS.refresh();
 }
 
 function renderMedia(media) {
@@ -647,6 +725,16 @@ function wireUniversosUi() {
 // =========================
 var _currentChar = null;
 var _currentGalleryIdx = 0;
+var _currentSerie = null;
+var SERIES_DATA = [
+    { id: 'db-classic', nombre: 'Dragon Ball Clásico', descripcion: 'La aventura original de Goku niño.', icono: 'https://lh3.googleusercontent.com/d/1-9iYR9tDzA3vZQyK4j8gkoI1GG-O8hEl', canon: 'OFICIAL Y CANON' },
+    { id: 'db-z', nombre: 'Dragon Ball Z', descripcion: 'Saiyans, Freezer, Cell y Buu.', icono: 'https://lh3.googleusercontent.com/d/1sk_RHuD7tLc0junztslnag4CgCisW0hy', canon: 'OFICIAL Y CANON' },
+    { id: 'db-gt', nombre: 'Dragon Ball GT', descripcion: 'Secuela alternativa con Goku niño.', icono: 'https://lh3.googleusercontent.com/d/1hEN8OUh65JHzYgOO67te3YL7x1TJ2z91', canon: 'OFICIAL Y NO CANON' },
+    { id: 'db-super', nombre: 'Dragon Ball Super', descripcion: 'Continuación oficial con los dioses.', icono: 'https://lh3.googleusercontent.com/d/1LU6auOSGf5z2bzTEOS-O4d0gsc8AV3Ux', canon: 'OFICIAL Y CANON' },
+    { id: 'db-daima', nombre: 'Dragon Ball Daima', descripcion: 'Nueva serie con personajes en miniatura.', icono: 'https://lh3.googleusercontent.com/d/1etdNiG1mN5VsA4FEnnaIIHKind9joCWs', canon: 'OFICIAL Y CANON' },
+    { id: 'db-games', nombre: 'Dragon Ball Games', descripcion: 'Personajes de videojuegos y Heroes.', icono: 'https://lh3.googleusercontent.com/d/115sLGIdzioiaRAsxG4ATFfliXWObYpQF', canon: 'NO OFICIAL Y NO CANON' },
+    { id: 'db-af', nombre: 'Dragon Ball AF', descripcion: 'El legendario doujinshi con SSJ5.', icono: 'https://lh3.googleusercontent.com/d/1qHsFQJOTLlQKxoaBHyoOB2tWWye_qFN0', canon: 'NO OFICIAL Y NO CANON' }
+];
 
 function showPersonajeDetail(char) {
     if (!char) return;
@@ -807,9 +895,17 @@ function wirePersonajesUi() {
     if (window.__personajesUiWired) return;
     window.__personajesUiWired = true;
 
+    const seriesBack = document.getElementById('personajesSeriesBackBtn');
     const back = document.getElementById('personajeBackBtn');
     const prev = document.getElementById('galleryPrevBtn');
     const next = document.getElementById('galleryNextBtn');
+
+    if (seriesBack) {
+        seriesBack.addEventListener('click', (e) => {
+            e.preventDefault();
+            goBackToSeries();
+        });
+    }
 
     if (back) {
         back.addEventListener('click', (e) => {
@@ -817,6 +913,17 @@ function wirePersonajesUi() {
             document.getElementById('personajesDetailView').classList.add('d-none');
             document.getElementById('personajesListView').classList.remove('d-none');
             _currentChar = null;
+            if (_currentSerie) {
+                document.getElementById('charactersSeriesContainer').classList.add('d-none');
+                document.getElementById('charactersContainer').classList.remove('d-none');
+                const bar = document.getElementById('personajesSerieBar');
+                if (bar) bar.classList.remove('d-none');
+            } else {
+                document.getElementById('charactersSeriesContainer').classList.remove('d-none');
+                document.getElementById('charactersContainer').classList.add('d-none');
+                const bar = document.getElementById('personajesSerieBar');
+                if (bar) bar.classList.add('d-none');
+            }
             if (window.AOS) AOS.refresh();
         });
     }
@@ -846,6 +953,17 @@ function wirePersonajesUi() {
             document.getElementById('personajesDetailView').classList.add('d-none');
             document.getElementById('personajesListView').classList.remove('d-none');
             _currentChar = null;
+            if (_currentSerie) {
+                document.getElementById('charactersSeriesContainer').classList.add('d-none');
+                document.getElementById('charactersContainer').classList.remove('d-none');
+                const bar = document.getElementById('personajesSerieBar');
+                if (bar) bar.classList.remove('d-none');
+            } else {
+                document.getElementById('charactersSeriesContainer').classList.remove('d-none');
+                document.getElementById('charactersContainer').classList.add('d-none');
+                const bar = document.getElementById('personajesSerieBar');
+                if (bar) bar.classList.add('d-none');
+            }
         }
     });
 }
@@ -954,13 +1072,29 @@ function initSectionSearchers() {
     injectSectionSearch('personajes', 'Buscar personaje...', (q) => {
         const listView = document.getElementById('personajesListView');
         const detailView = document.getElementById('personajesDetailView');
+        const seriesContainer = document.getElementById('charactersSeriesContainer');
+        const charsContainer = document.getElementById('charactersContainer');
         if (detailView && !detailView.classList.contains('d-none')) {
             detailView.classList.add('d-none');
             listView.classList.remove('d-none');
             _currentChar = null;
         }
-        const list = filterByQuery(window.ALL_CHARACTERS || [], q, c => [c.Personaje, c.Raza, c.descripcion, ...(c.tecnicas || []), ...(c.transformaciones || []).map(function(x) { return typeof x === 'string' ? x : x.nombre; })].join(' '));
-        renderCharacters(list, q);
+        if (q.trim()) {
+            if (seriesContainer) seriesContainer.classList.add('d-none');
+            if (charsContainer) charsContainer.classList.remove('d-none');
+            const bar = document.getElementById('personajesSerieBar');
+            if (bar) bar.classList.add('d-none');
+            _currentSerie = null;
+            const list = filterByQuery(window.ALL_CHARACTERS || [], q, c => [c.Personaje, c.Raza, c.descripcion, ...(c.tecnicas || []), ...(c.transformaciones || []).map(function(x) { return typeof x === 'string' ? x : x.nombre; })].join(' '));
+            renderCharacters(list, q);
+        } else {
+            if (seriesContainer) seriesContainer.classList.remove('d-none');
+            if (charsContainer) charsContainer.classList.add('d-none');
+            const bar = document.getElementById('personajesSerieBar');
+            if (bar) bar.classList.add('d-none');
+            _currentSerie = null;
+            renderSeriesCategories();
+        }
     });
 
     injectSectionSearch('serie', 'Buscar serie o saga...', (q) => {
