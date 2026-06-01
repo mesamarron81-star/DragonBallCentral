@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // UI interna para Fan Animations
     try { wireFanAnimationUi(); } catch(e) {}
+
+    // UI interna para Personajes
+    try { wirePersonajesUi(); } catch(e) {}
 });
 
 async function initDashboard() {
@@ -108,6 +111,17 @@ function showSection(sectionId, updateHistory = true, evt) {
         activeSection.offsetHeight; // Force reflow
         activeSection.style.animation = '';
         
+        // Cuando se navega a personajes, reset a lista
+        if (sectionId === 'personajes') {
+            const pDetail = document.getElementById('personajesDetailView');
+            const pList = document.getElementById('personajesListView');
+            if (pDetail && pList) {
+                pDetail.classList.add('d-none');
+                pList.classList.remove('d-none');
+                _currentChar = null;
+            }
+        }
+        
         // Trigger AOS para re-animar si es necesario
         if (window.AOS) AOS.refresh();
     }
@@ -164,7 +178,7 @@ function renderCharacters(characters, query = '') {
 
     container.innerHTML = characters.map(char => `
         <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="premium-card">
+            <div class="premium-card" style="cursor:pointer;" onclick='showPersonajeDetail(${JSON.stringify(char).replace(/'/g, "&#39;")})'>
                 <div class="card-image-box">
                     <img src="${char.imagenes[0]}" alt="${char.Personaje}">
                     <div class="position-absolute top-0 start-0 m-3">
@@ -552,6 +566,19 @@ function renderUniversos(world, query = '') {
     `).join('');
 }
 
+function setCharImg(id, url, alt) {
+    const img = document.getElementById(id);
+    if (!img) return;
+    if (url) {
+        img.src = url;
+        img.style.display = 'block';
+        img.alt = alt || '';
+        img.onerror = function() { this.style.display = 'none'; };
+    } else {
+        img.style.display = 'none';
+    }
+}
+
 function showUniversoDetail(u) {
     if (!u) return;
 
@@ -568,12 +595,14 @@ function showUniversoDetail(u) {
     document.getElementById('universoDiosNombre').textContent = di.nombre || u.dios;
     document.getElementById('universoDiosDesc').textContent = di.descripcion || '';
     document.getElementById('universoDiosHabilidades').textContent = di.habilidades || '';
+    setCharImg('universoDiosImg', di.imagen, di.nombre || u.dios);
 
     // Angel
     const ai = u.angelInfo || {};
     document.getElementById('universoAngelNombre').textContent = ai.nombre || u.angel;
     document.getElementById('universoAngelDesc').textContent = ai.descripcion || '';
     document.getElementById('universoAngelFuncion').textContent = ai.funcion || '';
+    setCharImg('universoAngelImg', ai.imagen, ai.nombre || u.angel);
 
     // Kaioshin
     const kList = document.getElementById('universoKaioshinList');
@@ -583,8 +612,8 @@ function showUniversoDetail(u) {
     } else {
         kList.innerHTML = kaioshin.map(k => `
             <div class="kaioshin-item d-flex align-items-start gap-3">
-                <div class="kaioshin-img-placeholder">
-                    <i class="bi bi-gem" style="color: var(--accent-secondary); opacity: 0.5;"></i>
+                <div class="kaioshin-img-placeholder" style="overflow: hidden;">
+                    ${k.imagen ? `<img src="${k.imagen}" alt="${k.nombre || 'Kaioshin'}" class="w-100 h-100" style="object-fit: contain;" onerror="this.style.display='none'">` : `<i class="bi bi-gem" style="color: var(--accent-secondary); opacity: 0.5;"></i>`}
                 </div>
                 <div>
                     <h6 class="text-white mb-1" style="font-size: 0.9rem;">${k.nombre || 'Kaioshin'}</h6>
@@ -611,6 +640,214 @@ function wireUniversosUi() {
             if (window.AOS) AOS.refresh();
         });
     }
+}
+
+// =========================
+// PERSONAJE DETAIL
+// =========================
+var _currentChar = null;
+var _currentGalleryIdx = 0;
+
+function showPersonajeDetail(char) {
+    if (!char) return;
+
+    _currentChar = char;
+    _currentGalleryIdx = 0;
+
+    document.getElementById('personajesListView').classList.add('d-none');
+    document.getElementById('personajesDetailView').classList.remove('d-none');
+
+    // Badges
+    document.getElementById('personajeUniversoBadge').textContent = 'U' + (char.Universo || '?');
+    document.getElementById('personajeRazaBadge').textContent = char.Raza || '';
+    document.getElementById('personajeEstadoBadge').textContent = char.estado || '';
+
+    // Name
+    document.getElementById('personajeNombre').textContent = char.Personaje || '';
+
+    // Info grid
+    document.getElementById('personajeRaza').textContent = char.Raza || '—';
+    document.getElementById('personajeAfiliacion').textContent = char.afiliaciones || '—';
+    document.getElementById('personajeEdad').textContent = char.edad || '—';
+
+    // First appearance (anime)
+    const anime = char.primeraAparicionAnime || {};
+    document.getElementById('personajePrimerAnime').innerHTML = anime.serie
+        ? (anime.titulo ? `<small>${anime.serie} Ep. ${anime.episodio}</small><br><span style="font-size:0.75rem;opacity:0.6;">${anime.titulo}</span>` : `${anime.serie} Ep. ${anime.episodio}`)
+        : '—';
+
+    // First appearance (manga)
+    const manga = char.primeraAparicionManga || {};
+    document.getElementById('personajePrimerManga').innerHTML = manga.manga
+        ? (manga.titulo ? `<small>${manga.manga} Cap. ${manga.capitulo}</small><br><span style="font-size:0.75rem;opacity:0.6;">${manga.titulo}</span>` : `${manga.manga} Cap. ${manga.capitulo}`)
+        : '—';
+
+    // Description
+    document.getElementById('personajeDesc').textContent = char.descripcion || '';
+
+    // History
+    document.getElementById('personajeHistoria').textContent = char.historia || '';
+
+    // Techniques
+    const techs = char.tecnicas || [];
+    document.getElementById('personajeTecnicas').innerHTML = techs.length
+        ? techs.map(t => `<span class="tech-tag tech-tag-tech">${t}</span>`).join('')
+        : '<span class="text-muted small">—</span>';
+
+    // Transformations
+    renderTransformations(char);
+
+    // Gallery
+    renderGallery(char);
+
+    // Set current form name
+    updateFormLabel(char);
+
+    if (window.AOS) AOS.refresh();
+}
+
+function getTransNombre(t, fallback) {
+    return typeof t === 'string' ? t : (t.nombre || fallback || '');
+}
+
+function renderTransformations(char) {
+    const trans = char.transformaciones || [];
+    const container = document.getElementById('personajeTransformaciones');
+    if (!trans.length) {
+        container.innerHTML = '<span class="text-muted small">—</span>';
+        return;
+    }
+    container.innerHTML = trans.map((t, i) => `
+        <span class="tech-tag tech-tag-trans ${i === _currentGalleryIdx ? 'active' : ''}" data-idx="${i}" onclick="jumpToGallery(${i})">${getTransNombre(t)}</span>
+    `).join('');
+}
+
+function renderGallery(char) {
+    const images = char.imagenes || [];
+    const imgEl = document.getElementById('galleryImage');
+    const dotsEl = document.getElementById('galleryDots');
+    const prevBtn = document.getElementById('galleryPrevBtn');
+    const nextBtn = document.getElementById('galleryNextBtn');
+
+    if (!images.length) {
+        imgEl.style.display = 'none';
+        dotsEl.innerHTML = '';
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        return;
+    }
+
+    imgEl.style.display = 'block';
+
+    // Clamp index
+    if (_currentGalleryIdx < 0) _currentGalleryIdx = images.length - 1;
+    if (_currentGalleryIdx >= images.length) _currentGalleryIdx = 0;
+
+    // Fade transition
+    imgEl.classList.remove('fade-in');
+    imgEl.classList.add('fade-out');
+    setTimeout(() => {
+        const t = (char.transformaciones && char.transformaciones[_currentGalleryIdx]) || '';
+        imgEl.src = images[_currentGalleryIdx];
+        imgEl.alt = (char.Personaje || '') + ' - ' + getTransNombre(t);
+        imgEl.classList.remove('fade-out');
+        imgEl.classList.add('fade-in');
+    }, 200);
+
+    // Dots
+    dotsEl.innerHTML = images.map((_, i) => `
+        <button class="gallery-dot ${i === _currentGalleryIdx ? 'active' : ''}" onclick="jumpToGallery(${i})"></button>
+    `).join('');
+
+    // Arrows visibility
+    if (prevBtn) prevBtn.style.display = images.length > 1 ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = images.length > 1 ? 'flex' : 'none';
+
+    // Update transformation tags
+    const tags = document.querySelectorAll('#personajeTransformaciones .tech-tag-trans');
+    tags.forEach((tag, i) => {
+        tag.classList.toggle('active', i === _currentGalleryIdx);
+    });
+
+    updateFormLabel(char);
+}
+
+function updateFormLabel(char) {
+    const trans = char.transformaciones || [];
+    const label = document.getElementById('personajeFormaActual');
+    const t = trans[_currentGalleryIdx];
+    if (t) {
+        label.textContent = getTransNombre(t);
+    } else {
+        label.textContent = 'Base';
+    }
+}
+
+function prevGallery() {
+    const images = (_currentChar && _currentChar.imagenes) || [];
+    if (images.length < 2) return;
+    _currentGalleryIdx--;
+    renderGallery(_currentChar);
+}
+
+function nextGallery() {
+    const images = (_currentChar && _currentChar.imagenes) || [];
+    if (images.length < 2) return;
+    _currentGalleryIdx++;
+    renderGallery(_currentChar);
+}
+
+function jumpToGallery(idx) {
+    _currentGalleryIdx = idx;
+    renderGallery(_currentChar);
+}
+
+function wirePersonajesUi() {
+    // Prevent duplicate wiring
+    if (window.__personajesUiWired) return;
+    window.__personajesUiWired = true;
+
+    const back = document.getElementById('personajeBackBtn');
+    const prev = document.getElementById('galleryPrevBtn');
+    const next = document.getElementById('galleryNextBtn');
+
+    if (back) {
+        back.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('personajesDetailView').classList.add('d-none');
+            document.getElementById('personajesListView').classList.remove('d-none');
+            _currentChar = null;
+            if (window.AOS) AOS.refresh();
+        });
+    }
+
+    if (prev) {
+        prev.addEventListener('click', (e) => {
+            e.preventDefault();
+            prevGallery();
+        });
+    }
+
+    if (next) {
+        next.addEventListener('click', (e) => {
+            e.preventDefault();
+            nextGallery();
+        });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!_currentChar) return;
+        const detail = document.getElementById('personajesDetailView');
+        if (!detail || detail.classList.contains('d-none')) return;
+        if (e.key === 'ArrowLeft') { prevGallery(); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { nextGallery(); e.preventDefault(); }
+        if (e.key === 'Escape') {
+            document.getElementById('personajesDetailView').classList.add('d-none');
+            document.getElementById('personajesListView').classList.remove('d-none');
+            _currentChar = null;
+        }
+    });
 }
 
 function renderBiomas(world, query = '') {
@@ -715,7 +952,14 @@ function injectSectionSearch(sectionId, placeholder, onSearch) {
 
 function initSectionSearchers() {
     injectSectionSearch('personajes', 'Buscar personaje...', (q) => {
-        const list = filterByQuery(window.ALL_CHARACTERS || [], q, c => [c.Personaje, c.Raza, c.descripcion, ...(c.tecnicas || []), ...(c.transformaciones || [])].join(' '));
+        const listView = document.getElementById('personajesListView');
+        const detailView = document.getElementById('personajesDetailView');
+        if (detailView && !detailView.classList.contains('d-none')) {
+            detailView.classList.add('d-none');
+            listView.classList.remove('d-none');
+            _currentChar = null;
+        }
+        const list = filterByQuery(window.ALL_CHARACTERS || [], q, c => [c.Personaje, c.Raza, c.descripcion, ...(c.tecnicas || []), ...(c.transformaciones || []).map(function(x) { return typeof x === 'string' ? x : x.nombre; })].join(' '));
         renderCharacters(list, q);
     });
 

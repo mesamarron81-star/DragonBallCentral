@@ -201,7 +201,109 @@
                         <p>Directorio detallado de guerreros y seres de todos los universos.</p>
                     </div>
                 </div>
-                <div class="row g-4" id="charactersContainer"></div>
+                <div id="personajesListView">
+                    <div class="row g-4" id="charactersContainer"></div>
+                </div>
+                <div id="personajesDetailView" class="d-none">
+                    <!-- Back button -->
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <button class="btn btn-outline-primary btn-sm" id="personajeBackBtn" style="border-radius: var(--radius-md);">
+                            <i class="bi bi-arrow-left"></i> Volver a Personajes
+                        </button>
+                    </div>
+
+                    <!-- Main character panel -->
+                    <div class="character-detail-panel">
+                        <div class="row g-0 align-items-stretch">
+                            <!-- LEFT: Info -->
+                            <div class="col-md-5 character-info-col">
+                                <div class="character-info-inner">
+                                    <!-- Breadcrumb / subtitle -->
+                                    <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+                                        <span class="character-badge universe-badge" id="personajeUniversoBadge">U7</span>
+                                        <span class="character-badge race-badge" id="personajeRazaBadge">Saiyan</span>
+                                        <span class="character-badge status-badge" id="personajeEstadoBadge">Vivo</span>
+                                    </div>
+
+                                    <!-- Name -->
+                                    <h1 class="character-name" id="personajeNombre">Goku</h1>
+                                    <div class="character-form-divider mb-3">
+                                        <span class="divider-line"></span>
+                                        <span class="divider-text" id="personajeFormaActual">Base</span>
+                                        <span class="divider-line"></span>
+                                    </div>
+
+                                    <!-- Info grid -->
+                                    <div class="character-info-grid mb-3">
+                                        <div class="info-item">
+                                            <span class="info-label">Raza</span>
+                                            <span class="info-value" id="personajeRaza">Saiyan</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Afiliación</span>
+                                            <span class="info-value" id="personajeAfiliacion">Guerreros Z</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Edad</span>
+                                            <span class="info-value" id="personajeEdad">42</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Primera Aparición (Anime)</span>
+                                            <span class="info-value" id="personajePrimerAnime">DB Ep. 1</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Primera Aparición (Manga)</span>
+                                            <span class="info-value" id="personajePrimerManga">DB Cap. 1</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <p class="character-desc" id="personajeDesc">Descripción general del personaje.</p>
+
+                                    <!-- History (collapsible) -->
+                                    <div class="character-history-wrap mb-3">
+                                        <button class="btn btn-sm btn-link text-muted p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#personajeHistoriaCollapse" aria-expanded="false" style="text-decoration: none; font-size: 0.85rem;">
+                                            <i class="bi bi-book me-1"></i> Historia completa <i class="bi bi-chevron-down ms-1 small"></i>
+                                        </button>
+                                        <div class="collapse" id="personajeHistoriaCollapse">
+                                            <p class="text-muted small mb-0" id="personajeHistoria" style="line-height: 1.7;"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Techniques & Transformations -->
+                                    <div class="row g-2 mb-0">
+                                        <div class="col-md-6">
+                                            <h6 class="text-white-50 mb-2" style="font-size: 0.75rem; letter-spacing: 0.1em; font-weight: 600;"><i class="bi bi-lightning-fill me-1" style="color: var(--accent-primary);"></i>TÉCNICAS</h6>
+                                            <div class="d-flex flex-wrap gap-1" id="personajeTecnicas"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="text-white-50 mb-2" style="font-size: 0.75rem; letter-spacing: 0.1em; font-weight: 600;"><i class="bi bi-stars me-1" style="color: var(--accent-gold);"></i>TRANSFORMACIONES</h6>
+                                            <div class="d-flex flex-wrap gap-1" id="personajeTransformaciones"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT: Image Gallery -->
+                            <div class="col-md-7 character-image-col">
+                                <div class="character-image-gallery">
+                                    <button class="gallery-arrow gallery-arrow-left" id="galleryPrevBtn" aria-label="Anterior">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
+                                    <div class="gallery-image-container">
+                                        <img id="galleryImage" src="" alt="Personaje" class="gallery-image">
+                                    </div>
+
+                                    <button class="gallery-arrow gallery-arrow-right" id="galleryNextBtn" aria-label="Siguiente">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                    <!-- Dots indicator -->
+                                    <div class="gallery-dots" id="galleryDots"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Esferas Section -->
@@ -253,13 +355,13 @@
                     <div class="premium-card p-4 mb-4">
                         <h5 class="text-white mb-3"><i class="bi bi-lightning-fill me-2" style="color: var(--accent-primary);"></i>Dios de la Destrucción</h5>
                         <div class="row g-3 align-items-center">
-                            <div class="col-md-4 text-center">
+                            <div class="col-md-5 text-center">
                                 <div class="universo-char-img-wrapper mb-2">
-                                    <div class="universo-char-placeholder"><i class="bi bi-person-fill" style="font-size: 2.5rem; opacity: 0.3;"></i></div>
+                                    <img id="universoDiosImg" src="" alt="Dios de la Destrucción" class="w-100 h-100" style="object-fit: contain; display: none;">
                                 </div>
                                 <h6 id="universoDiosNombre" class="text-white mb-0"></h6>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <p id="universoDiosDesc" class="text-muted small mb-2"></p>
                                 <div class="d-flex align-items-start gap-2">
                                     <i class="bi bi-stars mt-1" style="color: var(--accent-gold);"></i>
@@ -276,13 +378,13 @@
                     <div class="premium-card p-4 mb-4">
                         <h5 class="text-white mb-3"><i class="bi bi-feather me-2" style="color: var(--accent-electric);"></i>Ángel</h5>
                         <div class="row g-3 align-items-center">
-                            <div class="col-md-4 text-center">
+                            <div class="col-md-5 text-center">
                                 <div class="universo-char-img-wrapper mb-2">
-                                    <div class="universo-char-placeholder"><i class="bi bi-person-fill" style="font-size: 2.5rem; opacity: 0.3;"></i></div>
+                                    <img id="universoAngelImg" src="" alt="Ángel" class="w-100 h-100" style="object-fit: contain; display: none;">
                                 </div>
                                 <h6 id="universoAngelNombre" class="text-white mb-0"></h6>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <p id="universoAngelDesc" class="text-muted small mb-2"></p>
                                 <div class="d-flex align-items-start gap-2">
                                     <i class="bi bi-bookmark-star mt-1" style="color: var(--accent-electric);"></i>
