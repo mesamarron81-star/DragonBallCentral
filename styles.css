@@ -404,6 +404,61 @@ p, span, div { color: inherit; }
 /* Stats group (KI bar) - hidden */
 #charactersContainer .stats-group { display: none; }
 
+/* --- Series categories overrides --- */
+#charactersSeriesContainer .premium-card {
+    background: linear-gradient(160deg, rgba(15,15,22,0.85), rgba(8,8,14,0.95));
+    border-color: rgba(255,255,255,0.06);
+}
+
+#charactersSeriesContainer .premium-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,0.05);
+}
+
+#charactersSeriesContainer .card-image-box {
+    min-height: 200px;
+    background: radial-gradient(ellipse at 50% 40%, rgba(10,10,20,0.8), #050505);
+}
+
+#charactersSeriesContainer .card-content {
+    padding: 1.25rem 1.25rem 1rem;
+}
+
+#charactersSeriesContainer .card-content h4 {
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+}
+
+#charactersSeriesContainer .card-content p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+#charactersSeriesContainer .badge {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    letter-spacing: 0.05em;
+}
+
+/* Series search bar */
+#personajesSerieBar {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem;
+}
+
+#personajesSerieBar .btn-outline-primary {
+    border-color: rgba(255,94,0,0.3);
+    color: var(--accent);
+    font-size: 0.85rem;
+}
+
+#personajesSerieBar .btn-outline-primary:hover {
+    background: rgba(255,94,0,0.15);
+    border-color: var(--accent);
+}
+
 .card-image-box {
     position: relative;
     aspect-ratio: 16/9;

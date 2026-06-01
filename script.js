@@ -111,7 +111,11 @@ function showSection(sectionId, updateHistory = true, evt) {
         activeSection.offsetHeight; // Force reflow
         activeSection.style.animation = '';
         
+<<<<<<< HEAD
         // Cuando se navega a personajes, reset a vista de series
+=======
+        // Cuando se navega a personajes, reset a lista/series
+>>>>>>> 0409bcd5bddded99aab0ce7d3344460a6b1d85ed
         if (sectionId === 'personajes') {
             const pDetail = document.getElementById('personajesDetailView');
             const pList = document.getElementById('personajesListView');
@@ -121,7 +125,9 @@ function showSection(sectionId, updateHistory = true, evt) {
                 pDetail.classList.add('d-none');
                 pList.classList.remove('d-none');
                 _currentChar = null;
+                _currentSerie = null;
             }
+<<<<<<< HEAD
             if (pSeries && pChars) {
                 pSeries.classList.remove('d-none');
                 pChars.classList.add('d-none');
@@ -130,6 +136,15 @@ function showSection(sectionId, updateHistory = true, evt) {
             if (bar) bar.classList.add('d-none');
             _currentSerie = null;
             _currentChar = null;
+=======
+            const searchInput = document.querySelector('#personajes .search-input');
+            if (searchInput) {
+                searchInput.value = '';
+                const clearBtn = searchInput.parentElement?.querySelector('.search-clear');
+                if (clearBtn) clearBtn.classList.add('d-none');
+            }
+            goBackToSeries();
+>>>>>>> 0409bcd5bddded99aab0ce7d3344460a6b1d85ed
         }
         
         // Trigger AOS para re-animar si es necesario
@@ -172,8 +187,13 @@ function showSection(sectionId, updateHistory = true, evt) {
 }
 
 function renderAll(characters, media, world) {
+<<<<<<< HEAD
     renderSeriesCategories();
     renderCharacters(characters);
+=======
+    window.ALL_CHARACTERS = characters;
+    renderSeriesCategories();
+>>>>>>> 0409bcd5bddded99aab0ce7d3344460a6b1d85ed
     renderMedia(media);
     renderWorld(world);
     // Start in series view
@@ -183,9 +203,65 @@ function renderAll(characters, media, world) {
     if (cContainer) cContainer.classList.add('d-none');
 }
 
+function renderSeriesCategories() {
+    const container = document.getElementById('charactersSeriesContainer');
+    const charContainer = document.getElementById('charactersContainer');
+    const serieBar = document.getElementById('personajesSerieBar');
+    if (!container) return;
+    container.classList.remove('d-none');
+    if (charContainer) charContainer.innerHTML = '';
+    if (serieBar) serieBar.classList.add('d-none');
+
+    container.innerHTML = SERIES_DATA.map(s => `
+        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="premium-card" style="cursor:pointer;" onclick="selectSerie('${s.id}')">
+                <div class="card-image-box d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, ${s.color}22, ${s.color}44); min-height:180px;">
+                    <div class="text-center p-3">
+                        <h4 class="text-white mb-2" style="text-shadow: 0 0 20px ${s.color};">${s.nombre}</h4>
+                        <p class="text-muted small mb-2">${s.desc}</p>
+                        <span class="badge ${s.canon === 'OFICIAL Y CANON' ? 'bg-success' : s.canon === 'OFICIAL Y NO CANON' ? 'bg-warning text-dark' : 'bg-secondary'}">${s.canon}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    if (window.AOS) AOS.refresh();
+}
+
+function selectSerie(serieId) {
+    _currentSerie = serieId;
+    const seriesContainer = document.getElementById('charactersSeriesContainer');
+    const charContainer = document.getElementById('charactersContainer');
+    const serieBar = document.getElementById('personajesSerieBar');
+    const serieTitle = document.getElementById('personajesSerieTitle');
+    if (seriesContainer) seriesContainer.classList.add('d-none');
+    if (serieBar) serieBar.classList.remove('d-none');
+    if (serieTitle) {
+        const s = SERIES_DATA.find(x => x.id === serieId);
+        serieTitle.textContent = s ? s.nombre : '';
+    }
+    const filtered = (window.ALL_CHARACTERS || []).filter(c => c.serie === serieId);
+    renderCharacters(filtered);
+}
+
+function goBackToSeries() {
+    _currentSerie = null;
+    const seriesContainer = document.getElementById('charactersSeriesContainer');
+    const charContainer = document.getElementById('charactersContainer');
+    const serieBar = document.getElementById('personajesSerieBar');
+    if (charContainer) charContainer.innerHTML = '';
+    if (serieBar) serieBar.classList.add('d-none');
+    if (seriesContainer) seriesContainer.classList.remove('d-none');
+    renderSeriesCategories();
+}
+
 function renderCharacters(characters, query = '') {
     const container = document.getElementById('charactersContainer');
+    const seriesContainer = document.getElementById('charactersSeriesContainer');
     if (!container) return;
+
+    if (seriesContainer) seriesContainer.classList.add('d-none');
 
     if (!characters || characters.length === 0) {
         container.innerHTML = renderEmptySearch('No se encontraron personajes.');
@@ -721,6 +797,20 @@ function wireUniversosUi() {
 }
 
 // =========================
+// SERIES CATEGORIES
+// =========================
+var _currentSerie = null;
+var SERIES_DATA = [
+    { id: 'db-classic', nombre: 'Dragon Ball Cl\u00E1sico', canon: 'OFICIAL Y CANON', desc: 'El origen de la leyenda. Las aventuras de Goku ni\u00F1o.', color: '#ff6d00' },
+    { id: 'db-z', nombre: 'Dragon Ball Z', canon: 'OFICIAL Y CANON', desc: 'La era de los Saiyans, Freezer, Cell y Majin Buu.', color: '#2979ff' },
+    { id: 'db-gt', nombre: 'Dragon Ball GT', canon: 'OFICIAL Y NO CANON', desc: 'La continuaci\u00F3n alternativa tras Dragon Ball Z.', color: '#d50000' },
+    { id: 'db-super', nombre: 'Dragon Ball Super', canon: 'OFICIAL Y CANON', desc: 'La batalla de los dioses y el torneo del poder.', color: '#ffab00' },
+    { id: 'db-daima', nombre: 'Dragon Ball Daima', canon: 'OFICIAL Y CANON', desc: 'Goku y sus amigos encogidos en una nueva aventura.', color: '#00bcd4' },
+    { id: 'db-games', nombre: 'Dragon Ball Games', canon: 'OFICIAL Y NO CANON', desc: 'Personajes de videojuegos como Xenoverse y Heroes.', color: '#7c4dff' },
+    { id: 'db-af', nombre: 'Dragon Ball AF', canon: 'NO OFICIAL Y NO CANON', desc: 'El legendario fanmade m\u00E1s famoso de Dragon Ball.', color: '#e91e63' }
+];
+
+// =========================
 // PERSONAJE DETAIL
 // =========================
 var _currentChar = null;
@@ -914,6 +1004,7 @@ function wirePersonajesUi() {
             document.getElementById('personajesListView').classList.remove('d-none');
             _currentChar = null;
             if (_currentSerie) {
+<<<<<<< HEAD
                 document.getElementById('charactersSeriesContainer').classList.add('d-none');
                 document.getElementById('charactersContainer').classList.remove('d-none');
                 const bar = document.getElementById('personajesSerieBar');
@@ -923,8 +1014,22 @@ function wirePersonajesUi() {
                 document.getElementById('charactersContainer').classList.add('d-none');
                 const bar = document.getElementById('personajesSerieBar');
                 if (bar) bar.classList.add('d-none');
+=======
+                const filtered = (window.ALL_CHARACTERS || []).filter(c => c.serie === _currentSerie);
+                renderCharacters(filtered);
+            } else {
+                goBackToSeries();
+>>>>>>> 0409bcd5bddded99aab0ce7d3344460a6b1d85ed
             }
             if (window.AOS) AOS.refresh();
+        });
+    }
+
+    const serieBackBtn = document.getElementById('personajesSerieBack');
+    if (serieBackBtn) {
+        serieBackBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            goBackToSeries();
         });
     }
 
@@ -954,6 +1059,7 @@ function wirePersonajesUi() {
             document.getElementById('personajesListView').classList.remove('d-none');
             _currentChar = null;
             if (_currentSerie) {
+<<<<<<< HEAD
                 document.getElementById('charactersSeriesContainer').classList.add('d-none');
                 document.getElementById('charactersContainer').classList.remove('d-none');
                 const bar = document.getElementById('personajesSerieBar');
@@ -963,6 +1069,12 @@ function wirePersonajesUi() {
                 document.getElementById('charactersContainer').classList.add('d-none');
                 const bar = document.getElementById('personajesSerieBar');
                 if (bar) bar.classList.add('d-none');
+=======
+                const filtered = (window.ALL_CHARACTERS || []).filter(c => c.serie === _currentSerie);
+                renderCharacters(filtered);
+            } else {
+                goBackToSeries();
+>>>>>>> 0409bcd5bddded99aab0ce7d3344460a6b1d85ed
             }
         }
     });
@@ -1079,6 +1191,7 @@ function initSectionSearchers() {
             listView.classList.remove('d-none');
             _currentChar = null;
         }
+<<<<<<< HEAD
         if (q.trim()) {
             if (seriesContainer) seriesContainer.classList.add('d-none');
             if (charsContainer) charsContainer.classList.remove('d-none');
@@ -1095,6 +1208,23 @@ function initSectionSearchers() {
             _currentSerie = null;
             renderSeriesCategories();
         }
+=======
+        var list;
+        if (q) {
+            // Global search across all characters when typing
+            const seriesContainer = document.getElementById('charactersSeriesContainer');
+            const serieBar = document.getElementById('personajesSerieBar');
+            if (seriesContainer) seriesContainer.classList.add('d-none');
+            if (serieBar) serieBar.classList.add('d-none');
+            list = filterByQuery(window.ALL_CHARACTERS || [], q, c => [c.Personaje, c.Raza, c.descripcion, ...(c.tecnicas || []), ...(c.transformaciones || []).map(function(x) { return typeof x === 'string' ? x : x.nombre; })].join(' '));
+            _currentSerie = null;
+        } else {
+            // No query: return to series view
+            _currentSerie = null;
+            return goBackToSeries();
+        }
+        renderCharacters(list, q);
+>>>>>>> 0409bcd5bddded99aab0ce7d3344460a6b1d85ed
     });
 
     injectSectionSearch('serie', 'Buscar serie o saga...', (q) => {
