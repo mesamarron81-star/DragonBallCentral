@@ -16,16 +16,34 @@ var PERSONAJES_DATA = [
         "imagenes": [
             "https://lh3.googleusercontent.com/d/1YMQWD6mSeOAnboAO7TLQpzoSm1F2pCXa",
             "https://lh3.googleusercontent.com/d/1yFCllILQ9OZ7DFPdpEktH2gcEqGy9Bpb",
+            "https://lh3.googleusercontent.com/d/1OFL8RY9E2av7NgtAsPrsvrpnor6Ua-XU",
             "https://lh3.googleusercontent.com/d/1-7RPBAi4fO8cZwYo8za3DrYK_cdDtDrm",
-            "https://lh3.googleusercontent.com/d/1Y0oE1HReTeCMFw2gri00WWStTHHSiQY6"
+            "https://lh3.googleusercontent.com/d/1Y0oE1HReTeCMFw2gri00WWStTHHSiQY6",
+            "https://lh3.googleusercontent.com/d/1GKbIJI_ZivQIPjH9NaD3scxvGBIF8qaE",
+            "https://lh3.googleusercontent.com/d/1L2GCoJ9czVdIqcEr4DleZq3eL0mUpmis",
+            "https://lh3.googleusercontent.com/d/1iHTNtJP8jnuc6fEwG4bup7_D42lOLiwk",
+            "https://lh3.googleusercontent.com/d/1YUo_QnbgWMRX7RDd5Qox7KxNI_JHf8VE",
+            "https://lh3.googleusercontent.com/d/1Z6PJUuGvdhupyJp2fg4qL8jcWZodzeCf",
+            "https://lh3.googleusercontent.com/d/1kAN3IQ29W4PAkg7ZSgJ8JONHX4qmbBN8",
+            "https://lh3.googleusercontent.com/d/11BbW2Ls1f3LO1S0j08L349m1FeOGwx6b",
+            "https://lh3.googleusercontent.com/d/1J9wK8LYZzQmCCJmnAAXkQu-11BXlax8G"
         ],
         "descripcion": "El protagonista principal, un guerrero Saiyan criado en la Tierra. Superó todos los límites hasta alcanzar el Ultra Instinto.",
         "stats": { "fuerza": 95, "velocidad": 98, "ki": 100, "tecnica": 90 },
         "transformaciones": [
-            { "orden": 1, "nombre": "Base", "imagen": "https://lh3.googleusercontent.com/d/1YMQWD6mSeOAnboAO7TLQpzoSm1F2pCXa", "descripcion": "Estado natural de Goku. Su poder base tras años de entrenamiento supera al de la mayoría de los guerreros.", "saga": "Dragon Ball" },
-            { "orden": 2, "nombre": "Super Saiyan", "imagen": "https://lh3.googleusercontent.com/d/1yFCllILQ9OZ7DFPdpEktH2gcEqGy9Bpb", "descripcion": "Primera transformación Saiyan legendaria. Goku la alcanzó por primera vez en Namek tras la muerte de Krilin.", "saga": "Dragon Ball Z (Freezer)" },
-            { "orden": 3, "nombre": "Super Saiyan 2", "imagen": "https://lh3.googleusercontent.com/d/1-7RPBAi4fO8cZwYo8za3DrYK_cdDtDrm", "descripcion": "Evolución del Super Saiyan con poder eléctrico y velocidad amplificada. Goku la dominó en la Sala del Tiempo.", "saga": "Dragon Ball Z (Cell)" },
-            { "orden": 4, "nombre": "Super Saiyan 3", "imagen": "https://lh3.googleusercontent.com/d/1Y0oE1HReTeCMFw2gri00WWStTHHSiQY6", "descripcion": "Forma de cabello extremadamente largo y sin cejas. Goku la reveló ante Majin Buu con un poder abrumador.", "saga": "Dragon Ball Z (Majin Buu)" }
+            { "id": "goku_base", "orden": 1, "nombre": "Base", "imagen": "https://lh3.googleusercontent.com/d/1YMQWD6mSeOAnboAO7TLQpzoSm1F2pCXa", "descripcion": "Estado natural de Goku. Su poder base tras años de entrenamiento supera al de la mayoría de los guerreros.", "saga": "Dragon Ball" },
+            { "id": "goku_ssj1", "orden": 2, "nombre": "Super Saiyan", "imagen": "https://lh3.googleusercontent.com/d/1yFCllILQ9OZ7DFPdpEktH2gcEqGy9Bpb", "descripcion": "Primera transformación Saiyan legendaria. Goku la alcanzó por primera vez en Namek tras la muerte de Krilin.", "saga": "Dragon Ball Z (Freezer)" },
+            { "id": "goku_ssj_kaioken", "orden": 3, "nombre": "Super Saiyan Kaioken", "imagen": "https://lh3.googleusercontent.com/d/1OFL8RY9E2av7NgtAsPrsvrpnor6Ua-XU", "descripcion": "Combinación del Super Saiyan con la técnica Kaioken. Una fusión explosiva de poder que multiplica la fuerza a costa del cuerpo.", "saga": "Dragon Ball Z (Saiyans)" },
+            { "id": "goku_ssj2", "orden": 4, "nombre": "Super Saiyan 2", "imagen": "https://lh3.googleusercontent.com/d/1-7RPBAi4fO8cZwYo8za3DrYK_cdDtDrm", "descripcion": "Evolución del Super Saiyan con poder eléctrico y velocidad amplificada. Goku la dominó en la Sala del Tiempo.", "saga": "Dragon Ball Z (Cell)" },
+            { "id": "goku_ssj3", "orden": 5, "nombre": "Super Saiyan 3", "imagen": "https://lh3.googleusercontent.com/d/1Y0oE1HReTeCMFw2gri00WWStTHHSiQY6", "descripcion": "Forma de cabello extremadamente largo y sin cejas. Goku la reveló ante Majin Buu con un poder abrumador.", "saga": "Dragon Ball Z (Majin Buu)" },
+            { "id": "goku_ssj4_gt", "orden": 6, "nombre": "Super Saiyan 4 GT", "imagen": "https://lh3.googleusercontent.com/d/1GKbIJI_ZivQIPjH9NaD3scxvGBIF8qaE", "descripcion": "Forma que combina el poder del Super Saiyan con la cola de mono. Goku la alcanzó en Dragon Ball GT con un aspecto primal y pelaje rojo.", "saga": "Dragon Ball GT" },
+            { "id": "goku_ssj4_daima", "orden": 7, "nombre": "Super Saiyan 4 Daima", "imagen": "https://lh3.googleusercontent.com/d/1L2GCoJ9czVdIqcEr4DleZq3eL0mUpmis", "descripcion": "Variante del Super Saiyan 4 aparecida en Dragon Ball Daima, compatible con el cuerpo reducido pero conservando el poder del legendario saiyan.", "saga": "Dragon Ball Daima" },
+            { "id": "goku_ssg", "orden": 8, "nombre": "Super Saiyan God", "imagen": "https://lh3.googleusercontent.com/d/1iHTNtJP8jnuc6fEwG4bup7_D42lOLiwk", "descripcion": "Poder divino de color rojo alcanzado mediante el ritual de seis Saiyans justos. Primer escalón hacia los dioses.", "saga": "Dragon Ball Super (Batalla de los Dioses)" },
+            { "id": "goku_ssb", "orden": 9, "nombre": "Super Saiyan Blue", "imagen": "https://lh3.googleusercontent.com/d/1YUo_QnbgWMRX7RDd5Qox7KxNI_JHf8VE", "descripcion": "Fusión del Super Saiyan God con el Super Saiyan. Ki divino de color azul que supera al SSG.", "saga": "Dragon Ball Super (Resurrección de F)" },
+            { "id": "goku_ssb_kaioken", "orden": 10, "nombre": "Super Saiyan Blue Kaioken", "imagen": "https://lh3.googleusercontent.com/d/1Z6PJUuGvdhupyJp2fg4qL8jcWZodzeCf", "descripcion": "Superposición del Kaioken sobre el Super Saiyan Blue. Un poder colosal que pone al límite el cuerpo de Goku.", "saga": "Dragon Ball Super (Torneo del Poder)" },
+            { "id": "goku_ui", "orden": 11, "nombre": "Ultra Instinto", "imagen": "https://lh3.googleusercontent.com/d/1kAN3IQ29W4PAkg7ZSgJ8JONHX4qmbBN8", "descripcion": "Estado inicial del Ultra Instinto. El cuerpo se mueve por instinto sin pensar. Ojos plateados y aura gris.", "saga": "Dragon Ball Super (Torneo del Poder)" },
+            { "id": "goku_ui_dominado", "orden": 12, "nombre": "Ultra Instinto Dominado", "imagen": "https://lh3.googleusercontent.com/d/11BbW2Ls1f3LO1S0j08L349m1FeOGwx6b", "descripcion": "Forma completa del Ultra Instinto con cabello plateado. Poder que supera a los mismísimos Dioses de la Destrucción.", "saga": "Dragon Ball Super (Torneo del Poder)" },
+            { "id": "goku_ui_propio", "orden": 13, "nombre": "Ultra Instinto Propio", "imagen": "https://lh3.googleusercontent.com/d/1J9wK8LYZzQmCCJmnAAXkQu-11BXlax8G", "descripcion": "La verdadera forma del Ultra Instinto que Goku domina por completo. Poder absoluto que combina emoción y técnica al máximo nivel.", "saga": "Dragon Ball Super (Manga)" }
         ],
         "tecnicas": ["Kamehameha", "Genkidama", "Teletransportación", "Kaioken", "Fusión"]
     },
@@ -42,16 +60,35 @@ var PERSONAJES_DATA = [
         "primeraAparicionManga": { "manga": "Dragon Ball", "capitulo": 204, "titulo": "El secreto de los Saiyajin" },
         "historia": "Vegeta, el príncipe de los Saiyan, llegó a la Tierra como invasor. Derrotado por Goku y sus amigos, decidió permanecer en el planeta para superar al legendario Super Saiyan. Con el tiempo, su orgullo guerrero lo llevó a formar parte de los Guerreros Z, formando una familia con Bulma y convirtiéndose en un aliado leal. Su determinación lo llevó a alcanzar el Ultra Ego, la contraparte destructiva del Ultra Instinto.",
         "imagenes": [
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Vegeta+Base",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Vegeta+SSJ",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Vegeta+SSJ2",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Vegeta+SSG",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Vegeta+SSB",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Vegeta+Ultra+Ego"
+            "https://lh3.googleusercontent.com/d/1tj9NL7D6PrvN3laNGvV6CU3kfow6HIey",
+            "https://lh3.googleusercontent.com/d/1pLt1hPWAecLv2cKOkiJyvLHl7N86dM5Z",
+            "https://lh3.googleusercontent.com/d/1yyylVjVlhMyFFgOPghUeXz8uROeIcW93",
+            "https://lh3.googleusercontent.com/d/1eUPHkJ5gxL0Br9rFCbGtZEd_bdhla3_b",
+            "https://lh3.googleusercontent.com/d/1ANStMudWIvUOS4PVglQlbEDm0pZj_48f",
+            "https://lh3.googleusercontent.com/d/1Nf5iP5R61hOLOEIfPX32TYrlIrDu9aCn",
+            "https://lh3.googleusercontent.com/d/1egIvYugu40qEPSVDAdOs1j30N7PGFbv5",
+            "https://lh3.googleusercontent.com/d/171tTEXZSXgSrYa9G14UYlcUHV7gsqKKQ",
+            "https://lh3.googleusercontent.com/d/1D73ovHEm_vCm6Ldlk4t4G206rFJL-u_p",
+            "https://lh3.googleusercontent.com/d/1WiZFuoOACyGsFnps-VZFyoqldfbQSLZT",
+            "https://lh3.googleusercontent.com/d/1YxKIzlcLrrfCslo6Y2wSc10CqK9SaweF",
+            "https://lh3.googleusercontent.com/d/1mUcwXTh-mI76n6b1S5nhcrNyV_wNEyMb"
         ],
         "descripcion": "El príncipe de los Saiyan. Su orgullo y perseverancia lo han llevado a alcanzar el Ultra Ego.",
         "stats": { "fuerza": 94, "velocidad": 92, "ki": 95, "tecnica": 96 },
-        "transformaciones": ["Base", "Super Saiyan", "Super Saiyan 2", "Super Saiyan God", "Super Saiyan Blue", "Ultra Ego"],
+        "transformaciones": [
+            { "id": "vegeta_base", "orden": 1, "nombre": "Base", "imagen": "https://lh3.googleusercontent.com/d/1tj9NL7D6PrvN3laNGvV6CU3kfow6HIey", "descripcion": "Estado natural de Vegeta. Su poder base como príncipe Saiyan supera al de la mayoría de los guerreros del universo.", "saga": "Dragon Ball Z (Saiyans)" },
+            { "id": "vegeta_ozzaru", "orden": 2, "nombre": "Ozzaru", "imagen": "https://lh3.googleusercontent.com/d/1pLt1hPWAecLv2cKOkiJyvLHl7N86dM5Z", "descripcion": "Transformación en mono gigante al mirar la luna llena. Vegeta la utilizó durante su invasión a la Tierra.", "saga": "Dragon Ball Z (Saiyans)" },
+            { "id": "vegeta_ssj1", "orden": 3, "nombre": "Super Saiyan", "imagen": "https://lh3.googleusercontent.com/d/1yyylVjVlhMyFFgOPghUeXz8uROeIcW93", "descripcion": "Primera transformación Saiyan legendaria. Vegeta la alcanzó tras la derrota ante Freezer en Namek.", "saga": "Dragon Ball Z (Freezer)" },
+            { "id": "vegeta_super_vegeta", "orden": 4, "nombre": "Super Vegeta", "imagen": "https://lh3.googleusercontent.com/d/1eUPHkJ5gxL0Br9rFCbGtZEd_bdhla3_b", "descripcion": "Versión mejorada del Super Saiyan con músculos aumentados y poder amplificado. Vegeta la usó contra Cell.", "saga": "Dragon Ball Z (Cell)" },
+            { "id": "vegeta_ssj2", "orden": 5, "nombre": "Super Saiyan 2", "imagen": "https://lh3.googleusercontent.com/d/1ANStMudWIvUOS4PVglQlbEDm0pZj_48f", "descripcion": "Evolución del Super Saiyan con poder eléctrico. Vegeta dominó esta forma en la Sala del Tiempo.", "saga": "Dragon Ball Z (Cell)" },
+            { "id": "vegeta_majin", "orden": 6, "nombre": "Majin Vegeta", "imagen": "https://lh3.googleusercontent.com/d/1Nf5iP5R61hOLOEIfPX32TYrlIrDu9aCn", "descripcion": "Vegeta bajo el control de Babidi, impulsado por su orgullo y oscuridad. Alcanzó un poder comparable al de SSJ2.", "saga": "Dragon Ball Z (Majin Buu)" },
+            { "id": "vegeta_ssj3", "orden": 7, "nombre": "Super Saiyan 3", "imagen": "https://lh3.googleusercontent.com/d/1egIvYugu40qEPSVDAdOs1j30N7PGFbv5", "descripcion": "Forma de cabello extremadamente largo y sin cejas. Vegeta la alcanzó tras años de entrenamiento más allá del límite.", "saga": "Dragon Ball Z (Majin Buu)" },
+            { "id": "vegeta_ssj4", "orden": 8, "nombre": "Super Saiyan 4", "imagen": "https://lh3.googleusercontent.com/d/171tTEXZSXgSrYa9G14UYlcUHV7gsqKKQ", "descripcion": "Forma primal que combina el poder del Super Saiyan con la cola de mono. Vegeta la alcanzó en Dragon Ball GT.", "saga": "Dragon Ball GT" },
+            { "id": "vegeta_ssg", "orden": 9, "nombre": "Super Saiyan God", "imagen": "https://lh3.googleusercontent.com/d/1D73ovHEm_vCm6Ldlk4t4G206rFJL-u_p", "descripcion": "Poder divino de color rojo. Vegeta lo alcanzó mediante entrenamiento con Whis en el planeta de Beerus.", "saga": "Dragon Ball Super (Batalla de los Dioses)" },
+            { "id": "vegeta_ssb", "orden": 10, "nombre": "Super Saiyan Blue", "imagen": "https://lh3.googleusercontent.com/d/1WiZFuoOACyGsFnps-VZFyoqldfbQSLZT", "descripcion": "Fusión del Super Saiyan God con el Super Saiyan. Ki divino de color azul que supera al SSG.", "saga": "Dragon Ball Super (Resurrección de F)" },
+            { "id": "vegeta_ssb_evolution", "orden": 11, "nombre": "Super Saiyan Blue Evolution", "imagen": "https://lh3.googleusercontent.com/d/1YxKIzlcLrrfCslo6Y2wSc10CqK9SaweF", "descripcion": "Evolución del Super Saiyan Blue con aura más intensa y poder colosal. Vegeta superó sus límites contra Jiren.", "saga": "Dragon Ball Super (Torneo del Poder)" },
+            { "id": "vegeta_ultra_ego", "orden": 12, "nombre": "Ultra Ego", "imagen": "https://lh3.googleusercontent.com/d/1mUcwXTh-mI76n6b1S5nhcrNyV_wNEyMb", "descripcion": "Técnica divina de los Dioses de la Destrucción. Vegeta canaliza su orgullo y sed de lucha para volverse más poderoso cuanto más recibe daño.", "saga": "Dragon Ball Super (Manga)" }
+        ],
         "tecnicas": ["Galick Gun", "Final Flash", "Big Bang Attack", "Ataque del Orgullo"]
     },
     {
