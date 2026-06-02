@@ -2458,23 +2458,37 @@ p, span, div { color: inherit; }
 #charactersSeriesContainer .serie-card {
     position: relative;
     overflow: hidden;
+    border-radius: var(--radius-lg);
 }
 
 #charactersSeriesContainer .serie-card .card-image-box {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 #charactersSeriesContainer .serie-card .card-image-box img {
     width: 100%;
-    aspect-ratio: 2/3;
+    aspect-ratio: 16/9;
     object-fit: cover;
+    object-position: center 20%;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
 }
 
 #charactersSeriesContainer .serie-card:hover .card-image-box img {
     transform: scale(1.08);
+}
+
+#charactersSeriesContainer .serie-card .card-image-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    pointer-events: none;
 }
 
 #charactersSeriesContainer .serie-card .canon-badge {
@@ -2527,3 +2541,5 @@ p, span, div { color: inherit; }
     font-size: 1rem;
     font-weight: 600;
 }
+
+
