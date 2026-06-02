@@ -1,31 +1,56 @@
 ﻿// BASE DE DATOS INTEGRADA - DRAGON BALL CENTRAL
 var PERSONAJES_DATA = [
     {
-        "id": "goku-nino",
-        "Personaje": "Goku (Ni\u00F1o)",
+        "id": "goku_clasico",
+        "Personaje": "Goku (Cl\u00E1sico)",
         "Raza": "Saiyan",
         "serie": "db-classic",
         "Planeta de origen": "Vegeta",
         "Universo": "7",
-        "afiliaciones": "Guerreros Z",
+        "afiliaciones": "Escuela Tortuga",
         "estado": "Vivo",
         "edad": "12",
         "primeraAparicionAnime": { "serie": "Dragon Ball", "episodio": 1, "titulo": "El secreto de las Esferas del Drag\u00F3n" },
         "primeraAparicionManga": { "manga": "Dragon Ball", "capitulo": 1, "titulo": "Bulma y Son Goku" },
-        "historia": "Son Goku fue enviado a la Tierra siendo un beb\u00E9. Al golpearse la cabeza perdi\u00F3 su prop\u00F3sito original y se convirti\u00F3 en el defensor del planeta. Sus aventuras comenzaron cuando conoci\u00F3 a Bulma y juntos buscaron las Esferas del Drag\u00F3n.",
-        "descripcion": "El joven Saiyan criado en la Tierra. Su cola de mono y su apetito insaciable lo hacen \u00FAnico.",
+        "historia": "Son Goku fue enviado a la Tierra siendo un beb\u00E9 desde el planeta Vegeta. Al golpearse la cabeza perdi\u00F3 su prop\u00F3sito original de conquista y se convirti\u00F3 en el defensor del planeta. Entren\u00F3 bajo la tutela de Kame Sen'nin (Maestro Roshi) junto a Krilin, aprendiendo las t\u00E9cnicas fundamentales de la Escuela Tortuga. Particip\u00F3 en los Torneos de Artes Marciales, derrot\u00F3 al Ej\u00E9rcito de la Patrulla Roja y venci\u00F3 a Piccolo Daima\u014D, demostrando ser un guerrero excepcional.",
+        "descripcion": "El joven Saiyan criado en la Tierra. Su cola de mono, su apetito insaciable y su esp\u00EDritu de superaci\u00F3n lo hacen \u00FAnico.",
         "imagenes": [
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Goku+Ni%C3%B1o+Normal",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Goku+Ni%C3%B1o+Bast%C3%B3n",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Goku+Ni%C3%B1o+Nube+Kinton",
-            "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Goku+Ni%C3%B1o+Combate"
+            "https://lh3.googleusercontent.com/d/1fmS6UdG5a0RrJsGgT3r1GfzN363PpjUg",
+            "https://lh3.googleusercontent.com/d/1CmRy3y3z-BZyDEKos28ZRxKpE7hYNw1Y",
+            "https://lh3.googleusercontent.com/d/1tGpt9ZiV1aM65t8oW5IGRlGVjOPyGMfL",
+            "https://lh3.googleusercontent.com/d/1THRGhOlAyy6nNRy1i3et6aSw2c5MbJuV",
+            "https://lh3.googleusercontent.com/d/1l5XG_3P9nFRUtxUFF8ndiPnHk2Yks4vF",
+            "https://lh3.googleusercontent.com/d/1EP6iIMLAinAvOsVFxa-6zs-62km07e6Y"
         ],
         "stats": { "fuerza": 30, "velocidad": 45, "ki": 20, "tecnica": 25 },
         "transformaciones": [
-            { "id": "goku_nino_base", "orden": 1, "nombre": "Base", "imagen": "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Goku+Ni%C3%B1o+Normal", "descripcion": "Estado base de Goku ni\u00F1o.", "saga": "Dragon Ball Cl\u00E1sico" },
-            { "id": "goku_nino_ozzaru", "orden": 2, "nombre": "Ozzaru", "imagen": "https://via.placeholder.com/500x700/1a1a1a/ff5e00?text=Ozzaru", "descripcion": "Transformaci\u00F3n en mono gigante al mirar la luna llena.", "saga": "Dragon Ball Cl\u00E1sico" }
+            { "id": "goku_clasico_base", "orden": 1, "nombre": "Base", "imagen": "https://lh3.googleusercontent.com/d/1fmS6UdG5a0RrJsGgT3r1GfzN363PpjUg", "descripcion": "Estado base de Goku en su infancia.", "saga": "Dragon Ball Cl\u00E1sico" },
+            { "id": "goku_clasico_ozzaru", "orden": 2, "nombre": "Ozzaru", "imagen": "https://lh3.googleusercontent.com/d/1l5XG_3P9nFRUtxUFF8ndiPnHk2Yks4vF", "descripcion": "Transformaci\u00F3n en mono gigante al mirar la luna llena.", "saga": "Dragon Ball Cl\u00E1sico" }
         ],
-        "tecnicas": ["Kamehameha", "Nube Kinto", "Bast\u00F3n M\u00E1gico"]
+        "tecnicas": ["Kamehameha", "Nube Kinto", "Bast\u00F3n M\u00E1gico", "Zank\u016B F\u016Bken", "T\u00E9cnica del Kiai"]
+    },
+    {
+        "id": "bulma_clasica",
+        "Personaje": "Bulma (Cl\u00E1sica)",
+        "Raza": "Humana",
+        "serie": "db-classic",
+        "Planeta de origen": "Tierra",
+        "Universo": "7",
+        "afiliaciones": "Equipo de b\u00FAsqueda de las Esferas del Drag\u00F3n",
+        "estado": "Viva",
+        "edad": "16",
+        "primeraAparicionAnime": { "serie": "Dragon Ball", "episodio": 1, "titulo": "El secreto de las Esferas del Drag\u00F3n" },
+        "primeraAparicionManga": { "manga": "Dragon Ball", "capitulo": 1, "titulo": "Bulma y Son Goku" },
+        "historia": "Bulma Brief, la brillante hija del Dr. Brief, conoci\u00F3 a Goku mientras buscaba las Esferas del Drag\u00F3n. Aunque al principio solo le interesaban los deseos, su amistad con Goku la llev\u00F3 a vivir innumerables aventuras. Es la creadora del Radar del Drag\u00F3n y una de las mentes m\u00E1s brillantes de la Tierra. Su ingenio y determinaci\u00F3n fueron clave para superar los desaf\u00EDos del Ej\u00E9rcito de la Patrulla Roja y la amenaza de Piccolo Daima\u014D.",
+        "descripcion": "Genio cient\u00EDfica y aventurera. Creadora del Radar del Drag\u00F3n y compa\u00F1era inseparable de Goku en su primera gran aventura.",
+        "imagenes": [
+            "https://lh3.googleusercontent.com/d/1Xggc8_Qm00NMD3FaVuKErPCidzkqW_gK",
+            "https://lh3.googleusercontent.com/d/1RGpik2t1Ntas1E1M2MaYGJ9Yi6DK0IHn",
+            "https://lh3.googleusercontent.com/d/1iOiKuWkyZvLijPVe7uayrAMOSlQ1FsN2"
+        ],
+        "stats": { "fuerza": 5, "velocidad": 10, "ki": 2, "tecnica": 100 },
+        "transformaciones": [],
+        "tecnicas": ["Radar del Drag\u00F3n", "Inventos tecnol\u00F3gicos", "Conducci\u00F3n de veh\u00EDculos"]
     }
 ];
 var MEDIA_DATA = {
