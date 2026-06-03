@@ -1140,7 +1140,7 @@ var PERSONAJES_DATA = [
         "historia": "Panchy es la esposa del Dr. Brief y la madre de Bulma. Es una mujer amable y cari\u00F1osa que siempre recibe con los brazos abiertos a los amigos de su hija. Aunque no participa en las aventuras, su hogar en West City es un refugio para el grupo. Es conocida por su paciencia con las ocurrencias de su esposo.",
         "descripcion": "La madre de Bulma y esposa del Dr. Brief. Una mujer amable que siempre acoge a los amigos de su hija.",
         "imagenes": [
-            "https://lh3.googleusercontent.com/d/1aJRfKMWyWisod1xR7XgLUpPMHENwiyMU"
+            "https://lh3.googleusercontent.com/d/1qmoowKx3XIrOVP5iT69vkK9ZEO6lAoA7"
         ],
         "stats": { "fuerza": 2, "velocidad": 5, "ki": 1, "tecnica": 10 },
         "transformaciones": []

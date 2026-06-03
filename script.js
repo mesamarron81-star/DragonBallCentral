@@ -730,8 +730,8 @@ var SERIES_DATA = [
     { id: 'db-z', nombre: 'Dragon Ball Z', descripcion: 'Saiyans, Freezer, Cell y Buu.', icono: 'https://lh3.googleusercontent.com/d/1sk_RHuD7tLc0junztslnag4CgCisW0hy', canon: 'OFICIAL Y CANON' },
     { id: 'db-gt', nombre: 'Dragon Ball GT', descripcion: 'Secuela alternativa con Goku niño.', icono: 'https://lh3.googleusercontent.com/d/1hEN8OUh65JHzYgOO67te3YL7x1TJ2z91', canon: 'OFICIAL Y NO CANON' },
     { id: 'db-super', nombre: 'Dragon Ball Super', descripcion: 'Continuación oficial con los dioses.', icono: 'https://lh3.googleusercontent.com/d/1LU6auOSGf5z2bzTEOS-O4d0gsc8AV3Ux', canon: 'OFICIAL Y CANON' },
-    { id: 'db-daima', nombre: 'Dragon Ball Daima', descripcion: 'Nueva serie con personajes en miniatura.', icono: 'https://lh3.googleusercontent.com/d/1etdNiG1mN5VsA4FEnnaIIHKind9joCWs', canon: 'OFICIAL Y CANON' },
-    { id: 'db-games', nombre: 'Dragon Ball Games', descripcion: 'Personajes de videojuegos y Heroes.', icono: 'https://lh3.googleusercontent.com/d/115sLGIdzioiaRAsxG4ATFfliXWObYpQF', canon: 'NO OFICIAL Y NO CANON' },
+    { id: 'db-daima', nombre: 'Dragon Ball Daima', descripcion: 'Nueva serie con personajes en miniatura.', icono: 'https://lh3.googleusercontent.com/d/1etdNiG1mN5VsA4FEnnaIIHKind9joCWs', canon: 'OFICIAL Y NO CANON' },
+    { id: 'db-games', nombre: 'Dragon Ball Games', descripcion: 'Personajes de videojuegos y Heroes.', icono: 'https://lh3.googleusercontent.com/d/115sLGIdzioiaRAsxG4ATFfliXWObYpQF', canon: 'OFICIAL Y NO CANON' },
     { id: 'db-af', nombre: 'Dragon Ball AF', descripcion: 'El legendario doujinshi con SSJ5.', icono: 'https://lh3.googleusercontent.com/d/1qHsFQJOTLlQKxoaBHyoOB2tWWye_qFN0', canon: 'NO OFICIAL Y NO CANON' }
 ];
 
