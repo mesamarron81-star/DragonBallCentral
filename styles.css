@@ -313,35 +313,62 @@ p, span, div { color: inherit; }
 
 .premium-card:hover .card-image-box img { transform: scale(1.08); }
 
-/* --- Character cards overrides --- */
+/* --- Character cards premium redesign --- */
+
+/* Card background - dark energy gradient */
 #charactersContainer .premium-card {
-    background: linear-gradient(160deg, rgba(15,15,22,0.85), rgba(8,8,14,0.95));
-    border-color: rgba(255,255,255,0.06);
-}
-
-#charactersContainer .premium-card:hover {
-    border-color: rgba(255, 94, 0, 0.3);
+    background: linear-gradient(170deg, rgba(12,12,20,0.92), rgba(10,10,18,0.95));
+    border-color: rgba(255,94,0,0.12);
     box-shadow:
-        0 20px 50px rgba(0,0,0,0.6),
-        0 0 30px rgba(255, 94, 0, 0.08);
+        0 8px 32px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-#charactersContainer .premium-card:hover .card-image-box img {
-    transform: scale(1.1);
+/* Hide global blue glow for character cards */
+#charactersContainer .premium-card::after { display: none; }
+
+/* Dynamic energy background particles */
+#charactersContainer .premium-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255,94,0,0.04), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,215,0,0.03), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(0,210,255,0.02), transparent 50%);
 }
 
 #charactersContainer .card-image-box {
     aspect-ratio: 4/3;
-    background: radial-gradient(ellipse at 50% 40%, rgba(10,10,20,0.8), #050505);
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(255,94,0,0.06), rgba(10,10,20,0.9) 60%, #050505);
+    position: relative;
+    z-index: 1;
 }
 
+/* Subtle energy glow behind character */
+#charactersContainer .card-image-box::before {
+    content: '';
+    position: absolute;
+    inset: 12%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,94,0,0.1), transparent 70%);
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Orange energy overlay on hover */
 #charactersContainer .card-image-box::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 50% 60%, rgba(255,94,0,0.08), transparent 60%);
+    background: radial-gradient(ellipse at 50% 60%, rgba(255,94,0,0.12), transparent 70%);
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
     pointer-events: none;
     z-index: 1;
 }
@@ -351,58 +378,121 @@ p, span, div { color: inherit; }
 }
 
 #charactersContainer .card-image-box img {
-    object-position: center 15%;
-    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+    object-fit: contain;
+    object-position: center center;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5));
 }
 
+/* Universe badge - premium glow */
 #charactersContainer .category-badge {
-    background: linear-gradient(135deg, rgba(255,94,0,0.9), rgba(255,179,0,0.9));
-    padding: 3px 9px;
-    font-size: 0.65rem;
-    border-radius: 5px;
-    box-shadow: 0 4px 15px rgba(255,94,0,0.5);
+    background: linear-gradient(135deg, #ff5e00, #ff8c00);
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 6px;
+    box-shadow:
+        0 0 20px rgba(255,94,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+    color: #fff;
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+#charactersContainer .premium-card:hover .category-badge {
+    box-shadow:
+        0 0 30px rgba(255,94,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 #charactersContainer .card-content {
     padding: 1.25rem 1.25rem 1rem;
+    position: relative;
+    z-index: 1;
 }
 
+/* Decorative energy divider line */
+#charactersContainer .card-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 5%;
+    width: 90%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,94,0,0.25), rgba(255,215,0,0.25), transparent);
+    pointer-events: none;
+}
+
+/* Character name - bigger, bolder */
 #charactersContainer .card-content h5 {
-    font-size: 1.15rem;
-    letter-spacing: 0.01em;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255,255,255,0.06);
 }
 
+#charactersContainer .premium-card:hover .card-content h5 {
+    text-shadow: 0 0 30px rgba(255,255,255,0.12);
+}
+
+/* Race badge - glowing premium */
 #charactersContainer .card-content .text-muted.small {
     display: inline-block;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,94,0,0.08);
+    border: 1px solid rgba(255,94,0,0.2);
     border-radius: 20px;
-    padding: 1px 11px;
+    padding: 2px 12px;
     font-size: 0.6rem !important;
     font-weight: 600;
-    color: rgba(255,255,255,0.5) !important;
-    letter-spacing: 0.06em;
+    color: rgba(255,179,0,0.85) !important;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
+    backdrop-filter: blur(4px);
+    transition: var(--transition-smooth);
 }
 
+/* Description - clean with max 3 lines */
 #charactersContainer .card-content p.text-muted.small {
     background: none;
     border: none;
     border-radius: 0;
     padding: 0;
-    font-size: 0.8rem !important;
+    font-size: 0.82rem !important;
     font-weight: 400;
-    color: var(--text-muted) !important;
+    color: rgba(161,161,170,0.85) !important;
     letter-spacing: normal;
     text-transform: none;
-    white-space: normal;
-    margin-bottom: 0.75rem;
-    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-/* Stats group (KI bar) - hidden */
+/* Stats group - hidden */
 #charactersContainer .stats-group { display: none; }
+
+/* Hover effects */
+#charactersContainer .premium-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,94,0,0.35);
+    box-shadow:
+        0 24px 60px rgba(0,0,0,0.7),
+        0 0 40px rgba(255,94,0,0.12);
+}
+
+#charactersContainer .premium-card:hover .card-image-box img {
+    transform: scale(1.08);
+}
+
+#charactersContainer .premium-card:hover .card-image-box::before {
+    opacity: 0.8;
+}
 
 /* --- Series categories overrides --- */
 #charactersSeriesContainer .premium-card {
