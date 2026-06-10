@@ -1,6 +1,21 @@
 
 // DRAGON BALL CENTRAL - MODERN DASHBOARD ENGINE v3.0
 
+// Utility: Debounce — evita re-renders excesivos en búsquedas
+function debounce(fn, delay) {
+    var timer;
+    return function () {
+        var ctx = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () { fn.apply(ctx, args); }, delay || 250);
+    };
+}
+
+// Utility: DOM cache — selectores reutilizables sin repetir querySelector
+function dom(sel) { return document.querySelector(sel); }
+function domAll(sel) { return document.querySelectorAll(sel); }
+function byId(id) { return document.getElementById(id); }
+
 document.addEventListener('DOMContentLoaded', () => {
     initDashboard();
 
@@ -33,9 +48,20 @@ async function initDashboard() {
     // Animate counters after data loads
     animateCounters();
 
-    // Ocultar loader inicial
-    setTimeout(() => {
-        document.getElementById('loader').style.display = 'none';
+    // Inicializar AOS después de que los datos estén listos
+    if (typeof AOS !== 'undefined' && !window._aosInited) {
+        AOS.init({ duration: 800, once: true });
+        window._aosInited = true;
+    }
+
+    // Ocultar loader inicial con fade-out
+    var loader = byId('loader');
+    setTimeout(function () {
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.4s ease';
+            setTimeout(function () { loader.style.display = 'none'; }, 400);
+        }
     }, 800);
 }
 
@@ -80,53 +106,53 @@ function setupNavigation() {
     showSection(initialSection, false);
 }
 
+// Cache sections selector for faster show/hide
+var _cachedSections = null;
+function _getSections() {
+    if (!_cachedSections) _cachedSections = domAll('.section-content');
+    return _cachedSections;
+}
+
 function showSection(sectionId, updateHistory = true, evt) {
     // Evitar navegación por defecto y conflicto con Swiper/otros contenedores, si hay evento.
-    const e = evt || window.event;
+    var e = evt || window.event;
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
     // Guardar scroll de la sección anterior activa
-    const currentActive = document.querySelector('.section-content:not(.d-none)');
+    var currentActive = dom('.section-content:not(.d-none)');
     if (currentActive) {
         sessionStorage.setItem('scroll_' + currentActive.id, window.scrollY);
     }
 
-    // Ocultar todas las secciones con transición suave
-    const sections = document.querySelectorAll('.section-content');
-    sections.forEach(section => {
-        section.classList.add('d-none');
-    });
+    // Ocultar todas las secciones de forma eficiente
+    var sections = _getSections();
+    for (var i = 0; i < sections.length; i++) {
+        sections[i].classList.add('d-none');
+    }
 
     // Mostrar sección activa
-    let activeSection = document.getElementById(sectionId);
+    var activeSection = byId(sectionId);
     if (!activeSection) {
-        // Si la sección ya no existe (por ejemplo, #sagas eliminado), fallback seguro.
         sectionId = 'inicio';
-        activeSection = document.getElementById(sectionId);
+        activeSection = byId(sectionId);
     }
     if (activeSection) {
         activeSection.classList.remove('d-none');
-        // Re-trigger animation
-        activeSection.style.animation = 'none';
-        activeSection.offsetHeight; // Force reflow
-        activeSection.style.animation = '';
         
         // Cuando se navega a personajes, reset a vista de series
         if (sectionId === 'personajes') {
-            const pDetail = document.getElementById('personajesDetailView');
-            const pList = document.getElementById('personajesListView');
-            const pSeries = document.getElementById('charactersSeriesContainer');
-            const pChars = document.getElementById('charactersContainer');
+            var pDetail = byId('personajesDetailView');
+            var pList = byId('personajesListView');
             if (pDetail && pList) {
                 pDetail.classList.add('d-none');
                 pList.classList.remove('d-none');
                 _currentChar = null;
                 _currentSerie = null;
             }
-            const searchInput = document.querySelector('#personajes .search-input');
+            var searchInput = dom('#personajes .search-input');
             if (searchInput) {
                 searchInput.value = '';
-                const clearBtn = searchInput.parentElement?.querySelector('.search-clear');
+                var clearBtn = searchInput.parentElement && searchInput.parentElement.querySelector('.search-clear');
                 if (clearBtn) clearBtn.classList.add('d-none');
             }
             goBackToSeries();
@@ -136,38 +162,40 @@ function showSection(sectionId, updateHistory = true, evt) {
         if (window.AOS) AOS.refresh();
     }
 
-    // Actualizar Sidebar
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('onclick')?.includes(`'${sectionId}'`)) {
-            item.classList.add('active');
-        }
-    });
-
-    // Manejar el historial
-    if (updateHistory) {
-        // Evitar duplicar entradas si ya estamos en la misma sección.
-        if (history.state && history.state.sectionId === sectionId) {
-            history.replaceState({ sectionId: sectionId }, "", `#${sectionId}`);
-        } else {
-            history.pushState({ sectionId: sectionId }, "", `#${sectionId}`);
+    // Actualizar navegación con for loop (más rápido que forEach)
+    var navItems = domAll('.nav-item');
+    for (var i = 0; i < navItems.length; i++) {
+        navItems[i].classList.remove('active');
+        var onclick = navItems[i].getAttribute('onclick');
+        if (onclick && onclick.indexOf("'" + sectionId + "'") !== -1) {
+            navItems[i].classList.add('active');
         }
     }
 
-    // Restaurar o restablecer scroll
-    const savedScroll = sessionStorage.getItem('scroll_' + sectionId);
+    // Manejar el historial
+    if (updateHistory) {
+        if (history.state && history.state.sectionId === sectionId) {
+            history.replaceState({ sectionId: sectionId }, "", '#' + sectionId);
+        } else {
+            history.pushState({ sectionId: sectionId }, "", '#' + sectionId);
+        }
+    }
+
+    // Restaurar o restablecer scroll (con rAF para evitar saltos)
+    var savedScroll = sessionStorage.getItem('scroll_' + sectionId);
     if (savedScroll !== null) {
-        setTimeout(() => {
+        requestAnimationFrame(function () {
             window.scrollTo({ top: parseInt(savedScroll), behavior: 'auto' });
-        }, 50);
+        });
     } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        requestAnimationFrame(function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
     
     // Animate counters if showing inicio
     if (sectionId === 'inicio') {
-        setTimeout(() => animateCounters(), 300);
+        setTimeout(function () { animateCounters(); }, 300);
     }
 }
 
@@ -258,7 +286,7 @@ function renderCharacters(characters, query = '') {
         <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
             <div class="premium-card" style="cursor:pointer;" onclick='showPersonajeDetail(${JSON.stringify(char).replace(/'/g, "&#39;")})'>
                 <div class="card-image-box">
-                    <img src="${char.imagenes[0]}" alt="${char.Personaje}">
+                    <img src="${char.imagenes[0]}" alt="${char.Personaje}" loading="lazy" decoding="async">
                     <div class="position-absolute top-0 start-0 m-3">
                         <span class="category-badge">U${char.Universo}</span>
                     </div>
@@ -690,7 +718,7 @@ function showUniversoDetail(u) {
         kList.innerHTML = kaioshin.map(k => `
             <div class="kaioshin-item d-flex align-items-start gap-3">
                 <div class="kaioshin-img-placeholder" style="overflow: hidden;">
-                    ${k.imagen ? `<img src="${k.imagen}" alt="${k.nombre || 'Kaioshin'}" class="w-100 h-100" style="object-fit: contain;" onerror="this.style.display='none'">` : `<i class="bi bi-gem" style="color: var(--accent-secondary); opacity: 0.5;"></i>`}
+                    ${k.imagen ? `<img src="${k.imagen}" alt="${k.nombre || 'Kaioshin'}" loading="lazy" decoding="async" class="w-100 h-100" style="object-fit: contain;" onerror="this.style.display='none'">` : `<i class="bi bi-gem" style="color: var(--accent-secondary); opacity: 0.5;"></i>`}
                 </div>
                 <div>
                     <h6 class="text-white mb-1" style="font-size: 0.9rem;">${k.nombre || 'Kaioshin'}</h6>
@@ -1053,11 +1081,12 @@ function injectSectionSearch(sectionId, placeholder, onSearch) {
     const input = wrap.querySelector('.section-search-input');
     const clearBtn = wrap.querySelector('.section-search-clear');
 
-    input.addEventListener('input', () => {
+    var debouncedSearch = debounce(function (q) { onSearch(q); }, 220);
+    input.addEventListener('input', function () {
         clearBtn.classList.toggle('d-none', !input.value);
-        onSearch(input.value);
+        debouncedSearch(input.value);
     });
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener('click', function () {
         input.value = '';
         clearBtn.classList.add('d-none');
         onSearch('');
@@ -1680,7 +1709,7 @@ function initNetflixRows(media) {
             const imageUrl = item.imagen || 'https://via.placeholder.com/400x600/111/ff5e00';
             html += `
                 <div class="netflix-card" onclick="showSection('${sectionType}')">
-                    <img src="${imageUrl}" alt="${item.titulo}">
+                    <img src="${imageUrl}" alt="${item.titulo}" loading="lazy" decoding="async">
                     <div class="netflix-card-info">
                         <h6>${item.titulo}</h6>
                         <span>${item.info || item.año || ''}</span>
