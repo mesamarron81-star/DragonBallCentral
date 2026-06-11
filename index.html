@@ -35,8 +35,22 @@
 <body>
     <!-- Premium Loader -->
     <div id="loader">
-        <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="DB CENTRAL" style="height: 80px; width: auto; margin-bottom: 20px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255, 94, 0, 0.4));">
-        <div class="loader-circle"></div>
+        <canvas id="loaderCanvas"></canvas>
+        <div class="loader-inner">
+            <div class="loader-aura-ring"></div>
+            <div class="loader-dragon-balls">
+                <div class="loader-db" style="--i:0"></div>
+                <div class="loader-db" style="--i:1"></div>
+                <div class="loader-db" style="--i:2"></div>
+                <div class="loader-db" style="--i:3"></div>
+                <div class="loader-db" style="--i:4"></div>
+                <div class="loader-db" style="--i:5"></div>
+                <div class="loader-db" style="--i:6"></div>
+            </div>
+            <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="DB CENTRAL" class="loader-logo">
+            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <div class="loader-text" id="loaderText">Preparando las Esferas del Dragón...</div>
+        </div>
     </div>
 
     <div class="app-container">

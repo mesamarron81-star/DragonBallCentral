@@ -54,15 +54,8 @@ async function initDashboard() {
         window._aosInited = true;
     }
 
-    // Ocultar loader inicial con fade-out
-    var loader = byId('loader');
-    setTimeout(function () {
-        if (loader) {
-            loader.style.opacity = '0';
-            loader.style.transition = 'opacity 0.4s ease';
-            setTimeout(function () { loader.style.display = 'none'; }, 400);
-        }
-    }, 800);
+    // Premium loader with messages, progress, particles
+    initPremiumLoader();
 
     // Init premium effects for Inicio
     initInicioPremium();
@@ -88,9 +81,13 @@ async function loadInitialData() {
 
         // Initialize Cinematic Home
         initCinematicHome(media);
+
+        // Hide loader when data is ready
+        if (window._hideLoader) window._hideLoader();
     } catch (error) {
         console.error(error);
         showError("No se pudieron cargar los datos del multiverso.");
+        if (window._hideLoader) window._hideLoader();
     }
 }
 
@@ -1307,35 +1304,6 @@ document.head.appendChild(style);
 
 // --- ANIMATED COUNTERS ---
 
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number[data-count]');
-    counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-count'));
-        const suffix = target >= 100 ? '+' : '';
-        const duration = 1500;
-        const startTime = performance.now();
-        
-        function updateCounter(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            // Easing function (ease-out cubic)
-            const eased = 1 - Math.pow(1 - progress, 3);
-            const current = Math.floor(eased * target);
-            
-            counter.textContent = current + suffix;
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = target + suffix;
-            }
-        }
-        
-        requestAnimationFrame(updateCounter);
-    });
-}
-
 // --- TOPBAR SCROLL EFFECT ---
 
 function initScrollEffect() {
@@ -1602,22 +1570,21 @@ function initFullscreenHero(mediaList) {
         const imageUrl = item.imagen || 'https://via.placeholder.com/1920x1080/111/ff5e00';
         slidesHtml += `
             <div class="swiper-slide fullscreen-slide" data-bg="${imageUrl}">
-                <div class="container d-flex align-items-center justify-content-between h-100 w-100">
-                    <div class="slide-content-container col-lg-6 col-md-8">
+                <div class="slide-bg-layer" style="background-image: url('${imageUrl}')"></div>
+                <div class="slide-vignette"></div>
+                <div class="container h-100 d-flex align-items-end">
+                    <div class="slide-content-container">
                         <span class="slide-badge">${item.tipo || 'Franquicia'}</span>
                         <h2 class="slide-title">${item.titulo}</h2>
-                        <p class="slide-desc">${item.descripcion ? item.descripcion.substring(0, 150) + '...' : 'Explora el asombroso multiverso.'}</p>
+                        <p class="slide-desc">${item.descripcion ? item.descripcion.substring(0, 120) + '...' : 'Explora el asombroso multiverso.'}</p>
                         <div class="hero-actions">
                             <button class="epic-btn main-action" onclick="showSection('${item.tipo === 'Manga' ? 'manga' : (item.tipo === 'Película' ? 'peliculas' : 'serie')}', true, event)">
                                 <i class="bi bi-play-fill"></i> Explorar
                             </button>
                             <button class="epic-btn secondary-action" onclick="showMediaInfoByIndex(${index}, event)">
-                                <i class="bi bi-info-circle"></i> Info
+                                <i class="bi bi-info-circle"></i> Más info
                             </button>
                         </div>
-                    </div>
-                    <div class="slide-poster-container col-lg-5 d-none d-lg-flex justify-content-end">
-                        <img src="${imageUrl}" alt="${item.titulo}" class="slide-poster-img">
                     </div>
                 </div>
             </div>
@@ -1946,6 +1913,150 @@ function animateCounters() {
         requestAnimationFrame(updateCounter);
     });
 }
+
+// --- Premium Loader ---
+function initPremiumLoader() {
+    const loader = document.getElementById('loader');
+    if (!loader) return;
+
+    // Canvas particles
+    const canvas = document.getElementById('loaderCanvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        const particles = [];
+        const colors = ['255,94,0', '255,215,0', '0,210,255', '255,255,255'];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                size: Math.random() * 2.5 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.3 - 0.1,
+                opacity: Math.random() * 0.4 + 0.1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                pulse: Math.random() * 6,
+                phase: Math.random() * 6
+            });
+        }
+
+        function drawLoaderParticles(time) {
+            ctx.clearRect(0, 0, w, h);
+            const t = time * 0.001;
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+                p.pulse += 0.02;
+                if (p.x < -10) p.x = w + 10;
+                if (p.x > w + 10) p.x = -10;
+                if (p.y < -10) p.y = h + 10;
+                if (p.y > h + 10) p.y = -10;
+
+                const opacity = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
+                grad.addColorStop(0, `rgba(${p.color},${opacity})`);
+                grad.addColorStop(0.3, `rgba(${p.color},${opacity * 0.3})`);
+                grad.addColorStop(1, `rgba(${p.color},0)`);
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size * 4, 0, 6.28);
+                ctx.fillStyle = grad;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawLoaderParticles);
+        }
+        requestAnimationFrame(drawLoaderParticles);
+    }
+
+    // Dynamic messages
+    const messages = [
+        'Preparando las Esferas del Dragón...',
+        'Reuniendo el Ki...',
+        'Cargando el universo Dragon Ball...',
+        'Sincronizando personajes...',
+        'Accediendo al multiverso...',
+        'Preparando la siguiente aventura...',
+        'Despertando a los Saiyans...'
+    ];
+    const textEl = document.getElementById('loaderText');
+    let msgIdx = 0;
+
+    function cycleMessage() {
+        if (!textEl) return;
+        textEl.style.opacity = '0';
+        setTimeout(() => {
+            msgIdx = (msgIdx + 1) % messages.length;
+            textEl.textContent = messages[msgIdx];
+            textEl.style.opacity = '1';
+        }, 400);
+    }
+
+    const msgInterval = setInterval(cycleMessage, 2200);
+
+    // Progress bar
+    const barFill = document.querySelector('.loader-bar-fill');
+    let progress = 0;
+
+    function advanceProgress() {
+        if (!barFill) return;
+        progress += Math.random() * 15 + 5;
+        if (progress > 95) progress = 95;
+        barFill.style.width = progress + '%';
+    }
+
+    const progInterval = setInterval(advanceProgress, 400);
+
+    // Hide loader
+    const minLoadTime = 1800;
+    const loadStart = Date.now();
+
+    function hideLoader() {
+        clearInterval(msgInterval);
+        clearInterval(progInterval);
+        const elapsed = Date.now() - loadStart;
+        const delay = Math.max(0, minLoadTime - elapsed);
+
+        setTimeout(() => {
+            if (barFill) barFill.style.width = '100%';
+            setTimeout(() => {
+                loader.classList.add('loaded');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 600);
+            }, 300);
+        }, delay);
+    }
+
+    // Store hideLoader globally so loadInitialData can call it
+    window._hideLoader = hideLoader;
+
+    // Also hide after data loads (called from loadInitialData)
+    // Default fallback: hide after 4s if data never loads
+    setTimeout(hideLoader, 4000);
+}
+
+// --- Fix: Scroll to top on section change ---
+// Patch showSection to always scroll to top
+(function patchShowSectionScroll() {
+    const origShowSection = window.showSection;
+    if (origShowSection) {
+        window.showSection = function(sectionId, updateHistory, evt) {
+            // Call original
+            origShowSection(sectionId, updateHistory, evt);
+            // Force scroll to top after section switch
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        };
+    }
+})();
 
 // --- Init All Inicio Premium Effects ---
 function initInicioPremium() {
