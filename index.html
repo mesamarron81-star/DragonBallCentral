@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dragon Ball Central | Dashboard Multiversal</title>
-    <meta name="description" content="La base de datos más completa del multiverso Dragon Ball. Explora personajes, sagas, series, películas, videojuegos y compara el poder de tus guerreros favoritos.">
+    <meta name="description" content="La base de datos más completa del multiverso Dragon Ball. Explora personajes, sagas, series, películas, videojuegos, música y todo el universo de Goku y compañía.">
     <!-- Preconnect / DNS-Prefetch -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css?v=4.1">
+    <link rel="stylesheet" href="styles.css?v=4.4">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9">
     <!-- Theme Color -->
@@ -36,20 +36,29 @@
     <!-- Premium Loader -->
     <div id="loader">
         <canvas id="loaderCanvas"></canvas>
+        <div class="loader-ki-burst" aria-hidden="true"></div>
         <div class="loader-inner">
-            <div class="loader-aura-ring"></div>
-            <div class="loader-dragon-balls">
-                <div class="loader-db" style="--i:0"></div>
-                <div class="loader-db" style="--i:1"></div>
-                <div class="loader-db" style="--i:2"></div>
-                <div class="loader-db" style="--i:3"></div>
-                <div class="loader-db" style="--i:4"></div>
-                <div class="loader-db" style="--i:5"></div>
-                <div class="loader-db" style="--i:6"></div>
+            <div class="loader-orbit-wrap">
+                <div class="loader-aura-ring"></div>
+                <div class="loader-dragon-balls">
+                    <div class="loader-db" style="--i:0"></div>
+                    <div class="loader-db" style="--i:1"></div>
+                    <div class="loader-db" style="--i:2"></div>
+                    <div class="loader-db" style="--i:3"></div>
+                    <div class="loader-db" style="--i:4"></div>
+                    <div class="loader-db" style="--i:5"></div>
+                    <div class="loader-db" style="--i:6"></div>
+                </div>
+                <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="DB CENTRAL" class="loader-logo">
             </div>
-            <img src="https://drive.google.com/uc?export=view&id=176y7qqFev10QmgJHE7kWpBpQtRu4A7T9" alt="DB CENTRAL" class="loader-logo">
-            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
-            <div class="loader-text" id="loaderText">Preparando las Esferas del Dragón...</div>
+            <p class="loader-brand">DRAGON BALL CENTRAL</p>
+            <div class="loader-bar-track">
+                <div class="loader-bar-fill"></div>
+            </div>
+            <div class="loader-progress-row">
+                <span class="loader-text" id="loaderText">Preparando las Esferas del Dragón...</span>
+                <span class="loader-percent" id="loaderPercent">0%</span>
+            </div>
         </div>
     </div>
 
@@ -108,25 +117,66 @@
         <main class="main-wrapper">
             <!-- Dashboard / Inicio Section (Fullscreen Netflix Style) -->
             <section id="inicio" class="section-content cinematic-home p-0">
-                
-                <!-- 1. HERO FULLSCREEN CAROUSEL -->
-                <div class="fullscreen-hero-wrapper" data-aos="fade-in" data-aos-duration="1500">
+                <div class="home-ambient-bg" aria-hidden="true"></div>
+
+                <!-- 1. HERO ESTÁTICO (sin carrusel) -->
+                <div class="fullscreen-hero-wrapper home-static-hero" data-aos="fade-in" data-aos-duration="1200">
                     <div id="heroBgBlur" class="hero-bg-blur"></div>
+                    <div id="heroBgMain" class="hero-bg-main"></div>
+                    <div class="hero-light-sweep" aria-hidden="true"></div>
                     <div class="hero-gradient-overlay"></div>
-                    
-                    <div class="swiper fullscreenSwiper">
-                        <div class="swiper-wrapper" id="fullscreenHeroSlides">
-                            <!-- Slides inyectados por JS -->
-                        </div>
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                    <div class="hero-depth-layer" aria-hidden="true"></div>
+                    <div class="hero-ki-flares" aria-hidden="true">
+                        <span class="ki-flare ki-flare-1"></span>
+                        <span class="ki-flare ki-flare-2"></span>
+                        <span class="ki-flare ki-flare-3"></span>
                     </div>
+
+                    <div class="container h-100 d-flex align-items-end">
+                        <div class="home-hero-content slide-content-container">
+                            <span class="slide-badge" id="homeHeroBadge">Multiverso Dragon Ball</span>
+                            <h1 class="slide-title" id="homeHeroTitle">Dragon Ball Central</h1>
+                            <p class="slide-desc" id="homeHeroDesc">La base de datos definitiva del universo Dragon Ball. Explora personajes, series, películas, manga, juegos, música y mucho más.</p>
+                            <div class="hero-actions">
+                                <button class="epic-btn main-action" onclick="showSection('personajes', true, event)">
+                                    <i class="bi bi-person-badge-fill"></i> Explorar personajes
+                                </button>
+                                <button class="epic-btn secondary-action" onclick="document.getElementById('homeIntroPanel').scrollIntoView({behavior:'smooth'})">
+                                    <i class="bi bi-compass"></i> Descubrir contenido
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="hero-scroll-hint" onclick="document.getElementById('homeIntroPanel').scrollIntoView({behavior:'smooth'})" aria-label="Desplazarse al contenido">
+                        <span>Explorar</span>
+                        <i class="bi bi-chevron-double-down"></i>
+                    </button>
                 </div>
 
                 <div class="container-fluid px-md-5 home-content-overlap">
+                    <!-- Intro premium -->
+                    <div id="homeIntroPanel" class="home-intro-panel" data-aos="fade-up">
+                        <div class="home-intro-glass">
+                            <span class="home-intro-eyebrow">Dragon Ball Central</span>
+                            <h2 class="home-intro-title">Tu portal premium al multiverso</h2>
+                            <p class="home-intro-desc">Personajes, sagas, películas, manga, juegos, música y videos en una experiencia visual diseñada para fans exigentes.</p>
+                        </div>
+                    </div>
+
+                    <!-- Acceso rápido -->
+                    <nav class="home-quick-nav mb-5" aria-label="Acceso rápido" data-aos="fade-up" data-aos-delay="80">
+                        <a href="#" class="home-quick-pill" onclick="showSection('personajes'); return false;"><i class="bi bi-person-badge"></i> Personajes</a>
+                        <a href="#" class="home-quick-pill" onclick="showSection('serie'); return false;"><i class="bi bi-tv"></i> Series</a>
+                        <a href="#" class="home-quick-pill" onclick="showSection('peliculas'); return false;"><i class="bi bi-film"></i> Películas</a>
+                        <a href="#" class="home-quick-pill" onclick="showSection('manga'); return false;"><i class="bi bi-book"></i> Manga</a>
+                        <a href="#" class="home-quick-pill" onclick="showSection('videojuegos'); return false;"><i class="bi bi-controller"></i> Juegos</a>
+                        <a href="#" class="home-quick-pill" onclick="showSection('musica'); return false;"><i class="bi bi-music-note-beamed"></i> Música</a>
+                        <a href="#" class="home-quick-pill" onclick="showSection('videos'); return false;"><i class="bi bi-play-btn"></i> Videos</a>
+                    </nav>
+
                     <!-- 2. DESTACADOS ÉPICOS -->
-                    <div class="row g-4 mb-5">
+                    <div class="row g-4 g-xl-5 mb-5 home-section-block">
                         <div class="col-12">
                             <h4 class="epic-section-title" data-aos="fade-right">Destacados del Multiverso</h4>
                         </div>
@@ -188,8 +238,8 @@
                         </div>
                     </div>
 
-                    <!-- 3. EXPLORAR (NETFLIX ROWS) -->
-                    <div class="netflix-rows-container mb-5 pb-5">
+                    <!-- 3. EXPLORAR (CARRUSELES) -->
+                    <div class="netflix-rows-container mb-5 pb-5 home-section-block">
                         
                         <!-- Row 1: Series -->
                         <div class="netflix-row-wrapper mb-5" data-aos="fade-up">
@@ -537,7 +587,7 @@
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Batallas', this)" style="border-radius: var(--radius-md);">Batallas</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Transformaciones', this)" style="border-radius: var(--radius-md);">Transformaciones</button>
                             <button class="btn btn-outline-primary btn-sm" onclick="filterVideoCategory('Trailers', this)" style="border-radius: var(--radius-md);">Trailers</button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="showFanAnimations(this)" style="border-radius: var(--radius-md);"><i class="bi bi-stars"></i> Fan Animations</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="showFanAnimations(this)" style="border-radius: var(--radius-md);"><i class="bi bi-stars"></i> Animaciones de fans</button>
                         </div>
                     </div>
                 </div>
@@ -678,6 +728,11 @@
             </div>
         </footer>
     </div>
+
+    <!-- Volver arriba -->
+    <button type="button" id="backToTopBtn" class="back-to-top" aria-label="Volver arriba" title="Volver arriba">
+        <i class="bi bi-chevron-up"></i>
+    </button>
 
     <!-- Video Player Modal -->
     <div class="modal fade" id="videoPlayerModal" tabindex="-1" aria-labelledby="videoPlayerModalLabel" aria-hidden="true">

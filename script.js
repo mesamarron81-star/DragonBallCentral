@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Topbar scroll effect
     initScrollEffect();
 
+    // Botón volver arriba
+    initBackToTop();
+
     // UI interna para Series -> Sagas (sin modificar navegación global)
     try { wireSeriesSagasUi(); } catch(e) {}
 
@@ -139,6 +142,20 @@ function showSection(sectionId, updateHistory = true, evt) {
     if (activeSection) {
         activeSection.classList.remove('d-none');
         
+        // Reset vistas internas al entrar en secciones con detalle
+        if (sectionId === 'universos') {
+            var uList = byId('universosListView');
+            var uDetail = byId('universosDetailView');
+            if (uList) uList.classList.remove('d-none');
+            if (uDetail) uDetail.classList.add('d-none');
+        }
+        if (sectionId === 'serie') {
+            var sList = byId('seriesListView');
+            var sDetail = byId('seriesDetailView');
+            if (sList) sList.classList.remove('d-none');
+            if (sDetail) sDetail.classList.add('d-none');
+        }
+
         // Cuando se navega a personajes, reset a vista de series
         if (sectionId === 'personajes') {
             var pDetail = byId('personajesDetailView');
@@ -158,8 +175,15 @@ function showSection(sectionId, updateHistory = true, evt) {
             goBackToSeries();
         }
         
-        // Trigger AOS para re-animar si es necesario
-        if (window.AOS) AOS.refresh();
+        // Re-animar contenido de secciones que estaban ocultas al cargar
+        setTimeout(function () {
+            if (window.AOS) AOS.refresh();
+            if (activeSection) {
+                activeSection.querySelectorAll('[data-aos]').forEach(function (el) {
+                    el.classList.add('aos-animate');
+                });
+            }
+        }, 60);
     }
 
     // Actualizar navegación con for loop (más rápido que forEach)
@@ -270,7 +294,30 @@ function goBackToSeries() {
         if (list) list.classList.remove('d-none');
     }
     _currentChar = null;
+    _selectedCharId = null;
     if (window.AOS) AOS.refresh();
+}
+
+function getCharId(char) {
+    return char.id || char.Personaje;
+}
+
+function updateSelectedCharacterCards() {
+    document.querySelectorAll('.character-premium-card').forEach((card) => {
+        card.classList.toggle('is-selected', card.dataset.charId === _selectedCharId);
+    });
+}
+
+function scrollToPageTop(instant) {
+    window.scrollTo({ top: 0, left: 0, behavior: instant ? 'auto' : 'smooth' });
+}
+
+function selectCharacterCard(char) {
+    if (!char) return;
+    _selectedCharId = getCharId(char);
+    updateSelectedCharacterCards();
+    scrollToPageTop(true);
+    setTimeout(() => showPersonajeDetail(char), 80);
 }
 
 function renderCharacters(characters, query = '') {
@@ -282,34 +329,35 @@ function renderCharacters(characters, query = '') {
         container.innerHTML = renderEmptySearch('No se encontraron personajes.');
         return;
     }
-    container.innerHTML = characters.map(char => `
-        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="premium-card" style="cursor:pointer;" onclick='showPersonajeDetail(${JSON.stringify(char).replace(/'/g, "&#39;")})'>
-                <div class="card-image-box">
-                    <img src="${char.imagenes[0]}" alt="${char.Personaje}" loading="lazy" decoding="async">
-                    <div class="position-absolute top-0 start-0 m-3">
-                        <span class="category-badge">U${char.Universo}</span>
-                    </div>
-                </div>
-                <div class="card-content">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="mb-0 text-white">${highlightText(char.Personaje, query)}</h5>
-                        <span class="text-muted small">${highlightText(char.Raza, query)}</span>
-                    </div>
-                    <p class="text-muted small mb-4 line-clamp-2">${highlightText(char.descripcion, query)}</p>
-                    <div class="stats-group">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="text-muted extra-small">KI LEVEL</span>
-                            <span class="text-primary extra-small fw-bold">${char.stats.ki}%</span>
-                        </div>
-                        <div class="progress mb-3" style="height: 4px; background: rgba(255,255,255,0.05)">
-                            <div class="progress-bar bg-primary" style="width: ${char.stats.ki}%"></div>
+    container.innerHTML = characters.map((char, idx) => {
+        const charId = getCharId(char);
+        const ki = char.stats?.ki ?? 0;
+        const img = (char.imagenes && char.imagenes[0]) || 'https://via.placeholder.com/400x560/111/ff5e00?text=SIN+IMAGEN';
+        const charJson = JSON.stringify(char).replace(/'/g, '&#39;');
+        return `
+        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${(idx % 4) * 60}">
+            <article class="character-premium-card${charId === _selectedCharId ? ' is-selected' : ''}"
+                data-char-id="${charId}"
+                onclick='selectCharacterCard(${charJson})'>
+                <div class="character-card-glow" aria-hidden="true"></div>
+                <div class="character-card-frame">
+                    <div class="character-card-portrait">
+                        <img src="${img}" alt="${char.Personaje}" loading="lazy" decoding="async"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/400x560/111/ff5e00?text=SIN+IMAGEN';">
+                        <span class="character-card-universe">U${char.Universo}</span>
+                        <div class="character-card-ki-bar" title="Nivel de Ki: ${ki}%">
+                            <div class="character-card-ki-fill" style="width: ${ki}%"></div>
                         </div>
                     </div>
+                    <div class="character-card-body">
+                        <h5 class="character-card-name">${highlightText(char.Personaje, query)}</h5>
+                        <span class="character-card-race">${highlightText(char.Raza, query)}</span>
+                        <p class="character-card-desc">${highlightText(char.descripcion, query)}</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    `).join('');
+            </article>
+        </div>`;
+    }).join('');
 }
 
 function renderMedia(media) {
@@ -413,8 +461,8 @@ function renderMangas(mangas, query = '') {
     container.innerHTML = `
         <div class="col-12 mb-2"><h4 class="epic-section-title manga-subsection-title">Mangas Oficiales</h4></div>
         ${oficiales.length ? renderCards(oficiales) : '<div class="col-12"><p class="text-muted small">Sin resultados oficiales.</p></div>'}
-        <div class="col-12 mt-4 mb-2"><h4 class="epic-section-title manga-subsection-title">Fan Mangas</h4></div>
-        ${fan.length ? renderCards(fan) : '<div class="col-12"><p class="text-muted small">Sin resultados fan.</p></div>'}
+        <div class="col-12 mt-4 mb-2"><h4 class="epic-section-title manga-subsection-title">Mangas de fans</h4></div>
+        ${fan.length ? renderCards(fan) : '<div class="col-12"><p class="text-muted small">Sin mangas de fans.</p></div>'}
     `;
 }
 
@@ -434,7 +482,7 @@ function renderVideojuegos(games, query = '') {
                 <div class="card-image-box" style="aspect-ratio: 2/3;">
                     <img src="${item.imagen}" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x450/111/ff5e00?text=SIN+IMAGEN';">
                     <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-                        <span class="category-badge">Game</span>
+                        <span class="category-badge">Juego</span>
                         <h6 class="text-white small mb-1 text-truncate" title="${item.titulo}">${highlightText(item.titulo, query)}</h6>
                         <div class="game-platforms mb-1">${renderPlatformBadges(extra.plataformas)}</div>
                         <div class="text-muted" style="font-size: 0.7rem;">Salida: ${extra.salida}</div>
@@ -752,6 +800,7 @@ function wireUniversosUi() {
 // =========================
 var _currentChar = null;
 var _currentGalleryIdx = 0;
+var _selectedCharId = null;
 var _currentSerie = null;
 var SERIES_DATA = [
     { id: 'db-classic', nombre: 'Dragon Ball Clásico', descripcion: 'La aventura original de Goku niño.', icono: 'https://lh3.googleusercontent.com/d/1-9iYR9tDzA3vZQyK4j8gkoI1GG-O8hEl', canon: 'OFICIAL Y CANON' },
@@ -767,7 +816,9 @@ function showPersonajeDetail(char) {
     if (!char) return;
 
     _currentChar = char;
+    _selectedCharId = getCharId(char);
     _currentGalleryIdx = 0;
+    updateSelectedCharacterCards();
 
     document.getElementById('personajesListView').classList.add('d-none');
     document.getElementById('personajesDetailView').classList.remove('d-none');
@@ -818,7 +869,26 @@ function showPersonajeDetail(char) {
     // Set current form name
     updateFormLabel(char);
 
+    // Siempre mostrar el detalle desde arriba
+    scrollToPageTop(true);
+
     if (window.AOS) AOS.refresh();
+}
+
+function initBackToTop() {
+    const btn = document.getElementById('backToTopBtn');
+    if (!btn) return;
+
+    const toggleVisibility = () => {
+        btn.classList.toggle('visible', window.scrollY > 320);
+    };
+
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
+    toggleVisibility();
+
+    btn.addEventListener('click', () => {
+        scrollToPageTop(false);
+    });
 }
 
 function getTransNombre(t, fallback) {
@@ -940,6 +1010,7 @@ function wirePersonajesUi() {
             document.getElementById('personajesDetailView').classList.add('d-none');
             document.getElementById('personajesListView').classList.remove('d-none');
             _currentChar = null;
+            _selectedCharId = null;
             if (_currentSerie) {
                 const filtered = (window.ALL_CHARACTERS || []).filter(c => c.serie === _currentSerie);
                 renderCharacters(filtered);
@@ -983,6 +1054,7 @@ function wirePersonajesUi() {
             document.getElementById('personajesDetailView').classList.add('d-none');
             document.getElementById('personajesListView').classList.remove('d-none');
             _currentChar = null;
+            _selectedCharId = null;
             if (_currentSerie) {
                 const filtered = (window.ALL_CHARACTERS || []).filter(c => c.serie === _currentSerie);
                 renderCharacters(filtered);
@@ -1542,85 +1614,26 @@ function wireFanAnimationUi() {
 }
 
 function initCinematicHome(media) {
-    const seriesWithType = media.series.map(item => ({ ...item, tipo: 'Serie' }));
-    const peliculasWithType = media.peliculas.map(item => ({ ...item, tipo: 'Película' }));
-    const mangasWithType = media.mangas.map(item => ({ ...item, tipo: 'Manga' }));
-    
-    const allMedia = [...seriesWithType, ...peliculasWithType, ...mangasWithType];
-    
-    // 1. Init Hero Fullscreen
-    initFullscreenHero(allMedia);
-    
-    // 2. Init Netflix-style Rows
+    initStaticHero(media);
     initNetflixRows(media);
 }
 
-function initFullscreenHero(mediaList) {
-    const swiperWrapper = document.getElementById('fullscreenHeroSlides');
-    if (!swiperWrapper) return;
-    
-    const heroItems = mediaList.sort(() => 0.5 - Math.random()).slice(0, 8);
-    window.HERO_ITEMS = heroItems;
-    
-    // Preload first image into blur background immediately
-    if (heroItems.length > 0) {
-        const blurBg = document.getElementById('heroBgBlur');
-        if (blurBg) {
-            blurBg.style.backgroundImage = "url('" + heroItems[0].imagen + "')";
-        }
-    }
-    
-    let slidesHtml = '';
-    heroItems.forEach((item, index) => {
-        const imageUrl = item.imagen || 'https://via.placeholder.com/1920x1080/111/ff5e00';
-        slidesHtml += `
-            <div class="swiper-slide fullscreen-slide" data-bg="${imageUrl}">
-                <div class="slide-bg-layer" style="background-image: url('${imageUrl}')"></div>
-                <div class="slide-vignette"></div>
-                <div class="container h-100 d-flex align-items-end">
-                    <div class="slide-content-container">
-                        <span class="slide-badge">${item.tipo || 'Franquicia'}</span>
-                        <h2 class="slide-title">${item.titulo}</h2>
-                        <p class="slide-desc">${item.descripcion ? item.descripcion.substring(0, 120) + '...' : 'Explora el asombroso multiverso.'}</p>
-                        <div class="hero-actions">
-                            <button class="epic-btn main-action" onclick="showSection('${item.tipo === 'Manga' ? 'manga' : (item.tipo === 'Película' ? 'peliculas' : 'serie')}', true, event)">
-                                <i class="bi bi-play-fill"></i> Explorar
-                            </button>
-                            <button class="epic-btn secondary-action" onclick="showMediaInfoByIndex(${index}, event)">
-                                <i class="bi bi-info-circle"></i> Más info
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    
-    swiperWrapper.innerHTML = slidesHtml;
-    
-    if(window.Swiper) {
-        const swiper = new Swiper('.fullscreenSwiper', {
-            effect: 'fade',
-            fadeEffect: { crossFade: true },
-            grabCursor: true,
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            on: {
-                init: function () { updateHeroBlurBg(this); },
-                slideChangeTransitionStart: function () { updateHeroBlurBg(this); }
-            }
-        });
+function initStaticHero(media) {
+    const featured = (media.series && media.series[0]) || (media.peliculas && media.peliculas[0]) || null;
+    const imageUrl = (featured && featured.imagen) || 'https://lh3.googleusercontent.com/d/1sk_RHuD7tLc0junztslnag4CgCisW0hy';
+
+    const blurBg = document.getElementById('heroBgBlur');
+    const mainBg = document.getElementById('heroBgMain');
+    if (blurBg) blurBg.style.backgroundImage = "url('" + imageUrl + "')";
+    if (mainBg) mainBg.style.backgroundImage = "url('" + imageUrl + "')";
+
+    if (featured) {
+        const badge = document.getElementById('homeHeroBadge');
+        const title = document.getElementById('homeHeroTitle');
+        const desc = document.getElementById('homeHeroDesc');
+        if (badge) badge.textContent = featured.titulo || 'Multiverso Dragon Ball';
+        if (title) title.textContent = 'Dragon Ball Central';
+        if (desc && featured.descripcion) desc.textContent = featured.descripcion;
     }
 }
 
@@ -1671,16 +1684,19 @@ function initNetflixRows(media) {
     const renderRow = (containerId, items, sectionType) => {
         const container = document.getElementById(containerId);
         if (!container) return;
-        
+
         let html = '';
-        items.forEach(item => {
+        items.forEach((item, index) => {
             const imageUrl = item.imagen || 'https://via.placeholder.com/400x600/111/ff5e00';
+            const meta = item.info || item.año || item.descripcion || '';
             html += `
-                <div class="netflix-card" onclick="showSection('${sectionType}')">
-                    <img src="${imageUrl}" alt="${item.titulo}" loading="lazy" decoding="async">
+                <div class="netflix-card" onclick="showSection('${sectionType}')" data-aos="fade-up" data-aos-delay="${(index % 6) * 40}">
+                    <div class="netflix-card-shine" aria-hidden="true"></div>
+                    <img src="${imageUrl}" alt="${item.titulo}" loading="lazy" decoding="async"
+                        onerror="this.onerror=null; this.src='https://via.placeholder.com/400x600/111/ff5e00?text=SIN+IMAGEN';">
                     <div class="netflix-card-info">
                         <h6>${item.titulo}</h6>
-                        <span>${item.info || item.año || ''}</span>
+                        <span>${meta}</span>
                     </div>
                 </div>
             `;
@@ -2008,11 +2024,14 @@ function initPremiumLoader() {
     const barFill = document.querySelector('.loader-bar-fill');
     let progress = 0;
 
+    const percentEl = document.getElementById('loaderPercent');
+
     function advanceProgress() {
         if (!barFill) return;
         progress += Math.random() * 12 + 4;
         if (progress > 92) progress = 92;
         barFill.style.width = progress + '%';
+        if (percentEl) percentEl.textContent = Math.round(progress) + '%';
     }
 
     const progInterval = setInterval(advanceProgress, 500);
@@ -2032,6 +2051,7 @@ function initPremiumLoader() {
                 barFill.style.transition = 'width 0.4s ease';
                 barFill.style.width = '100%';
             }
+            if (percentEl) percentEl.textContent = '100%';
             setTimeout(() => {
                 loader.classList.add('loaded');
                 setTimeout(() => {
