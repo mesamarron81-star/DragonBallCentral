@@ -2078,8 +2078,13 @@ img[loading="lazy"] {
     position: absolute;
     inset: 0;
     z-index: 0;
-    background: radial-gradient(ellipse at center, transparent 20%, rgba(8, 8, 12, 0.65) 100%);
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(8, 8, 12, 0.7) 100%);
+    background-size: cover;
+    background-position: center;
+    filter: blur(40px) brightness(0.5);
+    transform: scale(1.2);
     pointer-events: none;
+    will-change: transform;
 }
 
 .hero-gradient-overlay {
@@ -2106,7 +2111,8 @@ img[loading="lazy"] {
     position: absolute;
     inset: 0;
     background-size: cover;
-    background-position: center 20%;
+    background-position: center;
+    background-repeat: no-repeat;
     transform: scale(1.06);
     transition: transform 6s ease;
     will-change: transform;
@@ -2119,8 +2125,8 @@ img[loading="lazy"] {
 .slide-vignette {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(8,8,12,0.65) 0%, rgba(8,8,12,0.25) 40%, transparent 60%),
-                linear-gradient(to top, rgba(8,8,12,0.88) 0%, transparent 50%);
+    background: linear-gradient(to right, rgba(8,8,12,0.7) 0%, rgba(8,8,12,0.15) 50%, transparent 65%),
+                linear-gradient(to top, rgba(8,8,12,0.9) 0%, transparent 55%);
     z-index: 1;
 }
 
