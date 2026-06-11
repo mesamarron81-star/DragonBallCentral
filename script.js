@@ -1559,11 +1559,16 @@ function initFullscreenHero(mediaList) {
     const swiperWrapper = document.getElementById('fullscreenHeroSlides');
     if (!swiperWrapper) return;
     
-    // Shuffle and pick 8 top items for the hero
     const heroItems = mediaList.sort(() => 0.5 - Math.random()).slice(0, 8);
-    
-    // Store globally to reference safely by index
     window.HERO_ITEMS = heroItems;
+    
+    // Preload first image into blur background immediately
+    if (heroItems.length > 0) {
+        const blurBg = document.getElementById('heroBgBlur');
+        if (blurBg) {
+            blurBg.style.backgroundImage = "url('" + heroItems[0].imagen + "')";
+        }
+    }
     
     let slidesHtml = '';
     heroItems.forEach((item, index) => {
@@ -1593,17 +1598,14 @@ function initFullscreenHero(mediaList) {
     
     swiperWrapper.innerHTML = slidesHtml;
     
-    // Initialize Swiper
     if(window.Swiper) {
         const swiper = new Swiper('.fullscreenSwiper', {
-            effect: 'fade', // Efecto cinemático suave
-            fadeEffect: {
-                crossFade: true
-            },
+            effect: 'fade',
+            fadeEffect: { crossFade: true },
             grabCursor: true,
             loop: true,
             autoplay: {
-                delay: 4000,
+                delay: 5000,
                 disableOnInteraction: false,
             },
             pagination: {
@@ -1615,12 +1617,8 @@ function initFullscreenHero(mediaList) {
                 prevEl: '.swiper-button-prev',
             },
             on: {
-                init: function () {
-                    updateHeroBlurBg(this);
-                },
-                slideChangeTransitionStart: function () {
-                    updateHeroBlurBg(this);
-                }
+                init: function () { updateHeroBlurBg(this); },
+                slideChangeTransitionStart: function () { updateHeroBlurBg(this); }
             }
         });
     }
@@ -1919,13 +1917,13 @@ function initPremiumLoader() {
     const loader = document.getElementById('loader');
     if (!loader) return;
 
-    // Canvas particles
     const canvas = document.getElementById('loaderCanvas');
     if (canvas) {
         const ctx = canvas.getContext('2d');
         let w, h;
         const particles = [];
         const colors = ['255,94,0', '255,215,0', '0,210,255', '255,255,255'];
+        let animFrameId = null;
 
         function resize() {
             w = canvas.width = window.innerWidth;
@@ -1934,48 +1932,54 @@ function initPremiumLoader() {
         resize();
         window.addEventListener('resize', resize);
 
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 40; i++) {
             particles.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                size: Math.random() * 2.5 + 0.5,
-                speedX: (Math.random() - 0.5) * 0.3,
-                speedY: (Math.random() - 0.5) * 0.3 - 0.1,
-                opacity: Math.random() * 0.4 + 0.1,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.2,
+                speedY: (Math.random() - 0.5) * 0.2 - 0.08,
+                opacity: Math.random() * 0.3 + 0.08,
                 color: colors[Math.floor(Math.random() * colors.length)],
-                pulse: Math.random() * 6,
-                phase: Math.random() * 6
+                pulse: Math.random() * 6
             });
         }
 
         function drawLoaderParticles(time) {
             ctx.clearRect(0, 0, w, h);
-            const t = time * 0.001;
             particles.forEach(p => {
                 p.x += p.speedX;
                 p.y += p.speedY;
-                p.pulse += 0.02;
+                p.pulse += 0.015;
                 if (p.x < -10) p.x = w + 10;
                 if (p.x > w + 10) p.x = -10;
                 if (p.y < -10) p.y = h + 10;
                 if (p.y > h + 10) p.y = -10;
 
                 const opacity = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
-                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
                 grad.addColorStop(0, `rgba(${p.color},${opacity})`);
-                grad.addColorStop(0.3, `rgba(${p.color},${opacity * 0.3})`);
+                grad.addColorStop(0.4, `rgba(${p.color},${opacity * 0.2})`);
                 grad.addColorStop(1, `rgba(${p.color},0)`);
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size * 4, 0, 6.28);
+                ctx.arc(p.x, p.y, p.size * 3, 0, 6.28);
                 ctx.fillStyle = grad;
                 ctx.fill();
             });
-            requestAnimationFrame(drawLoaderParticles);
+            animFrameId = requestAnimationFrame(drawLoaderParticles);
         }
-        requestAnimationFrame(drawLoaderParticles);
+        animFrameId = requestAnimationFrame(drawLoaderParticles);
+
+        // Clean up animation frame when loader is hidden to save resources
+        const observer = new MutationObserver(() => {
+            if (loader.classList.contains('loaded')) {
+                if (animFrameId) cancelAnimationFrame(animFrameId);
+                observer.disconnect();
+            }
+        });
+        observer.observe(loader, { attributes: true, attributeFilter: ['class'] });
     }
 
-    // Dynamic messages
     const messages = [
         'Preparando las Esferas del Dragón...',
         'Reuniendo el Ki...',
@@ -1987,54 +1991,61 @@ function initPremiumLoader() {
     ];
     const textEl = document.getElementById('loaderText');
     let msgIdx = 0;
+    let msgTimeout = null;
 
     function cycleMessage() {
         if (!textEl) return;
         textEl.style.opacity = '0';
-        setTimeout(() => {
+        msgTimeout = setTimeout(() => {
             msgIdx = (msgIdx + 1) % messages.length;
             textEl.textContent = messages[msgIdx];
             textEl.style.opacity = '1';
-        }, 400);
+        }, 350);
     }
 
-    const msgInterval = setInterval(cycleMessage, 2200);
+    const msgInterval = setInterval(cycleMessage, 2400);
 
-    // Progress bar
     const barFill = document.querySelector('.loader-bar-fill');
     let progress = 0;
 
     function advanceProgress() {
         if (!barFill) return;
-        progress += Math.random() * 15 + 5;
-        if (progress > 95) progress = 95;
+        progress += Math.random() * 12 + 4;
+        if (progress > 92) progress = 92;
         barFill.style.width = progress + '%';
     }
 
-    const progInterval = setInterval(advanceProgress, 400);
+    const progInterval = setInterval(advanceProgress, 500);
 
-    // Hide loader
-    const minLoadTime = 1800;
+    const minLoadTime = 2000;
     const loadStart = Date.now();
 
     function hideLoader() {
         clearInterval(msgInterval);
         clearInterval(progInterval);
+        if (msgTimeout) clearTimeout(msgTimeout);
         const elapsed = Date.now() - loadStart;
         const delay = Math.max(0, minLoadTime - elapsed);
 
         setTimeout(() => {
-            if (barFill) barFill.style.width = '100%';
+            if (barFill) {
+                barFill.style.transition = 'width 0.4s ease';
+                barFill.style.width = '100%';
+            }
             setTimeout(() => {
                 loader.classList.add('loaded');
                 setTimeout(() => {
                     loader.style.display = 'none';
-                }, 600);
-            }, 300);
+                    if (canvas) {
+                        const loaderEl = document.getElementById('loader');
+                        if (loaderEl) loaderEl.innerHTML = '';
+                    }
+                }, 700);
+            }, 350);
         }, delay);
     }
 
-    // Store hideLoader globally so loadInitialData can call it
+    // Store hideLoader globally
     window._hideLoader = hideLoader;
 
     // Also hide after data loads (called from loadInitialData)
