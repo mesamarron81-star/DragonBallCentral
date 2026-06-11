@@ -3559,3 +3559,667 @@ img[loading="lazy"] {
     0%, 100% { box-shadow: 0 0 15px rgba(255, 94, 0, 0.15); }
     50% { box-shadow: 0 0 35px rgba(255, 94, 0, 0.3); }
 }
+
+/* ========================================
+   INICIO PREMIUM REDESIGN
+   ======================================== */
+
+/* --- Particle Canvas --- */
+.hero-particle-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.6;
+    will-change: transform;
+}
+
+/* --- Ki Energy Orbs (decorative) --- */
+.ki-energy-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+    mix-blend-mode: screen;
+}
+
+.ki-orb-1 {
+    width: 300px;
+    height: 300px;
+    top: -5%;
+    right: 10%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 94, 0, 0.08), rgba(255, 215, 0, 0.03) 50%, transparent 70%);
+    animation: kiFloatA 12s ease-in-out infinite;
+}
+
+.ki-orb-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 10%;
+    left: 5%;
+    background: radial-gradient(circle at 40% 40%, rgba(0, 210, 255, 0.06), rgba(0, 100, 255, 0.02) 50%, transparent 70%);
+    animation: kiFloatB 15s ease-in-out infinite;
+}
+
+.ki-orb-3 {
+    width: 150px;
+    height: 150px;
+    top: 40%;
+    left: 60%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05), rgba(255, 94, 0, 0.02) 50%, transparent 70%);
+    animation: kiFloatC 10s ease-in-out infinite;
+}
+
+@keyframes kiFloatA {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-15px, 25px) scale(0.95); }
+}
+
+@keyframes kiFloatB {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-20px, 30px) scale(1.03); }
+    66% { transform: translate(25px, -15px) scale(0.97); }
+}
+
+@keyframes kiFloatC {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(20px, 20px) scale(1.08); }
+    50% { transform: translate(-20px, -10px) scale(0.95); }
+    75% { transform: translate(10px, -25px) scale(1.02); }
+}
+
+/* --- Hero Depth Layer --- */
+.hero-depth-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.hero-depth-layer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse at 20% 50%, rgba(255, 94, 0, 0.04), transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(0, 210, 255, 0.03), transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 215, 0, 0.02), transparent 50%);
+    transform: translateZ(0);
+}
+
+/* --- Hero Glow Lines --- */
+.hero-glow-line {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.hero-glow-line-1 {
+    width: 1px;
+    height: 40%;
+    top: 10%;
+    left: 15%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 94, 0, 0.06), transparent);
+    animation: glowLinePulse 4s ease-in-out infinite;
+}
+
+.hero-glow-line-2 {
+    width: 1px;
+    height: 60%;
+    top: 5%;
+    right: 25%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 210, 255, 0.04), transparent);
+    animation: glowLinePulse 6s ease-in-out infinite 1s;
+}
+
+@keyframes glowLinePulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* --- Dragon Ball Floating Decorative Spheres --- */
+.db-sphere {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform;
+}
+
+.db-sphere-1 {
+    width: 12px;
+    height: 12px;
+    top: 20%;
+    right: 30%;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 215, 0, 0.6), rgba(255, 94, 0, 0.3) 50%, transparent 70%);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+    animation: sphereFloat 8s ease-in-out infinite;
+}
+
+.db-sphere-2 {
+    width: 8px;
+    height: 8px;
+    top: 60%;
+    left: 20%;
+    background: radial-gradient(circle at 35% 35%, rgba(0, 210, 255, 0.5), rgba(0, 100, 255, 0.2) 50%, transparent 70%);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+    animation: sphereFloat 10s ease-in-out infinite 2s;
+}
+
+.db-sphere-3 {
+    width: 6px;
+    height: 6px;
+    top: 35%;
+    left: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.4), rgba(255, 215, 0, 0.15) 50%, transparent 70%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+    animation: sphereFloat 7s ease-in-out infinite 1s;
+}
+
+.db-sphere-4 {
+    width: 15px;
+    height: 15px;
+    bottom: 25%;
+    right: 15%;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 215, 0, 0.7), rgba(255, 94, 0, 0.4) 50%, transparent 70%);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+    animation: sphereFloat 9s ease-in-out infinite 3s;
+}
+
+@keyframes sphereFloat {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+}
+
+/* --- Premium Entrance Animations --- */
+@keyframes fadeScaleIn {
+    0% { opacity: 0; transform: scale(0.92); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUpBlur {
+    0% { opacity: 0; transform: translateY(40px); filter: blur(4px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes slideLeftIn {
+    0% { opacity: 0; transform: translateX(-40px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideRightIn {
+    0% { opacity: 0; transform: translateX(40px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes energyCharge {
+    0% { box-shadow: 0 0 0px rgba(255, 94, 0, 0); }
+    50% { box-shadow: 0 0 30px rgba(255, 94, 0, 0.15), inset 0 0 20px rgba(255, 94, 0, 0.05); }
+    100% { box-shadow: 0 0 0px rgba(255, 94, 0, 0); }
+}
+
+/* --- Premium Glassmorphism Cards --- */
+.epic-stat-glass {
+    background: linear-gradient(160deg, rgba(20, 20, 30, 0.75), rgba(10, 10, 16, 0.85));
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.epic-stat-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.02), transparent 50%);
+    pointer-events: none;
+}
+
+.epic-stat-glass::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 94, 0, 0.02), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.6s;
+    pointer-events: none;
+}
+
+.epic-stat-glass:hover::after {
+    opacity: 1;
+}
+
+.epic-stat-glass:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: rgba(255, 94, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 94, 0, 0.04);
+}
+
+/* --- Premium Epic Highlight Cards --- */
+.epic-highlight-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    background: var(--db-dark-2);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.epic-highlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.015), transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.epic-highlight-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255, 94, 0, 0.06), transparent 40%, rgba(0, 210, 255, 0.03));
+    opacity: 0;
+    transition: opacity 0.6s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.epic-highlight-card:hover::after {
+    opacity: 1;
+}
+
+.epic-highlight-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 94, 0, 0.12);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 94, 0, 0.04);
+}
+
+.main-highlight .epic-bg {
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.epic-highlight-card:hover .epic-bg {
+    transform: scale(1.06);
+}
+
+.main-highlight {
+    min-height: 380px;
+    position: relative;
+}
+
+/* --- Buttons Premium --- */
+.epic-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: #000;
+    box-shadow: 0 4px 20px rgba(255, 94, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    position: relative;
+    overflow: hidden;
+}
+
+.epic-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
+}
+
+.epic-btn:hover::before {
+    left: 100%;
+}
+
+.epic-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(255, 94, 0, 0.35);
+}
+
+.epic-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.hero-actions .main-action {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: #000;
+    box-shadow: 0 4px 20px rgba(255, 94, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.hero-actions .main-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(255, 94, 0, 0.4);
+}
+
+.hero-actions .secondary-action {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.hero-actions .secondary-action:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 94, 0, 0.2);
+    transform: translateY(-3px);
+}
+
+/* --- Slide & Hero Content Premium --- */
+.fullscreen-slide .slide-title {
+    font-size: 3.8rem;
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff, var(--accent-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+}
+
+.fullscreen-slide .slide-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 500px;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.slide-content-container {
+    position: relative;
+    z-index: 3;
+    max-width: 600px;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
+}
+
+.swiper-slide-active .slide-content-container {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.fullscreen-slide .slide-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border-radius: 4px;
+    background: rgba(255, 94, 0, 0.15);
+    color: var(--accent-primary);
+    border: 1px solid rgba(255, 94, 0, 0.2);
+    margin-bottom: 1rem;
+    box-shadow: 0 0 20px rgba(255, 94, 0, 0.08);
+    backdrop-filter: blur(4px);
+}
+
+.slide-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 94, 0, 0.04);
+    transform: rotateY(-5deg) scale(0.9);
+    opacity: 0;
+    transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.4s;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.swiper-slide-active .slide-poster-img {
+    transform: rotateY(-5deg) scale(1);
+    opacity: 1;
+}
+
+/* --- Netflix Row Premium --- */
+.netflix-card {
+    flex: 0 0 auto;
+    width: 180px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: var(--db-dark-2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.netflix-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(160deg, transparent, rgba(255, 94, 0, 0.03));
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+}
+
+.netflix-card:hover::after {
+    opacity: 1;
+}
+
+.netflix-card:hover {
+    transform: scale(1.08);
+    z-index: 5;
+    border-color: rgba(255, 94, 0, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 94, 0, 0.04);
+}
+
+.netflix-card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.95));
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1;
+}
+
+.netflix-card:hover .netflix-card-info {
+    transform: translateY(0);
+}
+
+/* --- Epic Section Title Premium --- */
+.epic-section-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-main);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.epic-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), transparent);
+    border-radius: 3px;
+    box-shadow: 0 0 15px rgba(255, 94, 0, 0.3);
+}
+
+/* --- Home Content Overlap Premium --- */
+.home-content-overlap {
+    margin-top: -8rem;
+    position: relative;
+    z-index: 10;
+    padding-bottom: 3rem;
+}
+
+/* --- Hero Wrapper Premium --- */
+.fullscreen-hero-wrapper {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    min-height: 600px;
+    max-height: 900px;
+}
+
+/* --- Cinematic Home Premium --- */
+.cinematic-home {
+    padding: 0 !important;
+    position: relative;
+}
+
+/* --- Hero Background Blur Premium --- */
+.hero-bg-blur {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(8, 8, 12, 0.7) 100%);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* --- Swiper Navigation Premium --- */
+.fullscreenSwiper .swiper-button-next,
+.fullscreenSwiper .swiper-button-prev {
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    width: 52px;
+    height: 52px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.fullscreenSwiper .swiper-button-next:hover,
+.fullscreenSwiper .swiper-button-prev:hover {
+    color: var(--accent-primary);
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 94, 0, 0.15);
+    transform: scale(1.05);
+}
+
+.fullscreenSwiper .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    opacity: 1;
+    margin: 0 6px !important;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.fullscreenSwiper .swiper-pagination-bullet-active {
+    width: 36px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-gold));
+    box-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
+}
+
+/* --- Responsive Premium for Inicio --- */
+@media (max-width: 1400px) {
+    .fullscreen-slide .slide-title { font-size: 3.2rem; }
+    .slide-poster-container { width: 280px; height: 420px; }
+}
+
+@media (max-width: 1200px) {
+    .fullscreen-slide .slide-title { font-size: 2.8rem; }
+    .slide-poster-container { width: 240px; height: 360px; right: 3rem; }
+}
+
+@media (max-width: 992px) {
+    .slide-poster-container { display: none; }
+    .fullscreen-slide .slide-title { font-size: 2.4rem; }
+    .fullscreen-slide { padding: 0 3rem; }
+    .fullscreen-hero-wrapper { height: 70vh; min-height: 450px; }
+    .ki-orb-1 { width: 200px; height: 200px; }
+    .ki-orb-2 { width: 140px; height: 140px; }
+    .ki-orb-3 { width: 100px; height: 100px; }
+    .db-sphere-1, .db-sphere-2, .db-sphere-3, .db-sphere-4 { display: none; }
+}
+
+@media (max-width: 768px) {
+    .fullscreen-slide .slide-title { font-size: 2rem; }
+    .fullscreen-slide { padding: 0 2rem; }
+    .slide-content-container { max-width: 100%; }
+    .fullscreen-hero-wrapper { height: 60vh; min-height: 360px; }
+    .home-content-overlap { margin-top: -4rem; }
+    .epic-stat-val { font-size: 2.4rem; }
+    .epic-highlight-card.main-highlight { min-height: 280px; }
+    .hero-actions .epic-btn { padding: 10px 20px; font-size: 0.82rem; }
+    .ki-orb-1 { width: 120px; height: 120px; }
+    .ki-orb-2 { display: none; }
+    .ki-orb-3 { display: none; }
+    .hero-glow-line-1, .hero-glow-line-2 { display: none; }
+}
+
+@media (max-width: 576px) {
+    .fullscreen-slide .slide-title { font-size: 1.5rem; }
+    .fullscreen-slide { padding: 0 1.25rem; }
+    .slide-content-container { max-width: 100%; }
+    .fullscreen-hero-wrapper { height: 50vh; min-height: 280px; }
+    .home-content-overlap { margin-top: -2rem; }
+    .epic-stat-val { font-size: 2rem; }
+    .epic-highlight-card.main-highlight { min-height: 220px; }
+    .hero-actions .epic-btn { padding: 8px 14px; font-size: 0.72rem; }
+    .fullscreen-slide .slide-badge { font-size: 0.55rem; padding: 3px 10px; }
+    .fullscreen-slide .slide-desc { font-size: 0.85rem; }
+    .fullscreenSwiper .swiper-pagination { bottom: 1rem !important; }
+    .fullscreenSwiper .swiper-pagination-bullet { width: 6px; height: 6px; }
+    .fullscreenSwiper .swiper-pagination-bullet-active { width: 24px; }
+    .ki-orb-1 { display: none; }
+}
+
+/* --- Reduced Motion Override for New Elements --- */
+@media (prefers-reduced-motion: reduce) {
+    .hero-particle-canvas { display: none; }
+    .ki-energy-orb { display: none; }
+    .db-sphere { display: none; }
+    .hero-glow-line { display: none; }
+    .epic-highlight-card::before,
+    .epic-highlight-card::after { display: none; }
+    .epic-stat-glass::before,
+    .epic-stat-glass::after { display: none; }
+}

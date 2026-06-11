@@ -63,6 +63,9 @@ async function initDashboard() {
             setTimeout(function () { loader.style.display = 'none'; }, 400);
         }
     }, 800);
+
+    // Init premium effects for Inicio
+    initInicioPremium();
 }
 
 async function loadInitialData() {
@@ -1723,4 +1726,232 @@ function initNetflixRows(media) {
     renderRow('row-series', media.series, 'serie');
     renderRow('row-peliculas', media.peliculas, 'peliculas');
     renderRow('row-mangas', media.mangas, 'manga');
+}
+
+/* ========================================
+   PREMIUM INICIO EFFECTS ENGINE
+   ======================================== */
+
+// --- Ki Particle System ---
+function initParticleSystem() {
+    const hero = document.querySelector('.fullscreen-hero-wrapper');
+    if (!hero) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'hero-particle-canvas';
+    canvas.id = 'particleCanvas';
+    hero.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animId = null;
+    let w, h;
+
+    function resize() {
+        w = canvas.width = hero.offsetWidth;
+        h = canvas.height = hero.offsetHeight;
+    }
+
+    function createParticle() {
+        const colors = [
+            '255, 94, 0',
+            '255, 215, 0',
+            '0, 210, 255',
+            '255, 255, 255',
+            '153, 51, 255'
+        ];
+        return {
+            x: Math.random() * w,
+            y: Math.random() * h,
+            size: Math.random() * 3 + 1,
+            speedX: (Math.random() - 0.5) * 0.4,
+            speedY: (Math.random() - 0.5) * 0.4 - 0.15,
+            opacity: Math.random() * 0.5 + 0.15,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            life: 0,
+            maxLife: Math.random() * 200 + 150,
+            pulse: Math.random() * Math.PI * 2
+        };
+    }
+
+    function initParticles() {
+        const count = Math.min(100, Math.floor(w * h / 12000));
+        particles = [];
+        for (let i = 0; i < count; i++) {
+            particles.push(createParticle());
+        }
+    }
+
+    function isVisible() {
+        return document.getElementById('inicio') && !document.getElementById('inicio').classList.contains('d-none');
+    }
+
+    function drawParticles(time) {
+        if (!isVisible()) {
+            animId = requestAnimationFrame(drawParticles);
+            return;
+        }
+        ctx.clearRect(0, 0, w, h);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.life++;
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.pulse += 0.02;
+
+            const pulseOpacity = Math.sin(p.pulse) * 0.2 + 0.8;
+            const currentOpacity = p.opacity * pulseOpacity * (1 - p.life / p.maxLife);
+
+            if (currentOpacity <= 0 || p.x < -10 || p.x > w + 10 || p.y < -10 || p.y > h + 10) {
+                particles[i] = createParticle();
+                continue;
+            }
+
+            const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
+            gradient.addColorStop(0, `rgba(${p.color}, ${currentOpacity})`);
+            gradient.addColorStop(0.4, `rgba(${p.color}, ${currentOpacity * 0.3})`);
+            gradient.addColorStop(1, `rgba(${p.color}, 0)`);
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 0.6, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${p.color}, ${currentOpacity * 0.8})`;
+            ctx.fill();
+        }
+
+        // Draw energy lines (subtle connections between nearby particles)
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    const lineOpacity = (1 - dist / 120) * 0.05;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(255, 94, 0, ${lineOpacity})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        animId = requestAnimationFrame(drawParticles);
+    }
+
+    function start() {
+        resize();
+        initParticles();
+        if (animId) cancelAnimationFrame(animId);
+        drawParticles(0);
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+    }
+
+    start();
+}
+
+// --- Floating Decorative Elements ---
+function initDecorativeElements() {
+    const hero = document.querySelector('.fullscreen-hero-wrapper');
+    if (!hero) return;
+
+    // Ki Energy Orbs
+    const orbConfigs = [
+        { className: 'ki-energy-orb ki-orb-1' },
+        { className: 'ki-energy-orb ki-orb-2' },
+        { className: 'ki-energy-orb ki-orb-3' }
+    ];
+    orbConfigs.forEach(cfg => {
+        const orb = document.createElement('div');
+        orb.className = cfg.className;
+        hero.appendChild(orb);
+    });
+
+    // Dragon Ball spheres
+    const sphereConfigs = [
+        { className: 'db-sphere db-sphere-1' },
+        { className: 'db-sphere db-sphere-2' },
+        { className: 'db-sphere db-sphere-3' },
+        { className: 'db-sphere db-sphere-4' }
+    ];
+    sphereConfigs.forEach(cfg => {
+        const sphere = document.createElement('div');
+        sphere.className = cfg.className;
+        hero.appendChild(sphere);
+    });
+
+    // Glow lines
+    const glowLine1 = document.createElement('div');
+    glowLine1.className = 'hero-glow-line hero-glow-line-1';
+    hero.appendChild(glowLine1);
+
+    const glowLine2 = document.createElement('div');
+    glowLine2.className = 'hero-glow-line hero-glow-line-2';
+    hero.appendChild(glowLine2);
+}
+
+// --- Parallax Hero Effect ---
+function initHeroParallax() {
+    const hero = document.querySelector('.fullscreen-hero-wrapper');
+    if (!hero) return;
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrollY = window.pageYOffset;
+                const heroHeight = hero.offsetHeight;
+                if (scrollY <= heroHeight) {
+                    const offset = scrollY * 0.3;
+                    hero.style.transform = `translateY(${offset}px)`;
+                    hero.style.willChange = 'transform';
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+}
+
+// --- Enhanced Counter Animation ---
+function animateCounters() {
+    const counters = document.querySelectorAll('.stat-number[data-count], .epic-stat-val[data-count]');
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count'));
+        const suffix = target >= 100 ? '+' : '';
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 4);
+            const current = Math.floor(eased * target);
+            counter.textContent = current + suffix;
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = target + suffix;
+            }
+        }
+        requestAnimationFrame(updateCounter);
+    });
+}
+
+// --- Init All Inicio Premium Effects ---
+function initInicioPremium() {
+    setTimeout(() => {
+        initDecorativeElements();
+        initParticleSystem();
+        initHeroParallax();
+    }, 200);
 }
