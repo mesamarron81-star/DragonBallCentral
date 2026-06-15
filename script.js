@@ -16,6 +16,69 @@ function dom(sel) { return document.querySelector(sel); }
 function domAll(sel) { return document.querySelectorAll(sel); }
 function byId(id) { return document.getElementById(id); }
 
+// Utility: Skeleton loader helpers
+function showSkeleton(containerId, count, columns) {
+    var container = byId(containerId);
+    if (!container) return;
+    var colClass = columns || 'col-xl-3 col-lg-4 col-md-6';
+    container.innerHTML = '';
+    for (var i = 0; i < count; i++) {
+        container.innerHTML += '<div class="' + colClass + '"><div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div></div>';
+    }
+}
+
+function hideSkeleton(containerId) {
+    var container = byId(containerId);
+    if (!container) return;
+    container.querySelectorAll('.skeleton-card').forEach(function(el) { el.remove(); });
+}
+
+// Utility: IntersectionObserver lazy load for images
+function initLazyImages() {
+    if ('IntersectionObserver' in window) {
+        var imageObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    var src = img.getAttribute('data-src');
+                    if (src) {
+                        img.src = src;
+                        img.removeAttribute('data-src');
+                    }
+                    imageObserver.unobserve(img);
+                }
+            });
+        }, { rootMargin: '200px 0px' });
+
+        document.querySelectorAll('img[data-src]').forEach(function(img) {
+            imageObserver.observe(img);
+        });
+    }
+}
+
+// Utility: Scroll reveal with IntersectionObserver
+function initScrollReveal() {
+    if ('IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(function(el) {
+            revealObserver.observe(el);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initLazyImages();
+    initScrollReveal();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     initDashboard();
 
@@ -331,7 +394,6 @@ function renderCharacters(characters, query = '') {
     }
     container.innerHTML = characters.map((char, idx) => {
         const charId = getCharId(char);
-        const ki = char.stats?.ki ?? 0;
         const img = (char.imagenes && char.imagenes[0]) || 'https://via.placeholder.com/400x560/111/ff5e00?text=SIN+IMAGEN';
         const charJson = JSON.stringify(char).replace(/'/g, '&#39;');
         return `
@@ -344,10 +406,10 @@ function renderCharacters(characters, query = '') {
                     <div class="character-card-portrait">
                         <img src="${img}" alt="${char.Personaje}" loading="lazy" decoding="async"
                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x560/111/ff5e00?text=SIN+IMAGEN';">
-                        <span class="character-card-universe">U${char.Universo}</span>
-                        <div class="character-card-ki-bar" title="Nivel de Ki: ${ki}%">
-                            <div class="character-card-ki-fill" style="width: ${ki}%"></div>
+                        <div class="character-card-play-overlay">
+                            <span class="play-icon"><i class="bi bi-eye-fill"></i></span>
                         </div>
+                        <span class="character-card-universe">U${char.Universo}</span>
                     </div>
                     <div class="character-card-body">
                         <h5 class="character-card-name">${highlightText(char.Personaje, query)}</h5>
@@ -1614,27 +1676,163 @@ function wireFanAnimationUi() {
 }
 
 function initCinematicHome(media) {
-    initStaticHero(media);
+    initHeroCarousel(media);
     initNetflixRows(media);
 }
 
-function initStaticHero(media) {
-    const featured = (media.series && media.series[0]) || (media.peliculas && media.peliculas[0]) || null;
-    const imageUrl = (featured && featured.imagen) || 'https://lh3.googleusercontent.com/d/1sk_RHuD7tLc0junztslnag4CgCisW0hy';
-
+function initHeroCarousel(media) {
+    const container = document.getElementById('dokkanCardsContainer');
+    const dotsEl = document.getElementById('dokkanDots');
     const blurBg = document.getElementById('heroBgBlur');
-    const mainBg = document.getElementById('heroBgMain');
-    if (blurBg) blurBg.style.backgroundImage = "url('" + imageUrl + "')";
-    if (mainBg) mainBg.style.backgroundImage = "url('" + imageUrl + "')";
+    if (!container) return;
 
-    if (featured) {
-        const badge = document.getElementById('homeHeroBadge');
-        const title = document.getElementById('homeHeroTitle');
-        const desc = document.getElementById('homeHeroDesc');
-        if (badge) badge.textContent = featured.titulo || 'Multiverso Dragon Ball';
-        if (title) title.textContent = 'Dragon Ball Central';
-        if (desc && featured.descripcion) desc.textContent = featured.descripcion;
+    const items = [];
+    (media.series || []).forEach(s => items.push({ ...s, tipo: 'Serie', section: 'serie' }));
+    (media.peliculas || []).forEach(p => items.push({ ...p, tipo: 'Película', section: 'peliculas' }));
+
+    if (!items.length) {
+        items.push({
+            titulo: 'Dragon Ball Central',
+            descripcion: 'La base de datos definitiva del universo Dragon Ball.',
+            imagen: 'https://lh3.googleusercontent.com/d/1sk_RHuD7tLc0junztslnag4CgCisW0hy',
+            info: 'Multiverso Dragon Ball',
+            tipo: 'Serie', section: 'inicio'
+        });
     }
+
+    // Shuffle items randomly
+    for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+    }
+
+    window.HERO_ITEMS = items;
+
+    let currentIndex = 0;
+    let autoplayTimer = null;
+
+    function renderCards() {
+        const total = items.length;
+        container.innerHTML = items.map((item, i) => {
+            const typeClass = item.tipo === 'Serie' ? 'serie' : 'pelicula';
+            const year = item.inicio ? item.inicio.split('/').pop() : (item.info || '');
+            const meta = year + (item.capitulos ? ' · ' + item.capitulos + ' ep.' : '');
+            return `
+                <div class="dokkan-card" data-index="${i}" onclick="dokkanGoTo(${i})">
+                    <div class="dokkan-card-img" style="background-image: url('${item.imagen}')"></div>
+                    <div class="dokkan-card-overlay"></div>
+                    <div class="dokkan-card-glow"></div>
+                    <span class="dokkan-card-type-badge ${typeClass}">${item.tipo}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function updatePositions() {
+        const cards = container.querySelectorAll('.dokkan-card');
+        const total = items.length;
+
+        cards.forEach((card, i) => {
+            card.classList.remove('active', 'prev', 'prev-2', 'next', 'next-2', 'hidden');
+
+            let diff = i - currentIndex;
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
+
+            if (diff === 0) {
+                card.classList.add('active');
+            } else if (diff === 1) {
+                card.classList.add('next');
+            } else if (diff === 2) {
+                card.classList.add('next-2');
+            } else if (diff === -1) {
+                card.classList.add('prev');
+            } else if (diff === -2) {
+                card.classList.add('prev-2');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        // Update dots
+        if (dotsEl) {
+            dotsEl.innerHTML = items.map((_, i) =>
+                `<button class="dokkan-dot${i === currentIndex ? ' active' : ''}" onclick="dokkanGoTo(${i})" aria-label="Slide ${i + 1}"></button>`
+            ).join('');
+        }
+
+        // Update info panel
+        updateInfoPanel(currentIndex);
+    }
+
+    function updateInfoPanel(index) {
+        const item = items[index];
+        if (!item) return;
+        const exploreBtn = document.getElementById('dokkanExploreBtn');
+        const charsBtn = document.getElementById('dokkanCharsBtn');
+
+        if (exploreBtn) {
+            exploreBtn.setAttribute('onclick', "showSection('" + item.section + "', true, event)");
+        }
+        if (charsBtn) {
+            charsBtn.setAttribute('onclick', "showSection('personajes', true, event)");
+        }
+
+        // Update blur bg
+        if (blurBg) blurBg.style.backgroundImage = "url('" + item.imagen + "')";
+    }
+
+    window.dokkanGoTo = function(index) {
+        currentIndex = index;
+        updatePositions();
+        resetAutoplay();
+    };
+
+    window.dokkanNext = function() {
+        currentIndex = (currentIndex + 1) % items.length;
+        updatePositions();
+    };
+
+    window.dokkanPrev = function() {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updatePositions();
+    };
+
+    function resetAutoplay() {
+        if (autoplayTimer) clearInterval(autoplayTimer);
+        autoplayTimer = setInterval(window.dokkanNext, 5000);
+    }
+
+    // Arrows
+    const arrowLeft = document.getElementById('dokkanArrowLeft');
+    const arrowRight = document.getElementById('dokkanArrowRight');
+    if (arrowLeft) arrowLeft.addEventListener('click', window.dokkanPrev);
+    if (arrowRight) arrowRight.addEventListener('click', window.dokkanNext);
+
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+        const hero = document.getElementById('inicio');
+        if (!hero || hero.classList.contains('d-none')) return;
+        if (e.key === 'ArrowLeft') window.dokkanPrev();
+        if (e.key === 'ArrowRight') window.dokkanNext();
+    });
+
+    // Touch/swipe
+    let touchStartX = 0;
+    container.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    container.addEventListener('touchend', function(e) {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) window.dokkanNext();
+            else window.dokkanPrev();
+        }
+    }, { passive: true });
+
+    renderCards();
+    updatePositions();
+    resetAutoplay();
 }
 
 function showMediaInfoByIndex(index, evt) {
@@ -1671,15 +1869,6 @@ function showMediaInfo(title, description, image, info, tipo) {
     modal.show();
 }
 
-function updateHeroBlurBg(swiperInstance) {
-    const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-    const bgUrl = activeSlide.getAttribute('data-bg');
-    const blurBg = document.getElementById('heroBgBlur');
-    if (blurBg && bgUrl) {
-        blurBg.style.backgroundImage = `url('${bgUrl}')`;
-    }
-}
-
 function initNetflixRows(media) {
     const renderRow = (containerId, items, sectionType) => {
         const container = document.getElementById(containerId);
@@ -1689,8 +1878,12 @@ function initNetflixRows(media) {
         items.forEach((item, index) => {
             const imageUrl = item.imagen || 'https://via.placeholder.com/400x600/111/ff5e00';
             const meta = item.info || item.año || item.descripcion || '';
+            const titulo = item.titulo || '';
+            const descripcion = item.descripcion || '';
+            const info = item.info || meta;
+            const tipo = sectionType === 'serie' ? 'Serie' : (sectionType === 'peliculas' ? 'Película' : 'Manga');
             html += `
-                <div class="netflix-card" onclick="showSection('${sectionType}')" data-aos="fade-up" data-aos-delay="${(index % 6) * 40}">
+                <div class="netflix-card" onclick="showMediaInfo('${titulo.replace(/'/g, "\\'")}', '${descripcion.replace(/'/g, "\\'")}', '${imageUrl}', '${info.replace(/'/g, "\\'")}', '${tipo}')" data-aos="fade-up" data-aos-delay="${(index % 6) * 40}">
                     <div class="netflix-card-shine" aria-hidden="true"></div>
                     <img src="${imageUrl}" alt="${item.titulo}" loading="lazy" decoding="async"
                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x600/111/ff5e00?text=SIN+IMAGEN';">
@@ -1715,7 +1908,7 @@ function initNetflixRows(media) {
 
 // --- Ki Particle System ---
 function initParticleSystem() {
-    const hero = document.querySelector('.fullscreen-hero-wrapper');
+    const hero = document.querySelector('.hero-carousel-wrapper');
     if (!hero) return;
 
     const canvas = document.createElement('canvas');
@@ -1842,7 +2035,7 @@ function initParticleSystem() {
 
 // --- Floating Decorative Elements ---
 function initDecorativeElements() {
-    const hero = document.querySelector('.fullscreen-hero-wrapper');
+    const hero = document.querySelector('.hero-carousel-wrapper');
     if (!hero) return;
 
     // Ki Energy Orbs
@@ -1870,6 +2063,28 @@ function initDecorativeElements() {
         hero.appendChild(sphere);
     });
 
+    // Vortex rings
+    const vortex1 = document.createElement('div');
+    vortex1.className = 'ki-vortex ki-vortex-1';
+    hero.appendChild(vortex1);
+
+    const vortex2 = document.createElement('div');
+    vortex2.className = 'ki-vortex ki-vortex-2';
+    hero.appendChild(vortex2);
+
+    // Energy streak lines
+    const streak1 = document.createElement('div');
+    streak1.className = 'ki-streak ki-streak-1';
+    hero.appendChild(streak1);
+
+    const streak2 = document.createElement('div');
+    streak2.className = 'ki-streak ki-streak-2';
+    hero.appendChild(streak2);
+
+    const streak3 = document.createElement('div');
+    streak3.className = 'ki-streak ki-streak-3';
+    hero.appendChild(streak3);
+
     // Glow lines
     const glowLine1 = document.createElement('div');
     glowLine1.className = 'hero-glow-line hero-glow-line-1';
@@ -1878,11 +2093,15 @@ function initDecorativeElements() {
     const glowLine2 = document.createElement('div');
     glowLine2.className = 'hero-glow-line hero-glow-line-2';
     hero.appendChild(glowLine2);
+
+    const glowLine3 = document.createElement('div');
+    glowLine3.className = 'hero-glow-line hero-glow-line-3';
+    hero.appendChild(glowLine3);
 }
 
 // --- Parallax Hero Effect ---
 function initHeroParallax() {
-    const hero = document.querySelector('.fullscreen-hero-wrapper');
+    const hero = document.querySelector('.hero-carousel-wrapper');
     if (!hero) return;
 
     let ticking = false;
@@ -1905,7 +2124,7 @@ function initHeroParallax() {
 
 // --- Enhanced Counter Animation ---
 function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number[data-count], .epic-stat-val[data-count]');
+    const counters = document.querySelectorAll('.epic-stat-val[data-count], .destacado-stat-val[data-count]');
     counters.forEach(counter => {
         const target = parseInt(counter.getAttribute('data-count'));
         const suffix = target >= 100 ? '+' : '';
@@ -1933,76 +2152,12 @@ function initPremiumLoader() {
     const loader = document.getElementById('loader');
     if (!loader) return;
 
-    const canvas = document.getElementById('loaderCanvas');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        let w, h;
-        const particles = [];
-        const colors = ['255,94,0', '255,215,0', '0,210,255', '255,255,255'];
-        let animFrameId = null;
-
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        for (let i = 0; i < 40; i++) {
-            particles.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                size: Math.random() * 2 + 0.5,
-                speedX: (Math.random() - 0.5) * 0.2,
-                speedY: (Math.random() - 0.5) * 0.2 - 0.08,
-                opacity: Math.random() * 0.3 + 0.08,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                pulse: Math.random() * 6
-            });
-        }
-
-        function drawLoaderParticles(time) {
-            ctx.clearRect(0, 0, w, h);
-            particles.forEach(p => {
-                p.x += p.speedX;
-                p.y += p.speedY;
-                p.pulse += 0.015;
-                if (p.x < -10) p.x = w + 10;
-                if (p.x > w + 10) p.x = -10;
-                if (p.y < -10) p.y = h + 10;
-                if (p.y > h + 10) p.y = -10;
-
-                const opacity = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
-                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
-                grad.addColorStop(0, `rgba(${p.color},${opacity})`);
-                grad.addColorStop(0.4, `rgba(${p.color},${opacity * 0.2})`);
-                grad.addColorStop(1, `rgba(${p.color},0)`);
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size * 3, 0, 6.28);
-                ctx.fillStyle = grad;
-                ctx.fill();
-            });
-            animFrameId = requestAnimationFrame(drawLoaderParticles);
-        }
-        animFrameId = requestAnimationFrame(drawLoaderParticles);
-
-        // Clean up animation frame when loader is hidden to save resources
-        const observer = new MutationObserver(() => {
-            if (loader.classList.contains('loaded')) {
-                if (animFrameId) cancelAnimationFrame(animFrameId);
-                observer.disconnect();
-            }
-        });
-        observer.observe(loader, { attributes: true, attributeFilter: ['class'] });
-    }
-
     const messages = [
         'Preparando las Esferas del Dragón...',
         'Reuniendo el Ki...',
         'Cargando el universo Dragon Ball...',
         'Sincronizando personajes...',
         'Accediendo al multiverso...',
-        'Preparando la siguiente aventura...',
         'Despertando a los Saiyans...'
     ];
     const textEl = document.getElementById('loaderText');
@@ -2036,7 +2191,7 @@ function initPremiumLoader() {
 
     const progInterval = setInterval(advanceProgress, 500);
 
-    const minLoadTime = 2000;
+    const minLoadTime = 1800;
     const loadStart = Date.now();
 
     function hideLoader() {
@@ -2056,20 +2211,12 @@ function initPremiumLoader() {
                 loader.classList.add('loaded');
                 setTimeout(() => {
                     loader.style.display = 'none';
-                    if (canvas) {
-                        const loaderEl = document.getElementById('loader');
-                        if (loaderEl) loaderEl.innerHTML = '';
-                    }
-                }, 700);
+                }, 600);
             }, 350);
         }, delay);
     }
 
-    // Store hideLoader globally
     window._hideLoader = hideLoader;
-
-    // Also hide after data loads (called from loadInitialData)
-    // Default fallback: hide after 4s if data never loads
     setTimeout(hideLoader, 4000);
 }
 
